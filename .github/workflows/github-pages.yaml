@@ -1,0 +1,24 @@
+name: Deploy GH Pages
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Install and Build
+        run: | # Install npm packages and build the Storybook files
+          yarn install
+          yarn build -- -c prod --output-path=../dist
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: docs # The branch the action should deploy to.
+          FOLDER: dist # The folder that the  script generates files.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+          TARGET_FOLDER: . # The folder that we serve our files from
