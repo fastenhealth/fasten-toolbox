@@ -1,19 +1,35 @@
 <div class="az-content">
   <div class="container">
-    <app-components-sidebar></app-components-sidebar>
     <div class="az-content-body pd-lg-l-40 d-flex flex-column">
       <div class="az-content-breadcrumb">
-        <span>Medical Sources</span>
+        <span>Export FHIR Bundle</span>
       </div>
 
       <div class="alert alert-info" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
-        <strong>Work-in-Progress!</strong> Some sources may not be implemented correctly.
-        Some sources may require frequent re-connection, as background refresh has not been implemented yet.
+        <strong>Work-in-Progress!</strong>
         <br/>
-        If you have feedback regarding healthcare sources, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
+        This tool is intended for use during the <a href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track">FHIR Connectathon</a> in Jan 2023. <br/>
+        It allows patients/users to export their electronic medical records from their healthcare providers, in FHIR format.<br/>
+        <br/>
+        When you click on a provider in the list below, you will be redirected to their login page. After authorization, you'll be redirected back to
+        this Fasten toolbox, where you will be able to see and export your FHIR bundle.
+        <br/>
+        <br/>
+        <strong>Please note:</strong><br/>
+        - No data is stored, this tool is state-less. If you refresh the page, you may need to reauthenticate with your provider.<br/>
+        - The export may take a while to process (5+minutes), if you have a long history with that provider.<br/>
+        - Some sources may not be implemented correctly.<br/>
+        <br/>
+
+        <strong>
+          This toolbox replicates functionality from <a href="https://github.com/fastenhealth/fasten-onprem">Fasten Health</a> - an open-source
+          project that allows you to connect your healthcare providers together, creating a personal health record that never leaves your hands
+        </strong>
+        <br/><br/>
+        If your healthcare provider is missing or broken, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
 
         <span *ngIf="environment_name == 'sandbox'">
           <br/>

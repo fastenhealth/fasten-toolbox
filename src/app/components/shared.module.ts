@@ -2,7 +2,6 @@ import { ComponentsSidebarComponent } from './components-sidebar/components-side
 import { NgModule } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
-import { UtilitiesSidebarComponent } from './utilities-sidebar/utilities-sidebar.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ToastComponent } from './toast/toast.component';
@@ -24,7 +23,6 @@ import { ChartsModule } from 'ng2-charts';
   ],
   declarations: [
     ComponentsSidebarComponent,
-    UtilitiesSidebarComponent,
 
     ToastComponent,
     FhirPathPipe,
@@ -32,7 +30,6 @@ import { ChartsModule } from 'ng2-charts';
   ],
     exports: [
         ComponentsSidebarComponent,
-        UtilitiesSidebarComponent,
         ToastComponent,
         FhirPathPipe,
         FilterPipe,
