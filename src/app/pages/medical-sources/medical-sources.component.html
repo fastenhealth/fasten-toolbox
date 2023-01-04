@@ -20,8 +20,8 @@
         <br/>
         <strong>Please note:</strong><br/>
         - No data is stored, this tool is state-less. If you refresh the page, you may need to reauthenticate with your provider.<br/>
-        - The export may take a while to process (5+minutes), if you have a long history with that provider.<br/>
-        - Some sources may not be implemented correctly.<br/>
+        - This toolbox will timeout if the request takes more than 30s, causing issues for patients with a long/complicated provider history.<br/>
+        - Some sources may not be working. Please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>.<br/>
         <br/>
 
         <strong>
@@ -62,11 +62,11 @@
           </div>
         </div>
 
-        <div *ngIf="bundle" class="col-sm-9 mg-b-20 px-3">
+        <div *ngIf="bundle" class="col-sm-9 mg-b-20 mt-3 px-3">
           <pre class="card" style="max-height:300px">
             <code  [highlight]="bundle | json"></code>
           </pre>
-          <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-warning btn-rounded">Download FHIR Bundle</a>
+          <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-indigo btn-rounded">Download FHIR Bundle</a>
 
         </div>
 
