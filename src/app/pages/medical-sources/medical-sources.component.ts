@@ -13,6 +13,7 @@ import {ToastNotification, ToastType} from '../../models/fasten/toast';
 import {environment} from '../../../environments/environment';
 import {forkJoin} from 'rxjs';
 import Fuse from 'fuse.js'
+import {ToolboxService} from '../../services/toolbox.service';
 // If you dont import this angular will import the wrong "Location"
 
 export const sourceConnectWindowTimeout = 24*5000 //wait 2 minutes (5 * 24 = 120)
@@ -31,6 +32,7 @@ export class MedicalSourcesComponent implements OnInit {
 
   constructor(
     private lighthouseApi: LighthouseService,
+    private toolboxApi: ToolboxService,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
@@ -237,45 +239,36 @@ export class MedicalSourcesComponent implements OnInit {
 
         console.log("TODO: CREATE SOURCE + LOGIN PAGE")
 
-      })
 
-      //   this.fastenApi.createSource(dbSourceCredential)
-      //     .subscribe((resp) => {
-      //       // const sourceSyncMessage = JSON.parse(msg) as SourceSyncMessage
-      //       delete this.status[sourceType]
-      //       // window.location.reload();
-      //       // this.connectedSourceList.
-      //
-      //       //find the index of the "inprogress" source in the connected List, and then add this source to its source metadata.
-      //       let foundSource = this.connectedSourceList.findIndex((item) => item.metadata.source_type == sourceType)
-      //       this.connectedSourceList[foundSource].source = resp.source
-      //
-      //       console.log("source sync-all response:", resp.summary)
-      //
-      //       const toastNotification = new ToastNotification()
-      //       toastNotification.type = ToastType.Success
-      //       toastNotification.message = `Successfully connected ${sourceType}`
-      //
-      //       // const upsertSummary = sourceSyncMessage.response as UpsertSummary
-      //       // if(upsertSummary && upsertSummary.totalResources != upsertSummary.updatedResources.length){
-      //       //   toastNotification.message += `\n (total: ${upsertSummary.totalResources}, updated: ${upsertSummary.updatedResources.length})`
-      //       // } else if(upsertSummary){
-      //       //   toastNotification.message += `\n (total: ${upsertSummary.totalResources})`
-      //       // }
-      //
-      //       this.toastService.show(toastNotification)
-      //     },
-      //     (err) => {
-      //       delete this.status[sourceType]
-      //       // window.location.reload();
-      //
-      //       const toastNotification = new ToastNotification()
-      //       toastNotification.type = ToastType.Error
-      //       toastNotification.message = `An error occurred while accessing ${sourceType}: ${err}`
-      //       toastNotification.autohide = false
-      //       this.toastService.show(toastNotification)
-      //       console.error(err)
-      //     });
-      // })
+        this.toolboxApi.exportSource(dbSourceCredential)
+          .subscribe((resp) => {
+            // const sourceSyncMessage = JSON.parse(msg) as SourceSyncMessage
+            delete this.status[sourceType]
+            // window.location.reload();
+            // this.connectedSourceList.
+
+
+            console.log("source bundle response:", resp)
+
+            const toastNotification = new ToastNotification()
+            toastNotification.type = ToastType.Success
+            toastNotification.message = `Successfully export FHIR bundle: ${sourceType}`
+
+            this.toastService.show(toastNotification)
+
+            //TODO: set the source bundle as a variable, display in the UI and allow users to download it.
+          },
+          (err) => {
+            delete this.status[sourceType]
+            // window.location.reload();
+
+            const toastNotification = new ToastNotification()
+            toastNotification.type = ToastType.Error
+            toastNotification.message = `An error occurred while exporting FHIR bundle ${sourceType}: ${err}`
+            toastNotification.autohide = false
+            this.toastService.show(toastNotification)
+            console.error(err)
+          });
+      })
   }
 }
