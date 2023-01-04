@@ -1,0 +1,107 @@
+<div class="az-content">
+  <div class="container">
+    <app-components-sidebar></app-components-sidebar>
+    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+      <div class="az-content-breadcrumb">
+        <span>Medical Sources</span>
+      </div>
+
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <strong>Work-in-Progress!</strong> Some sources may not be implemented correctly.
+        Some sources may require frequent re-connection, as background refresh has not been implemented yet.
+        <br/>
+        If you have feedback regarding healthcare sources, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
+
+        <span *ngIf="environment_name == 'sandbox'">
+          <br/>
+          <br/>
+        In <strong>Sandbox mode</strong> Fasten Health cannot access real patient information. You must use Sandbox credentials when authenticating to healthcare sources.
+          <a href="https://github.com/fastenhealth/docs/blob/main/BETA.md#connecting-a-new-source">These credentials are available on Github</a>
+        </span>
+      </div>
+
+
+      <h2 class="az-content-title">Connected Sources</h2>
+
+      <div *ngIf="!loading else isLoadingTemplate" class="row">
+        <div *ngFor="let sourceInfo of connectedSourceList" class="col-sm-3 mg-b-20 px-3">
+          <div class="card h-100 d-flex align-items-center justify-content-center mt-3 mt-3 rounded-0 cursor-pointer">
+            <div class="card-body">
+
+              <div class="h-100 d-flex align-items-center">
+                <img [src]="'assets/sources/'+sourceInfo?.metadata['source_type']+'.png'" [alt]="sourceInfo?.metadata.display" class="img-fluid">
+              </div>
+              <div *ngIf="status[sourceInfo.metadata?.source_type]" class="progress">
+                <div [style.width]="status[sourceInfo?.metadata?.source_type] == 'authorize' ? '33%' : '66%'" class="bg-indigo progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="card-footer text-center p-1" style="width:100%">
+              <small class="tx-gray-700">
+                {{sourceInfo?.metadata.display}}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="az-content-title mg-t-40">Medical Record Sources</h2>
+
+
+      <div class="az-content-label mg-b-5">Healthcare Companies</div>
+      <p class="mg-b-20">The following medical companies have API's which Fasten can use to retrieve your medical history.
+        Please click the logos below to initiate the connection.</p>
+
+      <!-- Search -->
+      <div class="row row-sm sticky-top pt-2" style="position:sticky;">
+        <div class="col-lg-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="search-prefix">Search</span>
+            </div>
+            <input (keyup)="searchTermChanged($event)" type="text" class="form-control" placeholder="Search Term">
+          </div><!-- input-group -->
+        </div><!-- col -->
+      </div>
+
+
+      <div *ngIf="!loading else isLoadingTemplate" class="row row-sm">
+        <div *ngFor="let sourceData of availableSourceList" (click)="connectHandler($event, sourceData.metadata.source_type)" class="col-sm-3 mg-b-20 px-3">
+          <div class="card h-100 d-flex align-items-center justify-content-center mt-3 mt-3 rounded-0 cursor-pointer" [ngClass]="{'card-disable': !sourceData.metadata.enabled}">
+            <div class="card-body d-flex align-items-center">
+              <img style="max-height: 130px;" [src]="'assets/sources/'+sourceData.metadata.source_type+'.png'" [alt]="metadataSources[sourceData.metadata.source_type].display" class="img-fluid">
+              <div *ngIf="status[sourceData.metadata.source_type]" class="progress">
+                <div [style.width]="status[sourceData.metadata.source_type] == 'authorize' ? '33%' : '66%'" class="bg-indigo progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+              </div>
+            </div>
+            <div class="card-footer text-center p-1" style="width:100%">
+              <small class="tx-gray-700">
+                {{metadataSources[sourceData.metadata.source_type].display}}
+              </small>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- row -->
+
+      <div class="ht-40"></div>
+
+    </div><!-- az-content-body -->
+  </div><!-- container -->
+</div><!-- az-content -->
+
+
+<ng-template #isLoadingTemplate>
+  <div class="row">
+    <div class="col-12">
+      <div class="text-center">
+        <p class="pb-3">Please wait, loading sources...</p>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
