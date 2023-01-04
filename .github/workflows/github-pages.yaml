@@ -13,7 +13,7 @@ jobs:
       - name: Install and Build
         run: | # Install npm packages and build the Storybook files
           yarn install
-          yarn build -- -c prod --output-path=../dist
+          yarn build -- -c prod --output-path=dist
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
