@@ -14,6 +14,7 @@ import {environment} from '../../../environments/environment';
 import {forkJoin} from 'rxjs';
 import Fuse from 'fuse.js'
 import {ToolboxService} from '../../services/toolbox.service';
+import {DomSanitizer} from '@angular/platform-browser';
 // If you dont import this angular will import the wrong "Location"
 
 export const sourceConnectWindowTimeout = 24*5000 //wait 2 minutes (5 * 24 = 120)
@@ -37,7 +38,8 @@ export class MedicalSourcesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private sanitizer: DomSanitizer
   ) { }
 
 
@@ -49,7 +51,10 @@ export class MedicalSourcesComponent implements OnInit {
 
   connectedSourceList: SourceListItem[] = [] //source's are populated for this list
   availableSourceList: SourceListItem[] = []
-  uploadedFile: File[] = []
+
+  bundle = null
+  generateBundleDownloadUrl = null
+  generateBundleDownloadFilename = null
 
   closeResult = '';
   modalSelectedSourceListItem:SourceListItem = null;
@@ -252,11 +257,19 @@ export class MedicalSourcesComponent implements OnInit {
 
             const toastNotification = new ToastNotification()
             toastNotification.type = ToastType.Success
-            toastNotification.message = `Successfully export FHIR bundle: ${sourceType}`
+            toastNotification.message = `Successfully exported FHIR bundle: ${sourceType}`
 
             this.toastService.show(toastNotification)
 
-            //TODO: set the source bundle as a variable, display in the UI and allow users to download it.
+            this.bundle = resp
+
+            let bundleJsonBlob = new Blob([JSON.stringify(this.bundle)], { type: 'application/json' });
+            this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
+            this.generateBundleDownloadFilename = `fasten-${sourceType}.bundle.json`
+
+
+
+              //TODO: set the source bundle as a variable, display in the UI and allow users to download it.
           },
           (err) => {
             delete this.status[sourceType]
