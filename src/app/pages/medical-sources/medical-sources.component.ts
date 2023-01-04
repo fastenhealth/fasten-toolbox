@@ -263,7 +263,7 @@ export class MedicalSourcesComponent implements OnInit {
 
             this.bundle = resp
 
-            let bundleJsonBlob = new Blob([JSON.stringify(this.bundle)], { type: 'application/json' });
+            let bundleJsonBlob = new Blob([JSON.stringify(this.bundle, null, 2)], { type: 'application/json' });
             this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
             this.generateBundleDownloadFilename = `fasten-${sourceType}.bundle.json`
 

@@ -44,7 +44,7 @@
 
       <div *ngIf="!loading else isLoadingTemplate" class="row">
         <div *ngFor="let sourceInfo of connectedSourceList" class="col-sm-3 mg-b-20 px-3">
-          <div class="card h-100 d-flex align-items-center justify-content-center mt-3 mt-3 rounded-0 cursor-pointer">
+          <div class="card d-flex align-items-center justify-content-center mt-3 mt-3 rounded-0 cursor-pointer">
             <div class="card-body">
 
               <div class="h-100 d-flex align-items-center">
@@ -63,12 +63,13 @@
         </div>
 
         <div *ngIf="bundle" class="col-sm-9 mg-b-20 px-3">
-          <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-warning btn-rounded btn-block">Download FHIR Bundle</a>
-
-          <pre>
+          <pre class="card" style="max-height:300px">
             <code  [highlight]="bundle | json"></code>
           </pre>
+          <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-warning btn-rounded">Download FHIR Bundle</a>
+
         </div>
+
       </div>
 
       <h2 class="az-content-title mg-t-40">Medical Record Sources</h2>
