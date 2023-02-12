@@ -17,8 +17,12 @@ export class LighthouseService {
   constructor(private _httpClient: HttpClient) {
   }
 
-  public getLighthouseSourceMetadataMap(): Observable<{[name: string]: MetadataSource}> {
-    return this._httpClient.get<ResponseWrapper>(`${environment.lighthouse_api_endpoint_base}/list`)
+  public getLighthouseSourceMetadataMap(show_hidden: boolean = false): Observable<{[name: string]: MetadataSource}> {
+    let queryParams = {
+      'show_hidden':show_hidden,
+    }
+
+    return this._httpClient.get<ResponseWrapper>(`${environment.lighthouse_api_endpoint_base}/list`,{params: queryParams})
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("Metadata RESPONSE", response)

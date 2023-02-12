@@ -61,11 +61,15 @@ export class MedicalSourcesComponent implements OnInit {
 
   searchIndex = null
   searchTerm: string = ""
+  showHidden: boolean = false
 
 
   ngOnInit(): void {
+    this.populateLighthouseSourceMetadataMap(this.showHidden)
+  }
 
-    forkJoin([this.lighthouseApi.getLighthouseSourceMetadataMap()]).subscribe(results => {
+  public populateLighthouseSourceMetadataMap(show_hidden:boolean = false){
+    forkJoin([this.lighthouseApi.getLighthouseSourceMetadataMap(show_hidden)]).subscribe(results => {
       this.loading = false
       //handle source metadata map response
       this.metadataSources = results[0] as {[name:string]: MetadataSource}
@@ -120,6 +124,13 @@ export class MedicalSourcesComponent implements OnInit {
     }, err => {
       this.loading = false
     })
+  }
+
+  public showHiddenToggled(){
+    //toggle value
+    this.showHidden = !this.showHidden
+    //reset sourcemetadata map
+    this.populateLighthouseSourceMetadataMap(this.showHidden)
   }
 
   public searchTermChanged($event):void {

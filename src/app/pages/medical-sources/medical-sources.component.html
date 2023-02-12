@@ -89,6 +89,10 @@
             <input (keyup)="searchTermChanged($event)" type="text" class="form-control" placeholder="Search Term">
           </div><!-- input-group -->
         </div><!-- col -->
+        <div class="col-lg-4">
+          <div class="az-toggle" (click)="showHiddenToggled()" [ngClass]="showHidden ? 'on' : null"><span></span></div>
+
+        </div><!-- col -->
       </div>
 
 
