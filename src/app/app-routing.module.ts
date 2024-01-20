@@ -6,10 +6,10 @@ import {MedicalSourcesEditorComponent} from './pages/medical-sources-editor/medi
 
 const routes: Routes = [
 
-  { path: '', redirectTo: '/editor', pathMatch: 'full' },
-  { path: 'editor', component: MedicalSourcesEditorComponent },
+  { path: '', redirectTo: '/catalog/editor', pathMatch: 'full' },
+  { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
 
-  { path: '**', redirectTo: 'editor' },
+  { path: '**', redirectTo: 'catalog/editor' },
 ];
 
 @NgModule({

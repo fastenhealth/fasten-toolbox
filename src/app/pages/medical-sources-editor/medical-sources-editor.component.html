@@ -19,46 +19,46 @@
         If your healthcare provider is missing or broken, please <a href="https://github.com/fastenhealth/fasten-onprem/issues">file a ticket <i class="fab fa-github"></i></a>
       </div>
 
+      <ng-container *ngIf="!loading || brandsList.length > 0 else isLoadingTemplate">
+        <!-- Search -->
+        <div class="row row-sm sticky-top pt-2" style="position:sticky;">
+          <div class="col-lg-8">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="search-prefix">Search</span>
+              </div>
+              <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
+            </div><!-- input-group -->
+          </div><!-- col -->
+        </div>
 
-      <!-- Search -->
-      <div class="row row-sm sticky-top pt-2" style="position:sticky;">
-        <div class="col-lg-8">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="search-prefix">Search</span>
-            </div>
-            <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
-          </div><!-- input-group -->
-        </div><!-- col -->
-      </div>
-
-      <div
-        infiniteScroll
-        [infiniteScrollDistance]="3"
-        [infiniteScrollThrottle]="50"
-        (scrolled)="onScroll()"
-        >
-        <hot-table
-          [settings]="settings"
-          [data]="brandsList"
-          [colHeaders]="true"
-          [rowHeaders]="true"
-          licenseKey="non-commercial-and-evaluation">
-          <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
-          <hot-column data="name" [readOnly]="true" title="Institution Name"></hot-column>
-          <hot-column data="id" [readOnly]="true" title="Logo" [renderer]="imageRender"></hot-column>
-  <!--        <hot-column type="autocomplete" title="NPI" [source]="npiTypeahead" width="300px"></hot-column>-->
-  <!--        <hot-column data="logo" [readOnly]="true" title="Logo Override"></hot-column>-->
-          <hot-column data="aliases" [readOnly]="true" title="Aliases" [renderer]="listRender"></hot-column>
-  <!--        <hot-column data="category" [readOnly]="true" title="Category Tags"></hot-column>-->
-          <hot-column data="brand_website" [readOnly]="true" title="Homepage"></hot-column>
-          <hot-column data="patient_access_description" [readOnly]="true" title="Description"></hot-column>
+        <div
+          infiniteScroll
+          [infiniteScrollDistance]="3"
+          [infiniteScrollThrottle]="50"
+          (scrolled)="onScroll()"
+          >
+          <hot-table
+            [settings]="settings"
+            [data]="brandsList"
+            [colHeaders]="true"
+            [rowHeaders]="true"
+            licenseKey="non-commercial-and-evaluation">
+            <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
+            <hot-column data="name" [readOnly]="true" title="Institution Name"></hot-column>
+            <hot-column data="id" [readOnly]="true" title="Logo" [renderer]="imageRender"></hot-column>
+    <!--        <hot-column type="autocomplete" title="NPI" [source]="npiTypeahead" width="300px"></hot-column>-->
+    <!--        <hot-column data="logo" [readOnly]="true" title="Logo Override"></hot-column>-->
+            <hot-column data="aliases" [readOnly]="true" title="Aliases" [renderer]="listRender"></hot-column>
+    <!--        <hot-column data="category" [readOnly]="true" title="Category Tags"></hot-column>-->
+            <hot-column data="brand_website" [readOnly]="true" title="Homepage"></hot-column>
+            <hot-column data="patient_access_description" [readOnly]="true" title="Description"></hot-column>
 
 
 
-        </hot-table>
-      </div>
-
+          </hot-table>
+        </div>
+      </ng-container>
     </div><!-- az-content-body -->
   </div><!-- container -->
 </div><!-- az-content -->
@@ -191,7 +191,7 @@
       <button (click)="resetEditorForm(selectedBrandForEditor)" type="button" class="btn btn-outline-light float-left">Reset</button>
 
       <button (click)="modal.dismiss('Close click')" type="button" class="btn btn-outline-light">Close</button>
-      <button *ngIf="!loading; else spinnerButton" type="button" [class.disabled]="!submitEnabled" class="btn btn-az-primary" (click)="submit()">Submit Changes</button>
+      <button *ngIf="!loading_submit; else spinnerButton" type="button" [class.disabled]="!submitEnabled" class="btn btn-az-primary" (click)="submit()">Submit Changes</button>
       <ng-template #spinnerButton>
         <button>
           <span class="spinner-border spinner-border-sm btn-az-primary" role="status" aria-hidden="true"></span>
@@ -199,4 +199,12 @@
         </button>
       </ng-template>
     </div>
+</ng-template>
+
+<ng-template #isLoadingTemplate>
+  <div class="row">
+    <div class="col-12">
+      <app-loading-spinner [loadingTitle]="'Please wait, loading sources...'"></app-loading-spinner>
+    </div>
+  </div>
 </ng-template>

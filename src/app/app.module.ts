@@ -20,6 +20,7 @@ import { registerAllModules } from 'handsontable/registry';
 import { MedicalSourcesEditorComponent } from './pages/medical-sources-editor/medical-sources-editor.component';
 import {ImageFallbackDirective} from './directives/image-fallback.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -29,6 +30,7 @@ registerAllModules();
     AppComponent,
     HeaderComponent,
     FooterComponent,
+    LoadingSpinnerComponent,
     MedicalSourcesEditorComponent,
     ImageFallbackDirective,
   ],

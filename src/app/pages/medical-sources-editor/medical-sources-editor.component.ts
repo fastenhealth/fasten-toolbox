@@ -14,6 +14,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ToolboxService} from '../../services/toolbox.service';
+import {ToastNotification, ToastType} from '../../models/fasten/toast';
+import {ToastService} from '../../services/toast.service';
 
 @Component({
   selector: 'app-medical-sources-editor',
@@ -65,6 +67,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
   constructor(
     private lighthouseApi: LighthouseService,
     private toolboxApi: ToolboxService,
+    private toastService: ToastService,
     private modalService: NgbModal,
   ) { }
 
@@ -174,10 +177,20 @@ export class MedicalSourcesEditorComponent implements OnInit {
         console.log("RESPONSE", response)
         this.loading_submit = false
         this.modalService.dismissAll()
+
+        const toastNotification = new ToastNotification()
+        toastNotification.type = ToastType.Success
+        toastNotification.message = "Thanks for submitting your changes! A member of our team will review them shortly."
+        this.toastService.show(toastNotification)
       },
       error => {
         console.log("ERROR", error)
         this.loading_submit = false
+
+        const toastNotification = new ToastNotification()
+        toastNotification.type = ToastType.Error
+        toastNotification.message = "An error occurred while submitting your changes. Please try again later or contact support@fastenhealth.com"
+        this.toastService.show(toastNotification)
       })
   }
 
