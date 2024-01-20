@@ -23,6 +23,18 @@
       </div>
 
 
+      <!-- Search -->
+      <div class="row row-sm sticky-top pt-2" style="position:sticky;">
+        <div class="col-lg-8">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="search-prefix">Search</span>
+            </div>
+            <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
+          </div><!-- input-group -->
+        </div><!-- col -->
+      </div>
+
       <div
         infiniteScroll
         [infiniteScrollDistance]="2"

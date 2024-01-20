@@ -12,6 +12,7 @@ import {
 } from '../../models/lighthouse/lighthouse-source-search';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-medical-sources-editor',
@@ -65,6 +66,22 @@ export class MedicalSourcesEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    //register a callback for when the search box content changes
+    this.searchTermUpdate
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+      )
+      .subscribe(value => {
+        console.log("search term changed:", value)
+        let currentQuery = this.searchFilter.query || ""
+        if(value != null && currentQuery != value){
+          this.searchFilter.query = value
+          this.resetSearch()
+        }
+      });
+
     this.loadMore()
   }
 
@@ -72,6 +89,11 @@ export class MedicalSourcesEditorComponent implements OnInit {
     if(!this.scrollComplete) {
       this.loadMore()
     }
+  }
+
+  resetSearch(){
+    this.scrollComplete = false
+    this.loadMore(true)
   }
 
   loadMore(reset: boolean = false){
@@ -82,7 +104,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
         this.loading = false
         console.log("RESULTS", wrapper)
         if (reset) {
-          this.brandsList = []
+          this.brandsList = wrapper?.hits?.hits?.map(hit => hit._source)
         } else {
           this.brandsList = this.brandsList.concat(wrapper?.hits?.hits?.map(hit => hit._source))
         }
