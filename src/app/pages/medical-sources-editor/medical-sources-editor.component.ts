@@ -82,7 +82,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
         }
       });
 
-    this.loadMore()
+    // this.loadMore()
   }
 
   public onScroll(): void {
