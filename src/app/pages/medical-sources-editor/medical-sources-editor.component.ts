@@ -201,7 +201,8 @@ export class MedicalSourcesEditorComponent implements OnInit {
       let reader = new FileReader();
       reader.onloadend = () => {
         // use a regex to remove data url part
-        this.logo_file.get('file_content').setValue(reader.result as string)
+        const base64String = (reader.result as string).replace('data:', '').replace(/^.+,/, '');
+        this.logo_file.get('file_content').setValue(base64String)
       };
       reader.readAsDataURL(fileInput.files[0]);
       this.logo_file.get('file_name').setValue(fileInput.files[0].name)
