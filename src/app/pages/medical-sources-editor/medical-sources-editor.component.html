@@ -190,8 +190,8 @@
       <button (click)="modal.dismiss('Close click')" type="button" class="btn btn-outline-light">Close</button>
       <button *ngIf="!loading_submit; else spinnerButton" type="button" [class.disabled]="!submitEnabled" class="btn btn-az-primary" (click)="submit()">Submit Changes</button>
       <ng-template #spinnerButton>
-        <button>
-          <span class="spinner-border spinner-border-sm btn-az-primary" role="status" aria-hidden="true"></span>
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           <span class="sr-only">Loading...</span>
         </button>
       </ng-template>
