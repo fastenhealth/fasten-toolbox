@@ -82,7 +82,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
         }
       });
 
-    // this.loadMore()
+    this.loadMore()
   }
 
   public onScroll(): void {
@@ -93,10 +93,16 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
   resetSearch(){
     this.scrollComplete = false
+    this.searchFilter.searchAfter = undefined
     this.loadMore(true)
   }
 
   loadMore(reset: boolean = false){
+    if(this.loading){
+      //already loading, don't start another request
+      return
+    }
+
     this.loading = true
     this.searchFilter.fields = ["*"];
     this.lighthouseApi.searchLighthouseSources(this.searchFilter)

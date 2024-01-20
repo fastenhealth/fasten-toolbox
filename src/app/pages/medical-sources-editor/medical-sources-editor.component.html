@@ -34,7 +34,7 @@
 
       <div
         infiniteScroll
-        [infiniteScrollDistance]="2"
+        [infiniteScrollDistance]="3"
         [infiniteScrollThrottle]="50"
         (scrolled)="onScroll()"
         >
@@ -57,7 +57,6 @@
 
 
         </hot-table>
-        <button style="margin-top:100px" *ngIf="!scrollComplete" class="btn btn-primary" (click)="loadMore()">loadMore</button>
       </div>
 
     </div><!-- az-content-body -->
