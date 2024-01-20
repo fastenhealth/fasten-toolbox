@@ -6,27 +6,35 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { MedicalSourcesComponent } from './pages/medical-sources/medical-sources.component';
 import { ChartsModule } from 'ng2-charts';
 import {SharedModule} from './components/shared.module';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { MomentModule } from 'ngx-moment';
+import { HotTableModule } from '@handsontable/angular';
+import { registerAllModules } from 'handsontable/registry';
+import { MedicalSourcesEditorComponent } from './pages/medical-sources-editor/medical-sources-editor.component';
+import {ImageFallbackDirective} from './directives/image-fallback.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+// register Handsontable's modules
+registerAllModules();
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    MedicalSourcesComponent,
+    MedicalSourcesEditorComponent,
+    ImageFallbackDirective,
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     FontAwesomeModule,
     SharedModule,
@@ -36,7 +44,9 @@ import { MomentModule } from 'ngx-moment';
     ChartsModule,
     NgxDropzoneModule,
     HighlightModule,
-    MomentModule
+    MomentModule,
+    HotTableModule,
+    InfiniteScrollModule
   ],
   providers: [
     {

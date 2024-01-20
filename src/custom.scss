@@ -1,0 +1,11 @@
+// Variations
+@mixin bs-callout-variant($color) {
+  border-left-color: $color;
+  border-left-width: .25rem;
+  h4 { color: $color; }
+}
+
+.bd-callout-success { @include bs-callout-variant($green); }
+.bd-callout-info { @include bs-callout-variant($cyan); }
+.bd-callout-warning { @include bs-callout-variant($yellow); }
+.bd-callout-danger { @include bs-callout-variant($red); }

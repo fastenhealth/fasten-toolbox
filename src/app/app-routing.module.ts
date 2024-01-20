@@ -2,16 +2,14 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
-import { MedicalSourcesComponent } from './pages/medical-sources/medical-sources.component';
+import {MedicalSourcesEditorComponent} from './pages/medical-sources-editor/medical-sources-editor.component';
 
 const routes: Routes = [
 
-  { path: '', redirectTo: '/export', pathMatch: 'full' },
-  { path: 'export', component: MedicalSourcesComponent },
-  { path: 'export/callback/:source_type', component: MedicalSourcesComponent },
+  { path: '', redirectTo: '/editor', pathMatch: 'full' },
+  { path: 'editor', component: MedicalSourcesEditorComponent },
 
-
-  { path: '**', redirectTo: 'export' },
+  { path: '**', redirectTo: 'editor' },
 ];
 
 @NgModule({

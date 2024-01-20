@@ -13,7 +13,7 @@ export const environment = {
   environment_name: "sandbox",
 
   //specify the lighthouse server that we're going to use to authenticate against all our source/providers. Must not have trailing slash
-  lighthouse_api_endpoint_base: 'https://lighthouse.fastenhealth.com/sandbox',
+  lighthouse_api_endpoint_base: 'https://lighthouse.fastenhealth.com/v1',
 
   //used to specify the couchdb server that we're going to use (can be relative or absolute). Must not have trailing slash
   // couchdb_endpoint_base: 'https://couchdb.sandbox.fastenhealth.com',
