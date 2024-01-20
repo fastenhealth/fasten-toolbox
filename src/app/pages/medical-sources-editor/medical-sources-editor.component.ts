@@ -172,13 +172,6 @@ export class MedicalSourcesEditorComponent implements OnInit {
   submit() {
     this.loading_submit = true
 
-    //remove data prefix
-    if(this.logo_file.get('file_content').value){
-      const base64String = this.logo_file.get('file_content').value.replace('data:', '').replace(/^.+,/, '');
-      this.logo_file.get('file_content').setValue(base64String)
-    }
-
-
     console.log("SUBMITTING", JSON.stringify(this.brandEditorForm.value))
     this.toolboxApi.catalogEditor(this.brandEditorForm.value).subscribe(
       response => {
