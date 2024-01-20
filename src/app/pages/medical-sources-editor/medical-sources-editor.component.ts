@@ -164,7 +164,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     return this.brandEditorForm.valid
   }
   submit() {
-    console.log("SUBMITTING", this.brandEditorForm.value)
+    console.log("SUBMITTING", JSON.stringify(this.brandEditorForm.value))
   }
 
   setImageLogoWebsite(logoWebsite){
