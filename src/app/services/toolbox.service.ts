@@ -12,8 +12,8 @@ export class ToolboxService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  exportSource(source: Source): Observable<any> {
-    return this._httpClient.post<any>(`https://qacjvynw4hzeuc2uasy2xl737m0nuhbh.lambda-url.us-east-1.on.aws`, source)
+  catalogEditor(submission: any): Observable<any> {
+    return this._httpClient.post<any>(`https://api.platform.fastenhealth.com/v1/catalog/editor`, submission)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)

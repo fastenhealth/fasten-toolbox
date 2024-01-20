@@ -13,6 +13,7 @@ import {
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {ToolboxService} from '../../services/toolbox.service';
 
 @Component({
   selector: 'app-medical-sources-editor',
@@ -22,6 +23,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class MedicalSourcesEditorComponent implements OnInit {
   environment_name = environment.environment_name
   loading: boolean = false
+  loading_submit: boolean = false
 
   brandsList: LighthouseBrandListDisplayItem[] = []
 
@@ -62,6 +64,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
   constructor(
     private lighthouseApi: LighthouseService,
+    private toolboxApi: ToolboxService,
     private modalService: NgbModal,
   ) { }
 
@@ -164,19 +167,18 @@ export class MedicalSourcesEditorComponent implements OnInit {
     return this.brandEditorForm.valid
   }
   submit() {
+    this.loading_submit = true
     console.log("SUBMITTING", JSON.stringify(this.brandEditorForm.value))
-  }
-
-  setImageLogoWebsite(logoWebsite){
-    if (
-      (logoWebsite.length == 0) ||
-      (logoWebsite.startsWith("data:image/png;base64,")) ||
-      (logoWebsite == "https://cdn.fastenhealth.com/images/no-image.svg") ||
-      (logoWebsite == `https://cdn.fastenhealth.com/logos/sources/${this.selectedBrandForEditor.id}.png`)
-    ){
-      return
-    }
-    this.brandEditorForm.controls['logo_website'].setValue(logoWebsite)
+    this.toolboxApi.catalogEditor(this.brandEditorForm.value).subscribe(
+      response => {
+        console.log("RESPONSE", response)
+        this.loading_submit = false
+        this.modalService.dismissAll()
+      },
+      error => {
+        console.log("ERROR", error)
+        this.loading_submit = false
+      })
   }
 
   addLogoFile($event){
