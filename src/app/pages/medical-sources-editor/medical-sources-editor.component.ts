@@ -172,8 +172,28 @@ export class MedicalSourcesEditorComponent implements OnInit {
   submit() {
     this.loading_submit = true
 
-    console.log("SUBMITTING", JSON.stringify(this.brandEditorForm.value))
-    this.toolboxApi.catalogEditor(this.brandEditorForm.value).subscribe(
+    let formData = this.brandEditorForm.value
+
+    //we need to convert the form before submission
+    //convert aliases
+    formData.aliases = formData.aliases.map(alias => alias.alias)
+    //convert npi_numbers
+    formData.npi_numbers = formData.npi_numbers.map(npi => npi.npi)
+
+    //only include fields that are "dirty"
+    if(!this.brandEditorForm.get('brand_website').dirty){
+     delete formData.brand_website
+    }
+    if(!this.brandEditorForm.get('logo_website').dirty){
+      delete formData.logo_website
+    }
+    if(!this.brandEditorForm.get('name').dirty){
+      delete formData.name
+    }
+
+
+    console.log("SUBMITTING", JSON.stringify(formData))
+    this.toolboxApi.catalogEditor(formData).subscribe(
       response => {
         console.log("RESPONSE", response)
         this.loading_submit = false
