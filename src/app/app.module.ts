@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -21,6 +21,8 @@ import { MedicalSourcesEditorComponent } from './pages/medical-sources-editor/me
 import {ImageFallbackDirective} from './directives/image-fallback.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
+import { MedicalRecordsExportComponent } from './pages/medical-records-export/medical-records-export.component';
+import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-export-callback/medical-records-export-callback.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -33,6 +35,8 @@ registerAllModules();
     LoadingSpinnerComponent,
     MedicalSourcesEditorComponent,
     ImageFallbackDirective,
+    MedicalRecordsExportComponent,
+    MedicalRecordsExportCallbackComponent,
   ],
   imports: [
     FormsModule,
@@ -62,7 +66,10 @@ registerAllModules();
       }
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
