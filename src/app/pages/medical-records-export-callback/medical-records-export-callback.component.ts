@@ -9,6 +9,14 @@ import {ToolboxService} from '../../services/toolbox.service';
 })
 export class MedicalRecordsExportCallbackComponent implements OnInit {
 
+  hasError = false
+  errorMsg = ""
+
+  loading = true
+
+  hasBundle = false
+  bundle = ""
+
   constructor(
     private activatedRoute : ActivatedRoute,
     private toolboxService: ToolboxService,
@@ -16,6 +24,20 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(values => {
+
+      if (values['error']) {
+        this.hasError = true
+        let errorMsgLines = [
+          'status=400',
+          `error=${values["error"]}`,
+          `error_description=${values["error_description"]}`,
+          `request_id=${values["request_id"]}`
+        ]
+        this.errorMsg = errorMsgLines.join('\n')
+        return
+      }
+
+
       this.toolboxService.recordsExportCallback(values).subscribe((res) => {
         console.log(res)
 
@@ -27,11 +49,32 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
               clearInterval(cancel)
             }
 
-            //TODO: if success, present the content and download link to the user
+            if(res.data.status == 'success') {
+              //if success, present the content and download link to the user
 
-            //TODO: if error present the error to the user
+              this.hasBundle = true
+              this.bundle = res.data.content
+            } else if(res.data.status == 'failed') {
+              //if error present the error to the user
+              this.hasError = true
+              let errorMsgLines = [
+                `status=400`,
+                `error=fasten_export_error`,
+                `error_description=An error occurred while exporting the records. Please try again later.`,
+              ]
+              this.errorMsg = errorMsgLines.join('\n')
+            }
+
           }, (err) => {
             clearInterval(cancel)
+
+            this.hasError = true
+            let errorMsgLines = [
+              `status=${err.status}`,
+              `error=${err.error.error}`,
+            ]
+            this.errorMsg = errorMsgLines.join('\n')
+
           })
         }, 10000)
 
