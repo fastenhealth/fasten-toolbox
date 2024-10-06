@@ -17,6 +17,9 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
   hasBundle = false
   bundle = ""
 
+  bundleSyncStart = ""
+  bundleSyncCurrent = ""
+
   constructor(
     private activatedRoute : ActivatedRoute,
     private toolboxService: ToolboxService,
@@ -24,6 +27,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(values => {
+
 
       if (values['error']) {
         this.hasError = true
@@ -35,18 +39,33 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
         ]
         this.errorMsg = errorMsgLines.join('\n')
         return
+      } else if(values['org_connection_id'] == '') {
+
+        this.hasError = true
+        let errorMsgLines = [
+          'status=400',
+          `error=fasten_export_error`,
+          `error_description=No connection id was provided. Please try again.`,
+        ]
+        this.errorMsg = errorMsgLines.join('\n')
+        return
       }
 
 
       this.toolboxService.recordsExportCallback(values).subscribe((res) => {
         console.log(res)
 
+        //get the current timestamp
+        this.bundleSyncStart = new Date().toISOString()
+
         //make calls to the download endpoint every 10 seconds, until we get an error or a success payload
         let cancel = setInterval(() => {
+          this.bundleSyncCurrent = new Date().toISOString()
           this.toolboxService.recordsExportDownload().subscribe((res) => {
             console.log(res)
             if(res.data.status == 'success' || res.data.status == 'failed'){
               clearInterval(cancel)
+              this.loading = false
             }
 
             if(res.data.status == 'success') {
@@ -67,11 +86,12 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
           }, (err) => {
             clearInterval(cancel)
+            this.loading = false
 
             this.hasError = true
             let errorMsgLines = [
               `status=${err.status}`,
-              `error=${err.error.error}`,
+              `error=${err.error.error || err.error}`,
             ]
             this.errorMsg = errorMsgLines.join('\n')
 
