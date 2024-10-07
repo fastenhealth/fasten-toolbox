@@ -80,7 +80,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
               this.hasBundle = true
               this.bundle = res.content
 
-              let bundleJsonBlob = new Blob([JSON.stringify(this.bundle, null, 2)], { type: 'application/json' });
+              let bundleJsonBlob = new Blob([this.bundle], { type: 'application/json' });
               this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
               this.generateBundleDownloadFilename = `fasten-${values['endpoint_id']}.bundle.jsonl`
 
