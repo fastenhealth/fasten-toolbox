@@ -35,6 +35,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
 
       if (values['error']) {
+        this.loading = false
         this.hasError = true
         let errorMsgLines = [
           'status=400',
@@ -44,8 +45,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
         ]
         this.errorMsg = errorMsgLines.join('\n')
         return
-      } else if(values['org_connection_id'] == '') {
-
+      } else if(!values['org_connection_id'] || values['org_connection_id'] == '') {
+        this.loading = false
         this.hasError = true
         let errorMsgLines = [
           'status=400',
