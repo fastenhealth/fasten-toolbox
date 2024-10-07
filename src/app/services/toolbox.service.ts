@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {ResponseWrapper} from '../models/response-wrapper';
 import {map} from 'rxjs/operators';
 import {Params} from '@angular/router';
+import {RecordExport} from '../models/fasten/record-export';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class ToolboxService {
       );
   }
 
-  recordsExportDownload(): Observable<any> {
+  recordsExportDownload(): Observable<RecordExport> {
     return this._httpClient.get<any>(`${this.platform_url}/records/export/download`,
       {
         withCredentials: true

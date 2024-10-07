@@ -63,17 +63,17 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
           this.bundleSyncCurrent = new Date().toISOString()
           this.toolboxService.recordsExportDownload().subscribe((res) => {
             console.log(res)
-            if(res.data.status == 'success' || res.data.status == 'failed'){
+            if(res.status == 'success' || res.status == 'failed'){
               clearInterval(cancel)
               this.loading = false
             }
 
-            if(res.data.status == 'success') {
+            if(res.status == 'success') {
               //if success, present the content and download link to the user
 
               this.hasBundle = true
-              this.bundle = res.data.content
-            } else if(res.data.status == 'failed') {
+              this.bundle = res.content
+            } else if(res.status == 'failed') {
               //if error present the error to the user
               this.hasError = true
               let errorMsgLines = [
