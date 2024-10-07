@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ToolboxService} from '../../services/toolbox.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-medical-records-export-callback',
@@ -20,9 +21,13 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
   bundleSyncStart = ""
   bundleSyncCurrent = ""
 
+  generateBundleDownloadUrl = null
+  generateBundleDownloadFilename = null
+
   constructor(
     private activatedRoute : ActivatedRoute,
     private toolboxService: ToolboxService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -73,6 +78,12 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
               this.hasBundle = true
               this.bundle = res.content
+
+              let bundleJsonBlob = new Blob([JSON.stringify(this.bundle, null, 2)], { type: 'application/json' });
+              this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
+              this.generateBundleDownloadFilename = `fasten-${values['endpoint_id']}.bundle.jsonl`
+
+
             } else if(res.status == 'failed') {
               //if error present the error to the user
               this.hasError = true
@@ -101,5 +112,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
       })
     })
   }
+
+
 
 }
