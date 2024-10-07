@@ -30,7 +30,7 @@
     </div>
 
 
-    <div *ngIf="hasError" class="col-sm-9 mg-b-20 mt-3 px-3">
+    <div *ngIf="hasError" class="d-flex justify-content-center mg-t-40">
       <h1>Sorry, an error occurred.</h1>
       <p>We're working on fixing it now.</p>
       <p>Need more help? Send an email to <a href="mailto:support@fastenhealth.com">support@fastenhealth.com</a> and include the information below:</p>
@@ -41,13 +41,13 @@
       </div>
     </div>
 
-    <div *ngIf="loading" class="col-sm-9 mg-b-20 mt-3 px-3">
+    <div *ngIf="loading" class="d-flex justify-content-center mg-t-40">
       <h1>Loading...</h1>
       <p>Please wait while we process your records.</p>
     </div>
 
 
-    <div *ngIf="hasBundle" class="col-sm-9 mg-b-20 mt-3 px-3">
+    <div *ngIf="hasBundle" class="d-flex justify-content-center mg-t-40">
       <pre class="card" style="max-height:300px">
         <code [languages]="['json', 'xml']" [highlight]="bundle"></code>
       </pre>
