@@ -34,11 +34,50 @@
 
 
   <div class="d-flex justify-content-center mg-t-40">
-    <fasten-stitch public-id="public_live_2rzrytsspr29g36o7fgbyo7k28ds4uyqbot3h0k80p0bm" external-id="user-opaque-id-12812904h31">
-      Export Records
-    </fasten-stitch>
+
+    <fasten-stitch-element
+      external-id="user-opaque-id-12812904h31"
+      public-id="public_live_2rzrytsspr29g36o7fgbyo7k28ds4uyqbot3h0k80p0bm"
+    ></fasten-stitch-element>
 
   </div>
+
+
+  <script type="application/javascript">
+    let connections = [];
+
+    const el = document.querySelector('fasten-stitch-element');
+    el.addEventListener('eventBus', (event) => {
+      console.log("EVENT BUS:", event.detail)
+      let eventPayload = JSON.parse(event.detail.data)
+      if(eventPayload.event_type == 'widget.complete') {
+        console.log(eventPayload.event_type, connections);
+
+        connections = eventPayload.data;
+      } else if(eventPayload.event_type == 'widget.close') {
+        console.log(eventPayload.event_type, connections);
+        if(connections && connections.length > 0){
+          var firstConnection = connections[0];
+          //redirect to the redirect.html file with these querystring parameters.
+          const currentURL = window.location.href;
+          var parsedURL = new URL(currentURL);
+          var pathParts = parsedURL.pathname.split("/")
+          pathParts.push("callback")
+          parsedURL.pathname = pathParts.join("/")
+
+          var params = new URLSearchParams(parsedURL.search);
+          for(let key of Object.getOwnPropertyNames(firstConnection)){
+            params.set(key, firstConnection[key]);
+          }
+          parsedURL.search = params.toString();
+
+          //change the current window location to the new URL
+          window.location.href = parsedURL.toString();
+        }
+      }
+
+    });
+  </script>
 
 
 </div>
