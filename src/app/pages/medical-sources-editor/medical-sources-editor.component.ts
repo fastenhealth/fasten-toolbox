@@ -16,6 +16,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ToolboxService} from '../../services/toolbox.service';
 import {ToastNotification, ToastType} from '../../models/fasten/toast';
 import {ToastService} from '../../services/toast.service';
+import {StateCodes} from "../../utils/state-codes";
 
 @Component({
   selector: 'app-medical-sources-editor',
@@ -23,6 +24,9 @@ import {ToastService} from '../../services/toast.service';
   styleUrls: ['./medical-sources-editor.component.scss']
 })
 export class MedicalSourcesEditorComponent implements OnInit {
+  stateCodes = StateCodes
+
+
   environment_name = environment.environment_name
   loading: boolean = false
   loading_submit: boolean = false
@@ -33,6 +37,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
   searchFilter: MedicalSourcesFilter = new MedicalSourcesFilter()
   scrollComplete: boolean = false
   searchTermUpdate = new BehaviorSubject<string>("");
+  searchLocations: string[] = ["ALL"];
 
   //editor
   @ViewChild('editor') editor : any;

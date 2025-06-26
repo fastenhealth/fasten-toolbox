@@ -6,6 +6,7 @@ export class MedicalSourcesFilter {
   platformTypes: string[] = [];
   categories: string[] = [];
   showHidden: boolean = false;
+  locations: string[] = ["ALL"];
 
   //pagination - this is the current page (changes here should be ignored)
   searchAfter: string | string[] = '';

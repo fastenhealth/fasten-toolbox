@@ -25,6 +25,13 @@
                 <span class="input-group-text" id="search-prefix">Search</span>
               </div>
               <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
+              <div class="input-group-append">
+                <select [(ngModel)]="searchFilter.locations[0]" (ngModelChange)="resetSearch()" class="w-full flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50">
+                  <option value="ALL" selected>All States</option>
+                  <option disabled>-------</option>
+                  <option *ngFor="let item of stateCodes | keyvalue"  [value]="item.value">{{ item.key }}</option>
+                </select>
+              </div>
             </div><!-- input-group -->
           </div><!-- col -->
         </div>

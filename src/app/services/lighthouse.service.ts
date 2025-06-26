@@ -102,7 +102,7 @@ export class LighthouseService {
     } else {
       filter.searchAfter = []
     }
-    const endpointUrl = new URL(`${environment.lighthouse_api_endpoint_base}/search`);
+    const endpointUrl = new URL(`https://api.connect.fastenhealth.com/v1/bridge/catalog/search?api_mode=live&public_id=public_live_luezin9lp65gprse02h0jox7dmkhi5406kujj4fjsar1b`);
     return this._httpClient.post<ResponseWrapper>(endpointUrl.toString(), filter)
       .pipe(
         map((response: ResponseWrapper) => {
