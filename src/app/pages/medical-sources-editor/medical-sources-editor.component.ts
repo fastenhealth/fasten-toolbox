@@ -139,6 +139,11 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
   //Editor Functionality
 
+  copyClipboard(event, endpointId: string, portalId: string, brandId: string){
+    navigator.clipboard.writeText(`endpoint_id: ${endpointId}\nportal_id: ${portalId}\nbrand_id: ${brandId}`);
+
+  }
+
   showEditorModal(rowData:LighthouseBrandListDisplayItem) {
 
     this.selectedBrandForEditor = rowData;

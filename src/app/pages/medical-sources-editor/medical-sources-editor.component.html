@@ -177,7 +177,18 @@
 
       <ng-container *ngFor="let portals of selectedBrandForEditor?.portals">
         <ng-container *ngFor="let endpoint of portals.endpoints">
-          <span class="badge badge-primary mr-1">{{endpoint.platform_type}}</span>
+
+          <ng-template #popTitle>{{portals.name}}</ng-template>
+          <ng-template #popContent>
+            <code class="cursor-pointer" (click)="copyClipboard($event, endpoint.id, portals.id, selectedBrandForEditor.id)">
+              <pre>
+endpoint: {{endpoint.id}}
+portal: {{portals.id}}
+brand: {{selectedBrandForEditor.id}}
+              </pre>
+            </code>
+          </ng-template>
+          <span class="badge badge-primary mr-1 cursor-pointer" [ngbPopover]="popContent" [popoverTitle]="popTitle">{{endpoint.platform_type}}</span>
         </ng-container>
       </ng-container>
 
