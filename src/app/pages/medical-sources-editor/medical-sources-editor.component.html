@@ -180,7 +180,7 @@
 
           <ng-template #popTitle>{{portals.name}}</ng-template>
           <ng-template #popContent>
-            <code class="cursor-pointer" (click)="copyClipboard($event, endpoint.id, portals.id, selectedBrandForEditor.id)">
+            <code class="cursor-pointer" (click)="copyClipboard($event, portals.name, endpoint.id, portals.id, selectedBrandForEditor.id)">
               <pre>
 endpoint: {{endpoint.id}}
 portal: {{portals.id}}

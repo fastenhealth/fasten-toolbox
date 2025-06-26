@@ -139,8 +139,8 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
   //Editor Functionality
 
-  copyClipboard(event, endpointId: string, portalId: string, brandId: string){
-    navigator.clipboard.writeText(`endpoint_id: ${endpointId}\nportal_id: ${portalId}\nbrand_id: ${brandId}`);
+  copyClipboard(event, portalName: string, endpointId: string, portalId: string, brandId: string){
+    navigator.clipboard.writeText(`portal_name: "${portalName}"\nendpoint_id: ${endpointId}\nportal_id: ${portalId}\nbrand_id: ${brandId}`);
 
   }
 
