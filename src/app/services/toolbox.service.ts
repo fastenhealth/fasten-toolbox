@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ResponseWrapper} from '../models/response-wrapper';
-import {map} from 'rxjs/operators';
+import {filter, map, repeat, switchMap, take, timeout} from 'rxjs/operators';
 import {Params} from '@angular/router';
 import {RecordExport} from '../models/fasten/record-export';
 
@@ -42,7 +42,7 @@ export class ToolboxService {
       );
   }
 
-  recordsExportDownload(): Observable<RecordExport> {
+  recordsExportContentUrl(): Observable<RecordExport> {
     return this._httpClient.get<any>(`${this.platform_url}/records/export/download`,
       {
         withCredentials: true
@@ -55,5 +55,20 @@ export class ToolboxService {
         })
       );
   }
+
+  recordsExportDownloadContentUrl(contentUrl: string): Observable<string> {
+    //contentUrl is a signed s3 url that we need to donwload
+    return this._httpClient.get(contentUrl, {responseType: 'text'})
+      .pipe(
+        map((response: string) => {
+          console.log("RECORDS EXPORT DOWNLOAD CONTENT URL RESPONSE", response)
+          return response; //return the content of the file
+        }),
+        timeout(120*1000), //timeout after 2 minutes
+        filter((response: string) => response.length > 0), //filter out empty responses
+        take(1) //take only one response
+      );
+  }
+
 
 }

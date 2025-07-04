@@ -67,7 +67,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
         //make calls to the download endpoint every 10 seconds, until we get an error or a success payload
         let cancel = setInterval(() => {
           this.bundleSyncCurrent = new Date().toISOString()
-          this.toolboxService.recordsExportDownload().subscribe((res) => {
+          this.toolboxService.recordsExportContentUrl().subscribe((res) => {
             console.log(res)
             if(res.status == 'success' || res.status == 'failed'){
               clearInterval(cancel)
@@ -75,15 +75,23 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
             }
 
             if(res.status == 'success') {
-              //if success, present the content and download link to the user
+              //if success, the platform will provide a signed s3 download URL.
+              // We will use this to download the bundle and present it to the user.
+              let contentUrl = res.content_url
 
-              this.hasBundle = true
-              this.bundle = res.content
 
-              let bundleJsonBlob = new Blob([this.bundle], { type: 'application/json' });
-              this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
-              this.generateBundleDownloadFilename = `fasten-${values['endpoint_id']}.bundle.jsonl`
+              this.toolboxService.recordsExportDownloadContentUrl(contentUrl).subscribe((res) => {
+                console.log("BUNDLE CONTENT", res)
+                this.hasBundle = true
 
+                //if the content is returned, we can set the bundle
+                this.bundle = res
+
+                let bundleJsonBlob = new Blob([this.bundle], { type: 'application/json' });
+                this.generateBundleDownloadUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(bundleJsonBlob));
+                this.generateBundleDownloadFilename = `fasten-${values['endpoint_id']}.bundle.jsonl`
+
+              })
 
             } else if(res.status == 'failed') {
               //if error present the error to the user
