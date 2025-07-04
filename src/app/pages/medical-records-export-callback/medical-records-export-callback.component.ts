@@ -71,9 +71,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
             console.log(res)
             if(res.status == 'success' || res.status == 'failed'){
               clearInterval(cancel)
-              this.loading = false
             }
-
             if(res.status == 'success') {
               //if success, the platform will provide a signed s3 download URL.
               // We will use this to download the bundle and present it to the user.
@@ -81,6 +79,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
 
               this.toolboxService.recordsExportDownloadContentUrl(contentUrl).subscribe((res) => {
+                this.loading = false
+
                 console.log("BUNDLE CONTENT", res)
                 this.hasBundle = true
 
@@ -94,6 +94,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
               })
 
             } else if(res.status == 'failed') {
+              this.loading = false
               //if error present the error to the user
               this.hasError = true
               let errorMsgLines = [
