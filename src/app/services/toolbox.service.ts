@@ -16,7 +16,7 @@ export class ToolboxService {
   constructor(private _httpClient: HttpClient) { }
 
   catalogEditor(submission: any): Observable<any> {
-    return this._httpClient.post<any>(`${this.platform_url}/catalog/editor`, submission)
+    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/support/catalog`, submission)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)
