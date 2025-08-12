@@ -102,6 +102,9 @@ export class LighthouseService {
     } else {
       filter.searchAfter = []
     }
+    //filter out empty string values for platformTypes
+    filter.platformTypes = filter.platformTypes.filter((item) => item && item.length > 0);
+
     const endpointUrl = new URL(`https://api.connect.fastenhealth.com/v1/bridge/catalog/search?api_mode=live&public_id=public_live_luezin9lp65gprse02h0jox7dmkhi5406kujj4fjsar1b`);
     return this._httpClient.post<ResponseWrapper>(endpointUrl.toString(), filter)
       .pipe(

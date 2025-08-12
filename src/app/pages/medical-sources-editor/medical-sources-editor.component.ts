@@ -25,6 +25,39 @@ import {StateCodes} from "../../utils/state-codes";
 })
 export class MedicalSourcesEditorComponent implements OnInit {
   stateCodes = StateCodes
+  platformTypes = [
+    {key: 'AdvancedMD', value: 'advancedmd'},
+    {key: 'Aetna', value: 'aetna'},
+    {key: 'Allscripts', value: 'allscripts'},
+    {key: 'Anthem', value: 'anthem'},
+    {key: 'Athena', value: 'athena'},
+    {key: 'Cerner', value: 'cerner'},
+    {key: 'CHBase', value: 'chbase'},
+    {key: 'DrChrono', value: 'Drchrono'},
+    {key: 'eCW/Healow', value: 'eclinicalworks'},
+    {key: 'Edifecs', value: 'edifecs'},
+    {key: 'Epic', value: 'epic'},
+    {key: 'Flatiron', value: 'flatiron'},
+    {key: 'Humana', value: 'humana'},
+    {key: 'Kaiser', value: 'kaiser'},
+    {key: 'Maximeyes', value: 'maximeyes'},
+    {key: 'Medhost', value: 'medhost'},
+    {key: 'Medicare', value: 'medicare'},
+    // {key: 'Meditech', value: 'meditech'},
+    // meldrx.yaml
+    {key: 'Netsmart', value: 'netsmart'},
+    {key: 'Nextgen', value: 'nextgen'},
+    // nhs.yaml
+    {key: 'OneMedical', value: 'onemedical'},
+    {key: 'PracticeFusion', value: 'practicefusion'},
+    {key: 'Qualifacts Carelogic', value: 'qualifacts-carelogic'},
+    {key: 'Qualifacts Credible', value: 'qualifacts-credible'},
+    {key: 'Qualifacts Insync', value: 'qualifacts-insync'},
+    {key: 'Quest Diagnostics', value: 'questdiagnostics'},
+    // {key: 'Tefca', value: 'tefca'}
+    {key: 'United Healthcare', value: 'unitedhealthcare'},
+    {key: 'VA Health', value: 'vahealth'},
+  ]
 
 
   environment_name = environment.environment_name
