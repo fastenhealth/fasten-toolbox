@@ -22,10 +22,7 @@ export class MedicalRecordsExportComponent implements OnInit, AfterViewInit {
       let eventPayload = JSON.parse(event.detail.data)
       if(eventPayload.event_type == 'widget.complete') {
         console.log(eventPayload.event_type, this.connections);
-
         this.connections = eventPayload.data;
-      } else if(eventPayload.event_type == 'widget.close') {
-        console.log(eventPayload.event_type, this.connections);
         if(this.connections && this.connections.length > 0){
           var firstConnection = this.connections[0];
           //redirect to the redirect.html file with these querystring parameters.
