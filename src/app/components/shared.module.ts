@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ToastComponent } from './toast/toast.component';
 import { MomentModule } from 'ngx-moment';
 import { FhirPathPipe } from '../pipes/fhir-path.pipe';
@@ -16,7 +15,6 @@ import { ChartsModule } from 'ng2-charts';
     RouterModule,
     BrowserModule,
     NgxDatatableModule,
-    NgbModule,
     MomentModule,
     TreeModule,
     ChartsModule

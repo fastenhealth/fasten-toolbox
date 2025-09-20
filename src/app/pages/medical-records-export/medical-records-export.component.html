@@ -1,51 +1,49 @@
-<div class="container">
-  <div class="az-content-body pd-lg-l-40 d-flex flex-column">
-
-    <div class="alert alert-info" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-      <strong>Export Records Utility</strong>
-      <br/>
-      This tool is intended for use during the <a href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track">FHIR Connectathon</a> in Jan 2023. <br/>
-      It allows patients/users to export their electronic medical records from their healthcare providers, in FHIR format.<br/>
-      <br/>
-      To start, click the "Export Records" button below and search for your health system by name.
-      After clicking on your health system, you will need to select a patient portal associated with their organization, then you will be redirected to their login page. After authorization, you'll be redirected back to
-      this Fasten toolbox, where you will be able to see and export your FHIR bundle.
-      <br/>
-      <br/>
-      <strong>Please note:</strong><br/>
-      - Your data is cached for 24h, this tool is effectively state-less. If you refresh the page, you may need to reauthenticate with your provider.<br/>
-      - You can only export one provider at a time. If you want to export from multiple providers, you will need to repeat the process for each provider.<br/>
-      - The export may take a while to process (5+minutes), if you have a long history with that provider.<br/>
-      - Some sources may not be working correctly.<br/>
-      - Exports larger than 10MB will fail, as the limited infrastructure serving this tool is not able to handle large files. If you have a large export, please reach out to us directly to retrieve your payload.<br/>
-      <br/>
-
-      <strong>
-        This toolbox showcases functionality from <a href="https://fastenhealth.com">Fasten Health</a> - an interoperability platform
-        that allows patients to share their medical records with organizations that they trust.
-      </strong>
-      <br/><br/>
-      If your healthcare provider is missing or broken, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
-
+<div class="space-y-8">
+  <div class="card bg-base-100 shadow">
+    <div class="card-body space-y-4 text-sm">
+      <div class="flex items-start justify-between gap-4">
+        <h2 class="card-title">Export Records Utility</h2>
+      </div>
+      <p>
+        This tool is intended for use during the
+        <a class="link" href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track" target="_blank" rel="noopener noreferrer">FHIR Connectathon</a>
+        in Jan 2023. It allows patients/users to export their electronic medical records from their healthcare providers in FHIR format.
+      </p>
+      <p>
+        To start, click the <strong>Export Records</strong> button below and search for your health system by name. After selecting your health system
+        and portal you will be redirected to their login page. Once authorization completes, you will return to the Fasten toolbox to download your FHIR bundle.
+      </p>
+      <div class="bg-base-200 rounded-box p-4 space-y-2">
+        <h3 class="font-semibold">Please note:</h3>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Your data is cached for 24h. If you refresh the page, you may need to reauthenticate with your provider.</li>
+          <li>You can only export one provider at a time.</li>
+          <li>The export may take a while to process (5+ minutes) if you have a long history with that provider.</li>
+          <li>Some sources may not be working correctly.</li>
+          <li>Exports larger than 10MB will fail. Contact us directly if you need to retrieve a large payload.</li>
+        </ul>
+      </div>
+      <p>
+        <strong>
+          This toolbox showcases functionality from
+          <a class="link" href="https://fastenhealth.com" target="_blank" rel="noopener noreferrer">Fasten Health</a>
+          – an interoperability platform that allows patients to share their medical records with organizations that they trust.
+        </strong>
+      </p>
+      <p>
+        If your healthcare provider is missing or broken, please
+        <a class="link" href="https://github.com/fastenhealth/docs/issues" target="_blank" rel="noopener noreferrer">
+          file a ticket <fa-icon [icon]="['fab', 'github']"></fa-icon>
+        </a>.
+      </p>
     </div>
-
   </div>
 
-
-  <div class="d-flex justify-content-center mg-t-40">
-
+  <div class="flex justify-center">
     <fasten-stitch-element
       #stitchElement
       external-id="user-opaque-id-12812904h31"
       public-id="public_live_2rzrytsspr29g36o7fgbyo7k28ds4uyqbot3h0k80p0bm"
     ></fasten-stitch-element>
-
   </div>
 </div>
-
-
-
-

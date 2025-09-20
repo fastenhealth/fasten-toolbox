@@ -1,9 +1,13 @@
-<div>
+<div class="min-h-screen flex flex-col bg-base-200">
   <app-header *ngIf="showHeader"></app-header>
 
   <app-toast aria-live="polite" aria-atomic="true"></app-toast>
-  <div class="az-content-wrapper mb-40">
-    <router-outlet></router-outlet>
-  </div>
+
+  <main class="flex-1">
+    <div class="az-content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
   <app-footer *ngIf="showFooter"></app-footer>
 </div>

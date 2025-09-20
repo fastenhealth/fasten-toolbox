@@ -1,25 +1,29 @@
-<div class="az-header">
-  <div class="container">
-    <div class="az-header-left">
-      <a routerLink="/" class="az-logo"><span></span> fasten</a>
-    </div><!-- az-header-left -->
-    <div class="az-header-menu">
-      <div class="az-header-menu-header">
-        <a routerLink="/" class="az-logo"><span></span> fasten</a>
-      </div><!-- az-header-menu-header -->
-      <ul class="nav">
-
-        <li class="nav-item" ngbDropdown [ngClass]="{ 'active': dashboard.isActive }">
-          <a routerLink="/catalog/editor" routerLinkActive="active" #dashboard="routerLinkActive" class="nav-link"><fa-icon [icon]="['fas', 'file-edit']"></fa-icon>&nbsp; Editor</a>
+<header class="bg-base-100 shadow">
+  <div class="navbar container mx-auto px-4">
+    <div class="flex-1">
+      <a routerLink="/" class="btn btn-ghost normal-case text-xl font-bold lowercase">fasten</a>
+    </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li>
+          <a routerLink="/catalog/editor" routerLinkActive="active" class="flex items-center gap-2">
+            <fa-icon [icon]="['fas', 'file-edit']"></fa-icon>
+            <span>Editor</span>
+          </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/fastenhealth/fasten-onprem"><fa-icon [icon]="['fas', 'code-branch']"></fa-icon>&nbsp; Github</a>
+        <li>
+          <a class="flex items-center gap-2" href="https://github.com/fastenhealth/fasten-onprem" target="_blank" rel="noopener noreferrer">
+            <fa-icon [icon]="['fas', 'code-branch']"></fa-icon>
+            <span>Github</span>
+          </a>
         </li>
-        <li class="nav-item" >
-          <a class="nav-link" href="https://app.fastenhealth.com/"><fa-icon [icon]="['fas', 'envelope']"></fa-icon>&nbsp; Waitlist</a>
+        <li>
+          <a class="flex items-center gap-2" href="https://app.fastenhealth.com/" target="_blank" rel="noopener noreferrer">
+            <fa-icon [icon]="['fas', 'envelope']"></fa-icon>
+            <span>Waitlist</span>
+          </a>
         </li>
-
       </ul>
-    </div><!-- az-header-menu -->
-  </div><!-- container -->
-</div><!-- az-header -->
+    </div>
+  </div>
+</header>

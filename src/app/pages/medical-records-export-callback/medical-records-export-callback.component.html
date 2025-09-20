@@ -1,75 +1,71 @@
-<div class="container">
-  <div class="az-content-body pd-lg-l-40 d-flex flex-column">
-
-    <div class="alert alert-info" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-      <strong>Export Records Utility - Complete</strong>
-      <br/>
-      This tool is intended for use during the <a href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track">FHIR Connectathon</a> in Jan 2023. <br/>
-      It allows patients/users to export their electronic medical records from their healthcare providers, in FHIR format.<br/>
-      <br/>
-      You have completed the authorization process. Please wait while we process your records and attempt to collect them.
-      One complete (and if no errors occurred) you will be able to download your records in FHIR format.<br/>
-      <br/>
-      <br/>
-      <strong>Please note:</strong><br/>
-      - Your data is cached for 24h, this tool is effectively state-less. If you refresh the page, you may need to reauthenticate with your provider.<br/>
-      - You can only export one provider at a time. If you want to export from multiple providers, you will need to repeat the process for each provider.<br/>
-      - The export may take a while to process (5+minutes), if you have a long history with that provider.<br/>
-      - Some sources may not be working correctly.<br/>
-      - Exports larger than 10MB will fail, as the limited infrastructure serving this tool is not able to handle large files. If you have a large export, please reach out to us directly to retrieve your payload.<br/>
-      <br/>
-
-      <strong>
-        This toolbox showcases functionality from <a href="https://fastenhealth.com">Fasten Health</a> - an interoperability platform
-        that allows patients to share their medical records with organizations that they trust.
-      </strong>
-      <br/><br/>
-      If your healthcare provider is missing or broken, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
-
+<div class="space-y-8">
+  <div class="card bg-base-100 shadow">
+    <div class="card-body space-y-4 text-sm">
+      <h2 class="card-title">Export Records Utility - Complete</h2>
+      <p>
+        This tool is intended for use during the
+        <a class="link" href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track" target="_blank" rel="noopener noreferrer">FHIR Connectathon</a>
+        in Jan 2023. It allows patients/users to export their electronic medical records from their healthcare providers in FHIR format.
+      </p>
+      <p>
+        You have completed the authorization process. Please wait while we process your records and attempt to collect them. Once complete you will be able to download your records in FHIR format.
+      </p>
+      <div class="bg-base-200 rounded-box p-4 space-y-2">
+        <h3 class="font-semibold">Please note:</h3>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Your data is cached for 24h. If you refresh the page, you may need to reauthenticate with your provider.</li>
+          <li>You can only export one provider at a time.</li>
+          <li>The export may take a while to process (5+ minutes) if you have a long history with that provider.</li>
+          <li>Some sources may not be working correctly.</li>
+          <li>Exports larger than 10MB will fail. Contact us directly if you need to retrieve a large payload.</li>
+        </ul>
+      </div>
+      <p>
+        <strong>
+          This toolbox showcases functionality from
+          <a class="link" href="https://fastenhealth.com" target="_blank" rel="noopener noreferrer">Fasten Health</a>
+          – an interoperability platform that allows patients to share their medical records with organizations that they trust.
+        </strong>
+      </p>
+      <p>
+        If your healthcare provider is missing or broken, please
+        <a class="link" href="https://github.com/fastenhealth/docs/issues" target="_blank" rel="noopener noreferrer">
+          file a ticket <fa-icon [icon]="['fab', 'github']"></fa-icon>
+        </a>.
+      </p>
     </div>
+  </div>
 
-
-    <div *ngIf="hasError" class="d-flex justify-content-center mg-t-40">
-      <div>
-        <h1>Sorry, an error occurred.</h1>
-        <p>We're working on fixing it now.</p>
-        <p>Need more help? Send an email to <a href="mailto:support@fastenhealth.com">support@fastenhealth.com</a> and include the information below:</p>
-        <div class="error-details">
+  <div *ngIf="hasError" class="alert alert-error shadow-lg">
+    <div class="space-y-2">
+      <h3 class="font-semibold text-lg">Sorry, an error occurred.</h3>
+      <p>We're working on fixing it now.</p>
+      <p>Need more help? Send an email to <a class="link" href="mailto:support@fastenhealth.com">support@fastenhealth.com</a> and include the information below:</p>
+      <div class="error-details">
         <pre><code>{{ errorMsg }}</code></pre>
-        </div>
+      </div>
+      <a class="btn btn-primary w-fit" [routerLink]="'/records/export/'">Try Again</a>
+    </div>
+  </div>
 
+  <div *ngIf="loading" class="card bg-base-100 shadow">
+    <div class="card-body items-center space-y-3">
+      <h3 class="font-semibold text-lg">Loading...</h3>
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+      <p>Please wait while we process your records.</p>
+      <small class="opacity-70">started: {{bundleSyncStart}}<br/>last checked: {{bundleSyncCurrent}}</small>
+    </div>
+  </div>
 
-        <a class="btn btn-indigo btn-rounded" [routerLink]="'/records/export/'">Try Again</a>
+  <div *ngIf="hasBundle" class="space-y-4">
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <pre class="overflow-auto max-h-80 bg-base-200 rounded-box p-4"><code [languages]="['json', 'xml']" [highlight]="bundle"></code></pre>
       </div>
     </div>
-
-    <div *ngIf="loading" class="d-flex justify-content-center mg-t-40">
-      <div >
-        <h1>Loading...</h1>
-        <div role="status" class="spinner-border text-primary"><span class="sr-only">Loading...</span></div>
-        <p>Please wait while we process your records.</p>
-        <small class="tx-gray-400">started: {{bundleSyncStart}} <br/>last checked: {{bundleSyncCurrent}}</small>
-      </div>
-
+    <div class="flex flex-wrap gap-3">
+      <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-primary">Download FHIR JSON File</a>
+      <a class="btn btn-outline" [routerLink]="'/records/export/'">Connect Another Health System</a>
     </div>
-
-
-    <div *ngIf="hasBundle">
-      <div class="d-flex justify-content-center mg-t-40">
-        <pre class="card" style="max-height:300px">
-          <code [languages]="['json', 'xml']" [highlight]="bundle"></code>
-        </pre>
-      </div>
-
-      <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-indigo btn-rounded">Download FHIR JSON File</a>
-      <a class="btn btn-outline-indigo btn-rounded" [routerLink]="'/records/export/'">Connect Another Health System</a>
-
-    </div>
-
-
-
   </div>
 </div>

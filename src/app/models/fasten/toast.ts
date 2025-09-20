@@ -9,6 +9,7 @@ export class ToastNotification {
   title?: string
   message: string
   type: ToastType = ToastType.Info
-  displayClass: string = 'demo-static-toast'
+  displayClass: string = 'alert-info'
   autohide: boolean = true
+  delay?: number
 }
