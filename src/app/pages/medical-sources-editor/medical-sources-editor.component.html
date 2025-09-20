@@ -1,234 +1,243 @@
-<div class="az-content">
-  <div class="">
-    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
-      <div class="az-content-breadcrumb">
-        <span>Fasten Sources Editor</span>
-      </div>
-
-      <div class="alert alert-info" role="alert">
-        <strong>Submit Corrections!</strong>
-        <br/>
-        This tool allows Fasten users to contribute changes & fixes to the Fasten Health sources list.<br/>
-        <br/>
-        When you click on a provider in the list below, you will be shown a form where you can edit the provider's details. <br/>
-        <strong>These changes will not be applied until they are reviewed by a Fasten Health administrator.</strong><br/>
-      </div>
-
-      <ng-container *ngIf="!loading || brandsList.length > 0 else isLoadingTemplate">
-        <!-- Search -->
-        <div class="row row-sm sticky-top pt-2" style="position:sticky;">
-          <div class="col-lg-8">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search-prefix">Search</span>
-              </div>
-              <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
-              <div class="input-group-append">
-                <select [(ngModel)]="searchFilter.locations[0]" (ngModelChange)="resetSearch()" class="w-full flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50">
-                  <option value="ALL" selected>All States</option>
-                  <option disabled>-------</option>
-                  <option *ngFor="let item of stateCodes | keyvalue"  [value]="item.value">{{ item.key }}</option>
-                </select>
-              </div>
-              <div class="input-group-append">
-                <select [(ngModel)]="searchFilter.platformTypes[0]" (ngModelChange)="resetSearch()" class="w-full flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50">
-                  <option value="" selected>All Platforms</option>
-                  <option disabled>-------</option>
-                  <option *ngFor="let item of platformTypes"  [value]="item.value">{{ item.key }}</option>
-                </select>
-              </div>
-            </div><!-- input-group -->
-          </div><!-- col -->
-        </div>
-
-        <div
-          infiniteScroll
-          [infiniteScrollDistance]="3"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onScroll()"
-          >
-          <hot-table
-            [settings]="settings"
-            [data]="brandsList"
-            [colHeaders]="true"
-            [rowHeaders]="true"
-            licenseKey="non-commercial-and-evaluation">
-            <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
-            <hot-column data="name" [readOnly]="true" title="Institution Name"></hot-column>
-            <hot-column data="id" [readOnly]="true" title="Logo" [renderer]="imageRender"></hot-column>
-    <!--        <hot-column type="autocomplete" title="NPI" [source]="npiTypeahead" width="300px"></hot-column>-->
-    <!--        <hot-column data="logo" [readOnly]="true" title="Logo Override"></hot-column>-->
-            <hot-column data="aliases" [readOnly]="true" title="Aliases" [renderer]="listRender"></hot-column>
-            <hot-column data="platform_type" [readOnly]="true" title="Platform Type" [renderer]="listRender"></hot-column>
-    <!--        <hot-column data="category" [readOnly]="true" title="Category Tags"></hot-column>-->
-            <hot-column data="brand_website" [readOnly]="true" title="Homepage"></hot-column>
-            <hot-column data="patient_access_description" [readOnly]="true" title="Description"></hot-column>
-
-
-
-          </hot-table>
-        </div>
-
-
-
-      </ng-container>
-    </div><!-- az-content-body -->
-  </div><!-- container -->
-</div><!-- az-content -->
-
-
-<ng-template #editor let-modal>
-  <div class="modal-header">
-    <h6 class="modal-title">Source Editor - {{selectedBrandForEditor.name}} </h6>
-    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">×</span>
-    </button>
-
+<div class="space-y-6">
+  <div class="text-sm breadcrumbs">
+    <ul>
+      <li>Fasten Sources Editor</li>
+    </ul>
   </div>
 
-  <div class="modal-body">
-    <div class="alert alert-info" role="alert">
-      <h6>Modify Institution Information</h6>
-      <p>You can use this form to edit the information for this institution. <br/>
-      When you are done, click "Submit" to send your changes to the Fasten Health administrators for review.
+  <div class="alert alert-info shadow-lg">
+    <div>
+      <h3 class="font-semibold">Submit Corrections!</h3>
+      <p class="mt-2 text-sm">
+        This tool allows Fasten users to contribute changes &amp; fixes to the Fasten Health sources list.
+        When you click on a provider in the list below, you will be shown a form where you can edit the provider's details.
+        <strong>These changes will not be applied until they are reviewed by a Fasten Health administrator.</strong>
       </p>
     </div>
-<!--    {{brandEditorForm.getRawValue() | json}}-->
-
-    <ng-container [formGroup]="brandEditorForm">
-
-      <div class="row">
-
-        <div class="col-6">
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">Institution <span class="text-danger">*</span></label>
-            <div class="input-group">
-              <input type="text" class="form-control" formControlName="name" required [ngClass]="{'bd-callout-warning': brandEditorForm.get('name').dirty}" >
-            </div>
-          </div>
-        </div>
-
-        <div class="col-6">
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">Homepage</label>
-
-            <div class="input-group">
-              <input type="text" class="form-control" formControlName="brand_website" [ngClass]="{'bd-callout-warning': brandEditorForm.get('brand_website').dirty}">
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col-3 d-flex align-items-center justify-content-center">
-          <img style="max-width: 100px" imageFallback class="img-fluid" alt="Responsive image"
-          [src]="logo_website || logo_file_data_url || logo_brand_id">
-        </div>
-        <div class="col-9">
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">Logo Link</label>
-
-            <div class="input-group">
-              <input type="text" class="form-control" formControlName="logo_website" [ngClass]="{'bd-callout-warning': brandEditorForm.get('logo_website').dirty}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">Logo Upload</label>
-
-            <div class="input-group" formControlName="logo_file">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" (change)="addLogoFile($event)" formControlName="file_name" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
-                <label class="custom-file-label" for="customFile" [ngClass]="{'bd-callout-warning': !!this.logo_file?.get('file_name')?.value}">{{ this.logo_file?.get('file_name')?.value || 'Choose file' }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-6 col-xs-12">
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">Aliases</label>
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let alias of selectedBrandForEditor?.aliases">{{alias}}</li>
-              <ng-container formArrayName="aliases">
-                <li class="list-group-item bd-callout-warning" [formGroup]="aliasGroup" *ngFor="let aliasGroup of aliases.controls; let i = index">{{aliasGroup.getRawValue()['alias']}}</li>
-              </ng-container>
-              <li class="list-group-item">
-                <div class="input-group">
-                  <input #newAlias (keyup.enter)="addAlias(newAlias)" type="text" class="form-control" placeholder="Add alternative name for institution">
-                  <span class="input-group-btn">
-                  <button (click)="addAlias(newAlias)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
-                </span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-6 col-xs-12">
-          <div class="form-group">
-            <label class="az-content-label tx-11 tx-medium tx-gray-600">NPI Numbers <a class="mg-l-2 small" target="_blank" href="https://npiregistry.cms.hhs.gov/search">[search]</a></label>
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let npiNumber of (selectedBrandForEditor?.identifiers?.['http://hl7.org/fhir/sid/us-npi'] || [])">{{npiNumber}}</li>
-              <ng-container formArrayName="npi_numbers">
-                <li class="list-group-item bd-callout-warning" [formGroup]="npiNumberGroup" *ngFor="let npiNumberGroup of npi_numbers.controls; let i = index">{{npiNumberGroup.getRawValue()['npi']}}</li>
-              </ng-container>
-              <li class="list-group-item">
-                <div class="input-group">
-                  <input #newNpiNumber (keyup.enter)="addNpiNumber(newNpiNumber)" type="text" class="form-control" placeholder="Add NPI number for institution">
-                  <span class="input-group-btn">
-                  <button (click)="addNpiNumber(newNpiNumber)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
-                </span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <ng-container *ngFor="let portals of selectedBrandForEditor?.portals">
-        <ng-container *ngFor="let endpoint of portals.endpoints">
-
-          <ng-template #popTitle>{{portals.name}}</ng-template>
-          <ng-template #popContent>
-            <code class="cursor-pointer" (click)="copyClipboard($event, portals.name, endpoint.id, portals.id, selectedBrandForEditor.id)">
-              <pre>
-endpoint: {{endpoint.id}}
-portal: {{portals.id}}
-brand: {{selectedBrandForEditor.id}}
-              </pre>
-            </code>
-          </ng-template>
-          <span class="badge badge-primary mr-1 cursor-pointer" [ngbPopover]="popContent" [popoverTitle]="popTitle">{{endpoint.platform_type}}</span>
-        </ng-container>
-      </ng-container>
-
-
-    </ng-container>
-
-
   </div>
 
-    <div class="modal-footer">
-
-      <button (click)="resetEditorForm(selectedBrandForEditor)" type="button" class="btn btn-outline-light float-left">Reset</button>
-
-      <button (click)="modal.dismiss('Close click')" type="button" class="btn btn-outline-light">Close</button>
-      <button *ngIf="!loading_submit; else spinnerButton" type="button" [class.disabled]="!submitEnabled" class="btn btn-az-primary" (click)="submit()">Submit Changes</button>
-      <ng-template #spinnerButton>
-        <button class="btn btn-primary" type="button" disabled>
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span class="sr-only">Loading...</span>
-        </button>
-      </ng-template>
+  <ng-container *ngIf="!loading || brandsList.length > 0; else isLoadingTemplate">
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <div class="grid gap-4 md:grid-cols-[2fr_1fr_1fr]">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Search term</span>
+            </div>
+            <input
+              [ngModel]="searchTermUpdate | async"
+              (keyup)="searchTermUpdate.next($event.target.value)"
+              type="text"
+              class="input input-bordered w-full"
+              placeholder="Search Term"
+            />
+          </label>
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Location</span>
+            </div>
+            <select
+              class="select select-bordered"
+              [(ngModel)]="searchFilter.locations[0]"
+              (ngModelChange)="resetSearch()"
+            >
+              <option value="ALL" selected>All States</option>
+              <option disabled>-------</option>
+              <option *ngFor="let item of stateCodes | keyvalue" [value]="item.value">{{ item.key }}</option>
+            </select>
+          </label>
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Platform</span>
+            </div>
+            <select
+              class="select select-bordered"
+              [(ngModel)]="searchFilter.platformTypes[0]"
+              (ngModelChange)="resetSearch()"
+            >
+              <option value="" selected>All Platforms</option>
+              <option disabled>-------</option>
+              <option *ngFor="let item of platformTypes" [value]="item.value">{{ item.key }}</option>
+            </select>
+          </label>
+        </div>
+      </div>
     </div>
-</ng-template>
+
+    <div
+      class="card bg-base-100 shadow"
+      infiniteScroll
+      [infiniteScrollDistance]="3"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+    >
+      <div class="card-body">
+        <hot-table
+          class="rounded-box border border-base-300"
+          [settings]="settings"
+          [data]="brandsList"
+          [colHeaders]="true"
+          [rowHeaders]="true"
+          licenseKey="non-commercial-and-evaluation"
+        >
+          <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
+          <hot-column data="name" [readOnly]="true" title="Institution Name"></hot-column>
+          <hot-column data="id" [readOnly]="true" title="Logo" [renderer]="imageRender"></hot-column>
+          <hot-column data="aliases" [readOnly]="true" title="Aliases" [renderer]="listRender"></hot-column>
+          <hot-column data="platform_type" [readOnly]="true" title="Platform Type" [renderer]="listRender"></hot-column>
+          <hot-column data="brand_website" [readOnly]="true" title="Homepage"></hot-column>
+          <hot-column data="patient_access_description" [readOnly]="true" title="Description"></hot-column>
+        </hot-table>
+      </div>
+    </div>
+  </ng-container>
+</div>
 
 <ng-template #isLoadingTemplate>
-  <div class="row">
-    <div class="col-12">
-      <app-loading-spinner [loadingTitle]="'Please wait, loading sources...'"></app-loading-spinner>
-    </div>
+  <div class="flex justify-center">
+    <app-loading-spinner [loadingTitle]="'Please wait, loading sources...'"></app-loading-spinner>
   </div>
 </ng-template>
+
+<div class="modal" [ngClass]="{'modal-open': editorOpen}">
+  <div class="modal-box max-w-5xl w-full" *ngIf="editorOpen">
+    <div class="flex items-start justify-between gap-4 mb-4">
+      <h3 class="font-semibold text-lg">Source Editor - {{selectedBrandForEditor?.name}}</h3>
+      <button class="btn btn-sm btn-circle btn-ghost" type="button" (click)="closeEditorModal()">✕</button>
+    </div>
+
+    <div class="alert alert-info mb-6">
+      <div>
+        <h4 class="font-semibold">Modify Institution Information</h4>
+        <p class="text-sm">
+          You can use this form to edit the information for this institution. When you are done, click
+          "Submit" to send your changes to the Fasten Health administrators for review.
+        </p>
+      </div>
+    </div>
+
+    <form *ngIf="brandEditorForm" [formGroup]="brandEditorForm" class="space-y-6" (ngSubmit)="submit()">
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Institution <span class="text-error">*</span></span>
+          </div>
+          <input
+            type="text"
+            class="input input-bordered"
+            formControlName="name"
+            required
+          />
+        </label>
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Homepage</span>
+          </div>
+          <input
+            type="text"
+            class="input input-bordered"
+            formControlName="brand_website"
+          />
+        </label>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3 md:items-start">
+        <div class="flex justify-center">
+          <img
+            class="rounded-box max-h-28 object-contain"
+            imageFallback
+            alt="Institution logo"
+            [src]="logo_website || logo_file_data_url || logo_brand_id"
+          />
+        </div>
+        <div class="md:col-span-2 space-y-4">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Logo Link</span>
+            </div>
+            <input
+              type="text"
+              class="input input-bordered"
+              formControlName="logo_website"
+            />
+          </label>
+          <div formGroupName="logo_file">
+            <label class="label">
+              <span class="label-text">Logo Upload</span>
+            </label>
+            <input
+              type="file"
+              class="file-input file-input-bordered w-full"
+              (change)="addLogoFile($event)"
+              accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+            />
+            <div class="mt-2 text-sm" *ngIf="logo_file?.get('file_name')?.value as fileName">Selected: {{ fileName }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="space-y-3">
+          <h4 class="font-semibold">Aliases</h4>
+          <div class="space-y-2 max-h-56 overflow-auto p-2 bg-base-200 rounded-box">
+            <p class="text-sm" *ngFor="let alias of selectedBrandForEditor?.aliases">{{alias}}</p>
+            <ng-container formArrayName="aliases">
+              <p class="text-sm font-medium" [formGroup]="aliasGroup" *ngFor="let aliasGroup of aliases.controls">{{aliasGroup.getRawValue()['alias']}}</p>
+            </ng-container>
+          </div>
+          <div class="join w-full">
+            <input #newAlias type="text" class="input input-bordered join-item flex-1" placeholder="Add alternative name" (keyup.enter)="addAlias(newAlias)" />
+            <button class="btn btn-primary join-item" type="button" (click)="addAlias(newAlias)">
+              <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h4 class="font-semibold">NPI Numbers <a class="link" target="_blank" href="https://npiregistry.cms.hhs.gov/search">[search]</a></h4>
+          <div class="space-y-2 max-h-56 overflow-auto p-2 bg-base-200 rounded-box">
+            <p class="text-sm" *ngFor="let npiNumber of (selectedBrandForEditor?.identifiers?.['http://hl7.org/fhir/sid/us-npi'] || [])">{{npiNumber}}</p>
+            <ng-container formArrayName="npi_numbers">
+              <p class="text-sm font-medium" [formGroup]="npiNumberGroup" *ngFor="let npiNumberGroup of npi_numbers.controls">{{npiNumberGroup.getRawValue()['npi']}}</p>
+            </ng-container>
+          </div>
+          <div class="join w-full">
+            <input #newNpiNumber type="text" class="input input-bordered join-item flex-1" placeholder="Add NPI number" (keyup.enter)="addNpiNumber(newNpiNumber)" />
+            <button class="btn btn-primary join-item" type="button" (click)="addNpiNumber(newNpiNumber)">
+              <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <ng-container *ngFor="let portals of selectedBrandForEditor?.portals">
+          <ng-container *ngFor="let endpoint of portals.endpoints">
+            <button
+              type="button"
+              class="badge badge-primary py-3"
+              (click)="copyClipboard($event, portals.name, endpoint.id, portals.id, selectedBrandForEditor.id)"
+              [attr.title]="'portal: ' + portals.id + ' | endpoint: ' + endpoint.id + ' | brand: ' + selectedBrandForEditor.id"
+            >
+              {{endpoint.platform_type}}
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <div class="modal-action justify-between">
+        <button type="button" class="btn btn-ghost" (click)="resetEditorForm(selectedBrandForEditor)">Reset</button>
+        <div class="flex gap-2">
+          <button type="button" class="btn" (click)="closeEditorModal()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!submitEnabled || loading_submit">
+            <span *ngIf="!loading_submit; else spinnerButton">Submit Changes</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <ng-template #spinnerButton>
+      <span class="loading loading-spinner"></span>
+    </ng-template>
+  </div>
+</div>

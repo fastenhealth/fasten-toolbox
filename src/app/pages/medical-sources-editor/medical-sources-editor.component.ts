@@ -1,16 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {LighthouseService} from '../../services/lighthouse.service';
 import {BehaviorSubject} from 'rxjs';
-import {MetadataSource} from '../../models/fasten/metadata-source';
 import Handsontable from 'handsontable';
-import { HotTableRegisterer } from '@handsontable/angular';
 import {MedicalSourcesFilter} from '../../models/lighthouse/medical-sources-filter';
 import {
   LighthouseBrandListDisplayItem,
   LighthouseSourceSearchResult
 } from '../../models/lighthouse/lighthouse-source-search';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ToolboxService} from '../../services/toolbox.service';
@@ -73,10 +70,9 @@ export class MedicalSourcesEditorComponent implements OnInit {
   searchLocations: string[] = ["ALL"];
 
   //editor
-  @ViewChild('editor') editor : any;
   selectedBrandForEditor: LighthouseBrandListDisplayItem = undefined
   brandEditorForm: FormGroup
-
+  editorOpen = false
 
   //table settings
   settings: Handsontable.GridSettings = {
@@ -106,7 +102,6 @@ export class MedicalSourcesEditorComponent implements OnInit {
     private lighthouseApi: LighthouseService,
     private toolboxApi: ToolboxService,
     private toastService: ToastService,
-    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
@@ -187,10 +182,8 @@ export class MedicalSourcesEditorComponent implements OnInit {
     this.selectedBrandForEditor = rowData;
     console.log("SHOWING EDITOR MODAL", rowData)
 
-
     this.resetEditorForm(this.selectedBrandForEditor)
-
-    this.modalService.open(this.editor, { size: 'lg' });
+    this.editorOpen = true;
   }
 
   resetEditorForm(selectedBrand: LighthouseBrandListDisplayItem) {
@@ -212,6 +205,11 @@ export class MedicalSourcesEditorComponent implements OnInit {
   get submitEnabled() {
     return this.brandEditorForm.valid
   }
+
+  closeEditorModal() {
+    this.editorOpen = false;
+  }
+
   submit() {
     this.loading_submit = true
 
@@ -240,7 +238,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
       response => {
         console.log("RESPONSE", response)
         this.loading_submit = false
-        this.modalService.dismissAll()
+        this.closeEditorModal()
 
         const toastNotification = new ToastNotification()
         toastNotification.type = ToastType.Success

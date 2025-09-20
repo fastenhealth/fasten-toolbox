@@ -12,21 +12,28 @@ export class ToastService {
   show(toastNotification: ToastNotification) {
     if(!toastNotification.title){
       if(toastNotification.type == ToastType.Error){
-        toastNotification.title = "Error"
+        toastNotification.title = "Error";
       }else if(toastNotification.type == ToastType.Success){
-        toastNotification.title = "Success"
+        toastNotification.title = "Success";
       }else{
-        toastNotification.title = "Notification"
+        toastNotification.title = "Notification";
       }
     }
 
     if(toastNotification.type == ToastType.Error){
-      toastNotification.displayClass += ' bg-danger text-light'
+      toastNotification.displayClass = 'alert-error';
     } else if(toastNotification.type == ToastType.Success){
-      toastNotification.displayClass += ' bg-indigo text-light'
+      toastNotification.displayClass = 'alert-success';
+    } else {
+      toastNotification.displayClass = 'alert-info';
     }
 
     this.toasts.push(toastNotification);
+
+    if (toastNotification.autohide !== false) {
+      const delay = toastNotification.delay ?? 5000;
+      setTimeout(() => this.remove(toastNotification), delay);
+    }
   }
 
   remove(toast) {
