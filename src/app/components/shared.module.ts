@@ -6,7 +6,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ToastComponent } from './toast/toast.component';
 import { MomentModule } from 'ngx-moment';
-import { FhirPathPipe } from '../pipes/fhir-path.pipe';
 import { TreeModule } from '@circlon/angular-tree-component';
 import {FilterPipe} from '../pipes/filter.pipe';
 import { ChartsModule } from 'ng2-charts';
@@ -25,13 +24,11 @@ import { ChartsModule } from 'ng2-charts';
     ComponentsSidebarComponent,
 
     ToastComponent,
-    FhirPathPipe,
     FilterPipe,
   ],
     exports: [
         ComponentsSidebarComponent,
         ToastComponent,
-        FhirPathPipe,
         FilterPipe,
 
     ]
