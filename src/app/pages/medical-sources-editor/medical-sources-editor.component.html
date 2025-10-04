@@ -126,7 +126,7 @@
 
       <div class="row">
         <div class="col-3 d-flex align-items-center justify-content-center">
-          <img style="max-width: 100px" imageFallback class="img-fluid" alt="Responsive image"
+          <img style="max-width: 100px" imageFallback class="img-fluid img-thumbnail" alt="Responsive image"
           [src]="logo_website || logo_file_data_url || logo_brand_id">
         </div>
         <div class="col-9">
@@ -154,7 +154,7 @@
         <div class="col-6 col-xs-12">
           <div class="form-group">
             <label class="az-content-label tx-11 tx-medium tx-gray-600">Aliases</label>
-            <ul class="list-group">
+            <ul class="list-group limited-scroll">
               <li class="list-group-item" *ngFor="let alias of selectedBrandForEditor?.aliases">{{alias}}</li>
               <ng-container formArrayName="aliases">
                 <li class="list-group-item bd-callout-warning" [formGroup]="aliasGroup" *ngFor="let aliasGroup of aliases.controls; let i = index">{{aliasGroup.getRawValue()['alias']}}</li>
@@ -171,7 +171,7 @@
         <div class="col-6 col-xs-12">
           <div class="form-group">
             <label class="az-content-label tx-11 tx-medium tx-gray-600">NPI Numbers <a class="mg-l-2 small" target="_blank" href="https://npiregistry.cms.hhs.gov/search">[search]</a></label>
-            <ul class="list-group">
+            <ul class="list-group limited-scroll">
               <li class="list-group-item" *ngFor="let npiNumber of (selectedBrandForEditor?.identifiers?.['http://hl7.org/fhir/sid/us-npi'] || [])">{{npiNumber}}</li>
               <ng-container formArrayName="npi_numbers">
                 <li class="list-group-item bd-callout-warning" [formGroup]="npiNumberGroup" *ngFor="let npiNumberGroup of npi_numbers.controls; let i = index">{{npiNumberGroup.getRawValue()['npi']}}</li>
