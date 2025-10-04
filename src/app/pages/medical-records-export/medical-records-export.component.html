@@ -1,51 +1,42 @@
-<div class="container">
-  <div class="az-content-body pd-lg-l-40 d-flex flex-column">
-
-    <div class="alert alert-info" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-      <strong>Export Records Utility</strong>
-      <br/>
-      This tool is intended for use during the <a href="https://confluence.hl7.org/display/FHIR/2023+-+01+Patient+Track">FHIR Connectathon</a> in Jan 2023. <br/>
-      It allows patients/users to export their electronic medical records from their healthcare providers, in FHIR format.<br/>
-      <br/>
-      To start, click the "Export Records" button below and search for your health system by name.
-      After clicking on your health system, you will need to select a patient portal associated with their organization, then you will be redirected to their login page. After authorization, you'll be redirected back to
-      this Fasten toolbox, where you will be able to see and export your FHIR bundle.
-      <br/>
-      <br/>
-      <strong>Please note:</strong><br/>
-      - Your data is cached for 24h, this tool is effectively state-less. If you refresh the page, you may need to reauthenticate with your provider.<br/>
-      - You can only export one provider at a time. If you want to export from multiple providers, you will need to repeat the process for each provider.<br/>
-      - The export may take a while to process (5+minutes), if you have a long history with that provider.<br/>
-      - Some sources may not be working correctly.<br/>
-      - Exports larger than 10MB will fail, as the limited infrastructure serving this tool is not able to handle large files. If you have a large export, please reach out to us directly to retrieve your payload.<br/>
-      <br/>
-
-      <strong>
-        This toolbox showcases functionality from <a href="https://fastenhealth.com">Fasten Health</a> - an interoperability platform
-        that allows patients to share their medical records with organizations that they trust.
-      </strong>
-      <br/><br/>
-      If your healthcare provider is missing or broken, please <a href="https://github.com/fastenhealth/docs/issues">file a ticket <i class="fab fa-github"></i></a>
-
+<div class="records-export container">
+  <div class="row">
+    <div class="col-lg-6 col-xl-5 instructions">
+      <h1 class="mb-3">Access your medical records</h1>
+      <p>Experience the power of the Fasten Connect widget and pull your own medical records in just a few steps.</p>
+      <ol>
+        <li>Click the <strong>Export Records</strong> button to begin, and search for your healthcare provider.</li>
+        <li>Choose your patient portal, then sign in with your existing credentials when prompted.</li>
+        <li>Click <strong>Continue</strong> and <strong>Close</strong></li>
+        <li>Once you return, Fasten will attempt to collect your records from your healthcare provider</li>
+        <li>On success, you can view & download your records in FHIR format.</li>
+      </ol>
+      <div class="alert alert-warning mt-4" role="alert">
+        <h6 class="mb-2">Demo Limitations</h6>
+        <ul class="mb-0">
+          <li>This demo is essentially stateless & your data is only cached for 24h.</li>
+          <li>Refreshing the page will require re-authentication with your provider.</li>
+          <li>You can only export one provider at a time; repeat the process for additional providers.</li>
+          <li>Exports can take 5+ minutes if you have a long medical history.</li>
+          <li>Some sources may not be working correctly.</li>
+          <li>Exports larger than 10MB may fail or slow down your browser. Contact us if you need help retrieving a large payload.</li>
+        </ul>
+        <small class="pt-4 text-muted">These limitations only exist in this stateless demo environment, your actual integration will not have these limitations</small>
+      </div>
+      <p class="mt-4 text-muted">
+        Need help or found a missing provider? <a href="mailto:support@fastenhealth.com" target="_blank" rel="noopener">Let us know</a> so we can investigate.
+      </p>
     </div>
-
-  </div>
-
-
-  <div class="d-flex justify-content-center mg-t-40">
-
-    <fasten-stitch-element
-      #stitchElement
-      external-id="user-opaque-id-12812904h31"
-      public-id="public_live_2rzrytsspr29g36o7fgbyo7k28ds4uyqbot3h0k80p0bm"
-    ></fasten-stitch-element>
-
+    <div class="col-lg-6 col-xl-7 widget-column">
+      <div class="widget-card">
+        <fasten-stitch-element
+          #stitchElement
+          external-id="user-opaque-id-12812904h31"
+          public-id="public_live_2rzrytsspr29g36o7fgbyo7k28ds4uyqbot3h0k80p0bm"
+        >Export Records</fasten-stitch-element>
+      </div>
+    </div>
   </div>
 </div>
-
 
 
 
