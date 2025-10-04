@@ -79,7 +79,11 @@
 
 <ng-template #editor let-modal>
   <div class="modal-header">
-    <h6 class="modal-title">Source Editor - {{selectedBrandForEditor.name}} </h6>
+    <div>
+      <h6 class="modal-title">Source Editor - {{selectedBrandForEditor.name}} </h6>
+      <small class="text-muted fs-6">{{selectedBrandForEditor.id}}</small>
+    </div>
+
     <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">×</span>
     </button>
@@ -155,15 +159,13 @@
               <ng-container formArrayName="aliases">
                 <li class="list-group-item bd-callout-warning" [formGroup]="aliasGroup" *ngFor="let aliasGroup of aliases.controls; let i = index">{{aliasGroup.getRawValue()['alias']}}</li>
               </ng-container>
-              <li class="list-group-item">
-                <div class="input-group">
-                  <input #newAlias (keyup.enter)="addAlias(newAlias)" type="text" class="form-control" placeholder="Add alternative name for institution">
-                  <span class="input-group-btn">
-                  <button (click)="addAlias(newAlias)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
-                </span>
-                </div>
-              </li>
             </ul>
+            <div class="input-group">
+              <input #newAlias (keyup.enter)="addAlias(newAlias)" type="text" class="form-control" placeholder="Add alternative name for institution">
+              <span class="input-group-btn">
+                    <button (click)="addAlias(newAlias)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
+                  </span>
+            </div>
           </div>
         </div>
         <div class="col-6 col-xs-12">
@@ -174,15 +176,13 @@
               <ng-container formArrayName="npi_numbers">
                 <li class="list-group-item bd-callout-warning" [formGroup]="npiNumberGroup" *ngFor="let npiNumberGroup of npi_numbers.controls; let i = index">{{npiNumberGroup.getRawValue()['npi']}}</li>
               </ng-container>
-              <li class="list-group-item">
-                <div class="input-group">
-                  <input #newNpiNumber (keyup.enter)="addNpiNumber(newNpiNumber)" type="text" class="form-control" placeholder="Add NPI number for institution">
-                  <span class="input-group-btn">
-                  <button (click)="addNpiNumber(newNpiNumber)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
-                </span>
-                </div>
-              </li>
             </ul>
+            <div class="input-group">
+              <input #newNpiNumber (keyup.enter)="addNpiNumber(newNpiNumber)" type="text" class="form-control" placeholder="Add NPI number for institution">
+              <span class="input-group-btn">
+                    <button (click)="addNpiNumber(newNpiNumber)" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
+                  </span>
+            </div>
           </div>
         </div>
       </div>
