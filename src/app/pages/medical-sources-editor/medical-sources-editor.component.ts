@@ -11,7 +11,7 @@ import {
   LighthouseSourceSearchResult
 } from '../../models/lighthouse/lighthouse-source-search';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ToolboxService} from '../../services/toolbox.service';
 import {ToastNotification, ToastType} from '../../models/fasten/toast';
@@ -206,6 +206,8 @@ export class MedicalSourcesEditorComponent implements OnInit {
         file_size: new FormControl(null),
         file_content: new FormControl(null),
       }),
+      submitter_email: new FormControl('', [Validators.email]),
+      submitter_private_note: new FormControl(''),
     })
   }
 
@@ -232,6 +234,16 @@ export class MedicalSourcesEditorComponent implements OnInit {
     }
     if(!this.brandEditorForm.get('name').dirty){
       delete formData.name
+    }
+
+    formData.submitter_email = formData.submitter_email?.trim()
+    if(!formData.submitter_email){
+      delete formData.submitter_email
+    }
+
+    formData.submitter_private_note = formData.submitter_private_note?.trim()
+    if(!formData.submitter_private_note){
+      delete formData.submitter_private_note
     }
 
 
