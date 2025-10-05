@@ -27,7 +27,7 @@
       </p>
     </div>
     <div class="col-lg-6 col-xl-7 widget-column">
-      <div class="widget-card">
+      <div class="widget-card" style="overflow-x: auto;">
 
         <div *ngIf="hasError" class="d-flex justify-content-center mg-t-40">
           <div>
@@ -59,10 +59,10 @@
             <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-indigo btn-rounded">Download FHIR JSON File</a>
             <a class="btn btn-outline-indigo btn-rounded" [routerLink]="'/records/export/'">Connect Another Health System</a>
 
-            <div class=" mg-t-40">
-            <pre style="max-height:600px">
-              <code [languages]="['json', 'xml']" [highlight]="bundle"></code>
-            </pre>
+            <div class="mg-t-40">
+              <pre style="max-height:600px">
+                <code [languages]="['json', 'xml']" [highlight]="bundle"></code>
+              </pre>
             </div>
           </div>
         </div>
