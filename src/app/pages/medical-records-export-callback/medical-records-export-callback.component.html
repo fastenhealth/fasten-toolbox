@@ -55,12 +55,12 @@
 
 
         <div *ngIf="hasBundle">
-          <div style="overflow-x: auto; max-width: 580px">
+          <div>
             <a [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename" class="btn btn-indigo btn-rounded">Download FHIR JSON File</a>
             <a class="btn btn-outline-indigo btn-rounded" [routerLink]="'/records/export/'">Connect Another Health System</a>
 
             <div class="mg-t-40">
-              <pre style="max-height:600px">
+              <pre style="max-height:600px; overflow-x: auto; max-width: 580px">
                 <code [languages]="['json', 'xml']" [highlight]="bundle"></code>
               </pre>
             </div>
