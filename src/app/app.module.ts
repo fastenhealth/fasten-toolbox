@@ -27,6 +27,7 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { ConsentMetricsComponent } from './pages/admin-dashboard/consent-metrics/consent-metrics.component';
 import { CollectMetricsComponent } from './pages/admin-dashboard/collect-metrics/collect-metrics.component';
 import { PaymentMetricsComponent } from './pages/admin-dashboard/payment-metrics/payment-metrics.component';
+import { AdminLoginComponent } from './pages/admin-dashboard/admin-login/admin-login.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -45,6 +46,7 @@ registerAllModules();
     ConsentMetricsComponent,
     CollectMetricsComponent,
     PaymentMetricsComponent,
+    AdminLoginComponent,
   ],
   imports: [
     FormsModule,

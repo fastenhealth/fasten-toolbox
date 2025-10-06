@@ -12,7 +12,7 @@
         <li class="nav-item" ngbDropdown [ngClass]="{ 'active': dashboard.isActive }">
           <a routerLink="/catalog/editor" routerLinkActive="active" #dashboard="routerLinkActive" class="nav-link"><fa-icon [icon]="['fas', 'file-edit']"></fa-icon>&nbsp; Editor</a>
         </li>
-        <li class="nav-item" ngbDropdown [ngClass]="{ 'active': adminDashboard.isActive }">
+        <li *ngIf="false" class="nav-item" ngbDropdown [ngClass]="{ 'active': adminDashboard.isActive }">
           <a routerLink="/admin" routerLinkActive="active" #adminDashboard="routerLinkActive" class="nav-link">
             <fa-icon [icon]="['fas', 'chart-line']"></fa-icon>&nbsp; Admin Dashboard
           </a>

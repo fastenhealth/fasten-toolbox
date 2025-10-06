@@ -11,6 +11,8 @@ import {AdminDashboardComponent} from './pages/admin-dashboard/admin-dashboard/a
 import {ConsentMetricsComponent} from './pages/admin-dashboard/consent-metrics/consent-metrics.component';
 import {CollectMetricsComponent} from './pages/admin-dashboard/collect-metrics/collect-metrics.component';
 import {PaymentMetricsComponent} from './pages/admin-dashboard/payment-metrics/payment-metrics.component';
+import {AdminLoginComponent} from './pages/admin-dashboard/admin-login/admin-login.component';
+import {AdminAuthGuard} from './guards/admin-auth.guard';
 
 const routes: Routes = [
 
@@ -18,9 +20,12 @@ const routes: Routes = [
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
+  { path: 'admin/login', component: AdminLoginComponent },
   {
     path: 'admin',
     component: AdminDashboardComponent,
+    canActivate: [AdminAuthGuard],
+    canActivateChild: [AdminAuthGuard],
     children: [
       { path: '', redirectTo: 'consent', pathMatch: 'full' },
       { path: 'consent', component: ConsentMetricsComponent },

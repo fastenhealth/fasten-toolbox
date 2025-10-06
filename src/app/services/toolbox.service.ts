@@ -15,6 +15,16 @@ export class ToolboxService {
 
   constructor(private _httpClient: HttpClient) { }
 
+  // Function to store a JWT token in local storage
+  storeAdminToken(token: string): void {
+    localStorage.setItem('fasten_connect_admin_jwt', token);
+  }
+
+// Function to read a JWT token from local storage
+  readAdminToken(): string | null {
+    return localStorage.getItem('fasten_connect_admin_jwt');
+  }
+
   catalogEditor(submission: any): Observable<any> {
     return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/support/catalog`, submission)
       .pipe(

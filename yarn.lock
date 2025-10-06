@@ -1746,6 +1746,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/google-one-tap@^1.2.6":
+  version "1.2.6"
+  resolved "https://registry.npmjs.org/@types/google-one-tap/-/google-one-tap-1.2.6.tgz#854bdf1a51f9bc3d61f3c55d44135b653c523583"
+  integrity sha512-REmJsXVHvKb/sgI8DF+7IesMbDbcsEokHBqxU01ENZ8d98UPWdRLhUCtxEm9bhNFFg6PJGy7PNFdvovp0hK3jA==
+
 "@types/http-proxy@^1.17.8":
   version "1.17.9"
   resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.9.tgz#7f0e7931343761efde1e2bf48c40f02f3f75705a"
