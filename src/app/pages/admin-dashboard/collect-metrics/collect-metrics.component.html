@@ -1,0 +1,131 @@
+<div class="collect-metrics-page">
+  <section class="filters" [formGroup]="filtersForm">
+    <div class="filters-header">
+      <h2>Collect Metrics</h2>
+      <button type="button" (click)="clearFilters()">Clear Filters</button>
+    </div>
+    <div class="filter-grid">
+      <label class="filter-control">
+        <span>Org ID</span>
+        <select formControlName="orgId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['orgId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>API Mode</span>
+        <select formControlName="apiMode">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['apiMode']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Brand</span>
+        <select formControlName="brandId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['brandId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Portal ID</span>
+        <select formControlName="portalId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['portalId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Endpoint ID</span>
+        <select formControlName="endpointId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['endpointId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>TEFCA Root ID</span>
+        <select formControlName="tefcaRootId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['tefcaRootId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="tables">
+    <div class="card">
+      <header>
+        <h3>eHI Export Outcomes by Platform</h3>
+        <span>Weekly drill-down</span>
+      </header>
+      <div class="table-wrapper" *ngIf="statusTableRows.length; else noStatusRows">
+        <table>
+          <thead>
+            <tr>
+              <th>Platform Type</th>
+              <th>Totals</th>
+              <th *ngFor="let day of weekDays">{{ day }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of statusTableRows">
+              <td>{{ row.platformType }}</td>
+              <td>
+                <div class="status-split">
+                  <span class="missing" title="Missing">{{ row.totals.missing }}</span>
+                  <span class="rejected" title="Rejected">{{ row.totals.rejected }}</span>
+                  <span class="successful" title="Successful">{{ row.totals.successful }}</span>
+                </div>
+              </td>
+              <td *ngFor="let day of weekDays">
+                <div class="status-split">
+                  <span class="missing" title="Missing">{{ row.perPeriod[day]?.missing || 0 }}</span>
+                  <span class="rejected" title="Rejected">{{ row.perPeriod[day]?.rejected || 0 }}</span>
+                  <span class="successful" title="Successful">{{ row.perPeriod[day]?.successful || 0 }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <h3>Resources Collected by Platform</h3>
+        <div class="timeframe-toggle">
+          <button type="button" [class.active]="timeframe === 'week'" (click)="setTimeframe('week')">Week</button>
+          <button type="button" [class.active]="timeframe === 'month'" (click)="setTimeframe('month')">Month</button>
+        </div>
+      </header>
+      <div class="table-wrapper" *ngIf="resourcesTableRows.length; else noResourcesRows">
+        <table>
+          <thead>
+            <tr>
+              <th>Platform Type</th>
+              <th>Resources</th>
+              <th>Successful</th>
+              <th>Missing</th>
+              <th>Rejected</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of resourcesTableRows">
+              <td>{{ row.platformType }}</td>
+              <td>{{ row.resources | number }}</td>
+              <td>{{ row.successful | number }}</td>
+              <td>{{ row.missing | number }}</td>
+              <td>{{ row.rejected | number }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <ng-template #noStatusRows>
+    <div class="empty-state">No weekly export activity for the selected filters.</div>
+  </ng-template>
+
+  <ng-template #noResourcesRows>
+    <div class="empty-state">No resource collection activity for the selected filters.</div>
+  </ng-template>
+</div>

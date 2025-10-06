@@ -23,6 +23,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 import { MedicalRecordsExportComponent } from './pages/medical-records-export/medical-records-export.component';
 import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-export-callback/medical-records-export-callback.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard/admin-dashboard.component';
+import { ConsentMetricsComponent } from './pages/admin-dashboard/consent-metrics/consent-metrics.component';
+import { CollectMetricsComponent } from './pages/admin-dashboard/collect-metrics/collect-metrics.component';
+import { PaymentMetricsComponent } from './pages/admin-dashboard/payment-metrics/payment-metrics.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -37,6 +41,10 @@ registerAllModules();
     ImageFallbackDirective,
     MedicalRecordsExportComponent,
     MedicalRecordsExportCallbackComponent,
+    AdminDashboardComponent,
+    ConsentMetricsComponent,
+    CollectMetricsComponent,
+    PaymentMetricsComponent,
   ],
   imports: [
     FormsModule,

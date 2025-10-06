@@ -1,0 +1,132 @@
+<div class="consent-metrics-page">
+  <section class="filters" [formGroup]="filtersForm">
+    <div class="filters-header">
+      <h2>Consent Metrics</h2>
+      <div class="timeframe-toggle" role="group" aria-label="Timeframe toggle">
+        <button
+          type="button"
+          [class.active]="currentTimeframe === 'week'"
+          (click)="setTimeframe('week')"
+        >
+          Week
+        </button>
+        <button
+          type="button"
+          [class.active]="currentTimeframe === 'month'"
+          (click)="setTimeframe('month')"
+        >
+          Month
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-grid">
+      <label class="filter-control">
+        <span>Org ID</span>
+        <select formControlName="orgId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['orgId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>API Mode</span>
+        <select formControlName="apiMode">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['apiMode']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Platform Type</span>
+        <select formControlName="platformType">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['platformType']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Brand</span>
+        <select formControlName="brandId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['brandId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Portal ID</span>
+        <select formControlName="portalId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['portalId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>Endpoint ID</span>
+        <select formControlName="endpointId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['endpointId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+      <label class="filter-control">
+        <span>TEFCA Root ID</span>
+        <select formControlName="tefcaRootId">
+          <option value="">All</option>
+          <option *ngFor="let option of filterOptions['tefcaRootId']" [value]="option">{{ option }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="filters-actions">
+      <button type="button" (click)="clearFilters()">Clear Filters</button>
+    </div>
+  </section>
+
+  <section class="visualisations">
+    <div class="card">
+      <header>
+        <h3>Diverging Consent Outcomes</h3>
+        <small *ngIf="barChartLabels.length; else noBarData">{{ currentTimeframe | titlecase }} view</small>
+      </header>
+      <div class="chart-wrapper" *ngIf="barChartLabels.length; else noBarData">
+        <canvas
+          baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [legend]="true"
+          [chartType]="'bar'"
+        >
+        </canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <h3>Platform &amp; Brand Treemap</h3>
+        <small *ngIf="treemapBlocks.length">{{ currentTimeframe | titlecase }} view</small>
+      </header>
+      <div class="treemap-wrapper">
+        <div class="treemap" *ngIf="treemapBlocks.length; else noTreemapData">
+          <div
+            *ngFor="let block of treemapBlocks"
+            class="treemap-block"
+            [style.left.%]="block.left"
+            [style.top.%]="block.top"
+            [style.width.%]="block.width"
+            [style.height.%]="block.height"
+            [style.background]="block.background"
+          >
+            <div class="treemap-content">
+              <span class="platform">{{ block.platformType }}</span>
+              <span class="brand">{{ block.brandId }}</span>
+              <span class="metrics">S {{ block.successful }} · F {{ block.missing + block.rejected }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noTreemapData>
+          <div class="empty-state">No data available for the selected filters.</div>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <ng-template #noBarData>
+    <div class="empty-state">No data available for the selected filters.</div>
+  </ng-template>
+</div>

@@ -1,0 +1,27 @@
+<div class="admin-dashboard m-5">
+  <header class="page-header">
+    <h1>Fasten Admin Dashboard</h1>
+    <p>Track customer engagement across consent, data collection, and payments.</p>
+  </header>
+
+  <nav class="nav-cards">
+    <a
+      *ngFor="let link of links"
+      class="nav-card"
+      [routerLink]="link.path"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [class.active]="isLinkActive(link)"
+    >
+      <div class="nav-card__body">
+        <h2>{{ link.label }}</h2>
+        <p>{{ link.description }}</p>
+      </div>
+      <span class="nav-card__cta">Open</span>
+    </a>
+  </nav>
+
+  <section class="dashboard-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

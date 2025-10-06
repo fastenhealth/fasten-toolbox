@@ -1,0 +1,194 @@
+.consent-metrics-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .filters {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+  }
+
+  .filters-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+  }
+
+  .timeframe-toggle {
+    display: inline-flex;
+    border: 1px solid #d1d5db;
+    overflow: hidden;
+
+    button {
+      border: none;
+      background: #ffffff;
+      padding: 0.45rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #374151;
+
+      &.active {
+        background: #111827;
+        color: #ffffff;
+      }
+
+      &:hover:not(.active) {
+        background: #f3f4f6;
+      }
+    }
+  }
+
+  .filter-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .filter-control {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: #4b5563;
+
+    span {
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #1f2937;
+    }
+
+    select {
+      border: 1px solid #d1d5db;
+      padding: 0.45rem 0.65rem;
+      background: #ffffff;
+      color: #1f2937;
+    }
+  }
+
+  .filters-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      padding: 0.45rem 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background: #f3f4f6;
+      }
+    }
+  }
+
+  .visualisations {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #111827;
+      }
+
+      small {
+        color: #6b7280;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .chart-wrapper {
+    position: relative;
+    height: 320px;
+  }
+
+  .treemap-wrapper {
+    position: relative;
+    height: 400px;
+  }
+
+  .treemap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+  }
+
+  .treemap-block {
+    position: absolute;
+    padding: 0.5rem;
+    color: #111827;
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-sizing: border-box;
+
+    .treemap-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      height: 100%;
+      justify-content: space-between;
+      font-size: 0.75rem;
+    }
+
+    .platform {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .brand {
+      font-weight: 500;
+    }
+
+    .metrics {
+      font-weight: 500;
+      align-self: flex-end;
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-weight: 600;
+    height: 320px;
+    background: #ffffff;
+    border: 1px dashed #d1d5db;
+  }
+
+  @media (min-width: 992px) {
+    .filters-header {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .visualisations {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
