@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import {CmsService} from "../../services/cms.service";
@@ -18,6 +18,8 @@ interface HealthcareInstitution {
 export class TefcaIasBetaComponent implements OnInit, OnDestroy {
   requestForm: FormGroup;
   searchForm: FormGroup;
+
+  @ViewChild('stitchElement', { static: true }) stitchElement: ElementRef;
 
   private readonly destroy$ = new Subject<void>();
 
@@ -59,6 +61,8 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.stitchElement.nativeElement.show()
+
     if (this.requestForm.invalid || this.selectedInstitutions.length === 0) {
       this.requestForm.markAllAsTouched();
       this.submissionMessage = '';
@@ -70,6 +74,7 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy {
 
     this.submissionMessage = `Thanks ${fullName}! We\'ve noted your interest. A confirmation email will go to ${email}.`;
     console.table({ fullName, email, institutions: institutionNames });
+
   }
 
   addInstitution(institution: HealthcareInstitution): void {

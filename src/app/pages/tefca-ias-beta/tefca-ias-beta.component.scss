@@ -4,6 +4,11 @@ $primary-strong: darken($primary-color, 18%);
 $primary-tint: lighten($primary-color, 24%);
 $primary-soft: lighten($primary-color, 36%);
 
+::ng-deep fasten-stitch-element > button {
+  display: none !important
+}
+
+
 .tefca-landing {
   color: #0c1b33;
 
