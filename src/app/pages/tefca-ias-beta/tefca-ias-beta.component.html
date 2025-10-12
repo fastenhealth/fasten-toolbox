@@ -7,14 +7,19 @@
           <h1>Fasten Health TEFCA IAS Beta</h1>
           <p>
             Connect to TEFCA and retrieve the clinical records that belong to you. Our beta widget lets you
-            authenticate against participating healthcare organizations and pull a copy of your health data
-            straight into Fasten.
+            authenticate with participating healthcare organizations, pull a fresh copy of your health data,
+            and download it to keep—Fasten never stores the payload.
           </p>
           <ul class="highlight-list">
             <li>Secure, patient-driven access to the TEFCA network</li>
+            <li>Stateless retrieval—download your records directly after each export</li>
             <li>Guided onboarding to collect the providers that know you best</li>
             <li>Export-ready records to power second opinions, care coordination, and more</li>
           </ul>
+          <p class="hero-note">
+            Because the beta is stateless, you stay in control: once the TEFCA network responds, you will be prompted to
+            download everything, and Fasten does not retain a copy on our servers.
+          </p>
         </div>
         <div class="col-lg-6">
           <div class="form-card">
@@ -41,6 +46,9 @@
               <div class="form-group institutions" [formGroup]="searchForm">
                 <label>Healthcare institutions</label>
                 <p class="helper-text">Search for each organization that holds your records. Add at least one.</p>
+                <p class="small alert alert-warning">
+                  Adding all the places you receive care is not required for Fasten to function but helps us measure TEFCA response rates.
+                </p>
                 <div class="d-flex inputs">
                   <div class="flex-grow-1">
                     <input

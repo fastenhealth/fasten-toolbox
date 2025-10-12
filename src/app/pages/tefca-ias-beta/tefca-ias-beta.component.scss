@@ -20,6 +20,12 @@
       color: #1f3558;
       margin-bottom: 1.5rem;
     }
+
+    .hero-note {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: #4d5f7c;
+    }
   }
 
   .beta-pill {
@@ -91,6 +97,12 @@
   .helper-text {
     margin-bottom: 1rem;
     color: #4d5f7c;
+
+    &.optional {
+      margin-top: -0.5rem;
+      font-size: 0.9rem;
+      color: #6d7d96;
+    }
   }
 
   .institutions {
