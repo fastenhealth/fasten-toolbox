@@ -1,8 +1,14 @@
+$primary-color: #5b47fb;
+$primary-color-hover: darken($primary-color, 8%);
+$primary-strong: darken($primary-color, 18%);
+$primary-tint: lighten($primary-color, 24%);
+$primary-soft: lighten($primary-color, 36%);
+
 .tefca-landing {
   color: #0c1b33;
 
   .hero {
-    background: linear-gradient(135deg, #f2f7ff 0%, #edf3ff 50%, #ffffff 100%);
+    background: linear-gradient(135deg, $primary-soft 0%, $primary-soft 50%, #ffffff 100%);
     padding: 4rem 0 3rem;
   }
 
@@ -29,7 +35,7 @@
   }
 
   .beta-pill {
-    background: #102a75;
+    background: $primary-color;
     color: #ffffff;
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
@@ -53,7 +59,7 @@
 
   .form-card {
     background: #ffffff;
-    border-radius: 1.5rem;
+    border-radius: .5rem;
     box-shadow: 0 18px 45px rgba(25, 41, 89, 0.12);
     padding: 2.5rem;
   }
@@ -78,14 +84,14 @@
     }
 
     .form-control {
-      border-radius: 0.75rem;
-      border: 1px solid #d5dcef;
+      border-radius: .5rem;
+      border: 1px solid $primary-tint;
       padding: 0.75rem 1rem;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
       &:focus {
-        border-color: #2e6ddb;
-        box-shadow: 0 0 0 0.2rem rgba(46, 109, 219, 0.15);
+        border-color: $primary-color;
+        box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.15);
       }
 
       &.ng-invalid.ng-touched {
@@ -125,7 +131,7 @@
     }
 
     .chip {
-      background: #eef3ff;
+      background: $primary-soft;
       border-radius: 999px;
       padding: 0.35rem 0.85rem;
       display: inline-flex;
@@ -134,13 +140,13 @@
       font-size: 0.875rem;
 
       .meta {
-        color: #4d5f7c;
+        color: $primary-strong;
       }
 
       .chip-remove {
         background: none;
         border: none;
-        color: #334a7d;
+        color: $primary-strong;
         cursor: pointer;
         font-size: 1.1rem;
         line-height: 1;
@@ -168,12 +174,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #dbe3ff;
-      border-radius: 0.85rem;
+      border: 1px solid $primary-tint;
+      border-radius: .5rem;
       padding: 0.75rem 1rem;
-      background: #fafcff;
+      background: $primary-soft;
       font-weight: 600;
-      color: #21365c;
+      color: $primary-strong;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
 
       .location {
@@ -184,14 +190,14 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 26px rgba(26, 50, 100, 0.12);
+        box-shadow: 0 3px 3px rgba($primary-color, 0.18);
       }
     }
 
     .no-results {
       margin-top: 1rem;
-      background: #f7f9ff;
-      border-radius: 1rem;
+      background: $primary-soft;
+      border-radius: .5rem;
       padding: 1rem;
       text-align: center;
 
@@ -205,17 +211,45 @@
   .btn-block {
     width: 100%;
     padding: 0.9rem;
-    border-radius: 0.85rem;
+    border-radius: .5rem;
     font-weight: 600;
     font-size: 1rem;
   }
 
+  .btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover,
+    &:focus {
+      background-color: $primary-color-hover;
+      border-color: $primary-color-hover;
+    }
+
+    &:disabled {
+      background-color: lighten($primary-color, 20%);
+      border-color: lighten($primary-color, 20%);
+    }
+  }
+
+  .btn-outline-primary {
+    color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover,
+    &:focus {
+      background-color: $primary-color;
+      border-color: $primary-color;
+      color: #ffffff;
+    }
+  }
+
   .submission {
     margin-top: 1.5rem;
-    background: #f0f7ff;
+    background: $primary-soft;
     padding: 1rem 1.25rem;
-    border-radius: 1rem;
-    color: #1f3558;
+    border-radius: .5rem;
+    color: $primary-strong;
   }
 
   .invalid-feedback {
@@ -231,7 +265,7 @@
 
     .detail-card {
       background: #f7f9ff;
-      border-radius: 1rem;
+      border-radius: .5rem;
       padding: 1.75rem;
       height: 100%;
       box-shadow: inset 0 0 0 1px rgba(26, 50, 100, 0.08);
