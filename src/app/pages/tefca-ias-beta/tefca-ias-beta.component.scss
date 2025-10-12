@@ -1,0 +1,254 @@
+.tefca-landing {
+  color: #0c1b33;
+
+  .hero {
+    background: linear-gradient(135deg, #f2f7ff 0%, #edf3ff 50%, #ffffff 100%);
+    padding: 4rem 0 3rem;
+  }
+
+  .hero-copy {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #1f3558;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .beta-pill {
+    background: #102a75;
+    color: #ffffff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .highlight-list {
+    padding-left: 1.25rem;
+    color: #1f3558;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .form-card {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 45px rgba(25, 41, 89, 0.12);
+    padding: 2.5rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-subtitle {
+    color: #4d5f7c;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border-radius: 0.75rem;
+      border: 1px solid #d5dcef;
+      padding: 0.75rem 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+      &:focus {
+        border-color: #2e6ddb;
+        box-shadow: 0 0 0 0.2rem rgba(46, 109, 219, 0.15);
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: #c22727;
+      }
+    }
+  }
+
+  .helper-text {
+    margin-bottom: 1rem;
+    color: #4d5f7c;
+  }
+
+  .institutions {
+    position: relative;
+
+    .inputs {
+      gap: 0.75rem;
+      flex-wrap: wrap;
+
+      .zip {
+        width: 160px;
+      }
+    }
+
+    .selected {
+      margin: 1rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      background: #eef3ff;
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+
+      .meta {
+        color: #4d5f7c;
+      }
+
+      .chip-remove {
+        background: none;
+        border: none;
+        color: #334a7d;
+        cursor: pointer;
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+    }
+
+    .results {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .results-label {
+      color: #4d5f7c;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+
+    .result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #dbe3ff;
+      border-radius: 0.85rem;
+      padding: 0.75rem 1rem;
+      background: #fafcff;
+      font-weight: 600;
+      color: #21365c;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      .location {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #4d5f7c;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 26px rgba(26, 50, 100, 0.12);
+      }
+    }
+
+    .no-results {
+      margin-top: 1rem;
+      background: #f7f9ff;
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+
+      p {
+        margin-bottom: 0.75rem;
+        color: #4d5f7c;
+      }
+    }
+  }
+
+  .btn-block {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 0.85rem;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .submission {
+    margin-top: 1.5rem;
+    background: #f0f7ff;
+    padding: 1rem 1.25rem;
+    border-radius: 1rem;
+    color: #1f3558;
+  }
+
+  .invalid-feedback {
+    display: block;
+    font-size: 0.85rem;
+    color: #b32020;
+    margin-top: 0.5rem;
+  }
+
+  .details {
+    padding: 4rem 0;
+    background: #fff;
+
+    .detail-card {
+      background: #f7f9ff;
+      border-radius: 1rem;
+      padding: 1.75rem;
+      height: 100%;
+      box-shadow: inset 0 0 0 1px rgba(26, 50, 100, 0.08);
+
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      p {
+        color: #4d5f7c;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .hero {
+      padding: 3rem 0 2rem;
+    }
+
+    .form-card {
+      padding: 2rem;
+    }
+
+    .inputs {
+      flex-direction: column;
+
+      .zip {
+        width: 100%;
+      }
+    }
+  }
+}

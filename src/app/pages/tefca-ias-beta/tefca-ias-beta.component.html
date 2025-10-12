@@ -1,0 +1,134 @@
+<div class="tefca-landing">
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-copy">
+          <span class="badge beta-pill">Beta Access</span>
+          <h1>Fasten Health TEFCA IAS Beta</h1>
+          <p>
+            Connect to TEFCA and retrieve the clinical records that belong to you. Our beta widget lets you
+            authenticate against participating healthcare organizations and pull a copy of your health data
+            straight into Fasten.
+          </p>
+          <ul class="highlight-list">
+            <li>Secure, patient-driven access to the TEFCA network</li>
+            <li>Guided onboarding to collect the providers that know you best</li>
+            <li>Export-ready records to power second opinions, care coordination, and more</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-card">
+            <h2 class="card-title">Request Beta Access</h2>
+            <p class="card-subtitle">Tell us who you are and where you receive care to start the request.</p>
+
+            <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" novalidate>
+              <div class="form-group">
+                <label for="fullName">Full name</label>
+                <input id="fullName" type="text" class="form-control" formControlName="fullName" placeholder="John Doe" />
+                <div class="invalid-feedback" *ngIf="requestForm.get('fullName')?.touched && requestForm.get('fullName')?.invalid">
+                  Please share your name so we know who to contact.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input id="email" type="email" class="form-control" formControlName="email" placeholder="john@example.com" />
+                <div class="invalid-feedback" *ngIf="requestForm.get('email')?.touched && requestForm.get('email')?.invalid">
+                  Enter a valid email so we can send your access link.
+                </div>
+              </div>
+
+              <div class="form-group institutions" [formGroup]="searchForm">
+                <label>Healthcare institutions</label>
+                <p class="helper-text">Search for each organization that holds your records. Add at least one.</p>
+                <div class="d-flex inputs">
+                  <div class="flex-grow-1">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="institutionSearch"
+                      placeholder="Search by organization name"
+                    />
+                  </div>
+                  <div class="zip">
+                    <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip (optional)" maxlength="10" />
+                  </div>
+                </div>
+
+                <div class="selected" *ngIf="selectedInstitutions.length">
+                  <span class="chip" *ngFor="let institution of selectedInstitutions; let i = index">
+                    {{ institution.name }}<span class="meta" *ngIf="institution.city"> · {{ institution.city }}, {{ institution.state }}</span>
+                    <button type="button" class="chip-remove" (click)="removeInstitution(i)" aria-label="Remove institution">&times;</button>
+                  </span>
+                </div>
+
+                <div class="results" *ngIf="filteredInstitutions.length; else noResults">
+                  <p class="results-label">Suggested matches</p>
+                  <button
+                    type="button"
+                    class="result"
+                    *ngFor="let institution of filteredInstitutions"
+                    (click)="addInstitution(institution)"
+                  >
+                    <span class="name">{{ institution.name }}</span>
+                    <span class="location" *ngIf="institution.city">{{ institution.city }}, {{ institution.state }}</span>
+                  </button>
+                </div>
+                <ng-template #noResults>
+                  <div class="no-results">
+                    <p>No matches yet. Add the organization you're looking for.</p>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addCustomInstitution()">
+                      Add "{{ searchForm.get('institutionSearch')?.value }}"
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="selectedInstitutions.length === 0">
+                Request my records
+              </button>
+            </form>
+
+            <div class="submission" *ngIf="submissionMessage">
+              <p>{{ submissionMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="details">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-4">
+          <div class="detail-card">
+            <h3>Patient-first by design</h3>
+            <p>
+              Fasten Health hands control back to you. The TEFCA IAS Beta uses a secure widget so you approve every
+              connection and data transfer.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="detail-card">
+            <h3>Unified health record</h3>
+            <p>
+              Pull records from multiple institutions and create a longitudinal view of your care history—ready for
+              sharing with your care team.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="detail-card">
+            <h3>Beta support</h3>
+            <p>
+              Our team partners with every beta participant. From provider coverage to data quality questions, we make
+              sure you get the most out of TEFCA.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
