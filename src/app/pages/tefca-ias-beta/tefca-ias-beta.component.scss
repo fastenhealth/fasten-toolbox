@@ -137,8 +137,11 @@
 
     .results {
       margin-top: 1rem;
-      display: flex;
+      display: grid;
       gap: 0.5rem;
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 0.25rem;
     }
 
     .results-label {
