@@ -16,8 +16,7 @@ import {MedicalSourcesFilter} from '../models/lighthouse/medical-sources-filter'
 })
 export class LighthouseService {
 
-  constructor(private _httpClient: HttpClient) {
-  }
+  constructor(private _httpClient: HttpClient) {}
 
   searchMedicalContactIndividual(searchTerm: string): Observable<string[]> {
     let queryParams = {

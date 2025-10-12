@@ -7,10 +7,12 @@ import {MedicalRecordsExportComponent} from './pages/medical-records-export/medi
 import {
   MedicalRecordsExportCallbackComponent
 } from './pages/medical-records-export-callback/medical-records-export-callback.component';
+import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 
 const routes: Routes = [
 
-  { path: '', redirectTo: '/catalog/editor', pathMatch: 'full' },
+  { path: '', component: MedicalSourcesEditorComponent, pathMatch: 'full' },
+  { path: 'tefca/export', component: TefcaIasBetaComponent },
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
