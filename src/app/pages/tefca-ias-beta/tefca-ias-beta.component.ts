@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {CmsService} from "../../services/cms.service";
 import {ToolboxService} from "../../services/toolbox.service";
+import { v4 as uuidv4 } from 'uuid';
 
 interface HealthcareInstitution {
   id: string;
@@ -41,6 +42,8 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
   submissionMessage = '';
 
   connections = [];
+
+  external_id: string = uuidv4();
 
   constructor(private readonly fb: FormBuilder, private cmsService: CmsService, private toolboxService: ToolboxService, private renderer: Renderer2) {
     this.requestForm = this.fb.group({
