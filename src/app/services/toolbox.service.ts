@@ -5,6 +5,7 @@ import {ResponseWrapper} from '../models/response-wrapper';
 import {filter, map, repeat, switchMap, take, timeout} from 'rxjs/operators';
 import {Params} from '@angular/router';
 import {RecordExport} from '../models/fasten/record-export';
+import {RequestTefcaIasBeta} from "../models/fasten/request-tefca-ias-beta";
 
 @Injectable({
   providedIn: 'root'
@@ -71,4 +72,14 @@ export class ToolboxService {
   }
 
 
+  tefcaIasBetaRequest(requestTefcaIasBeta: RequestTefcaIasBeta): Observable<any> {
+    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/form/tefca-ias-beta`, requestTefcaIasBeta)
+      .pipe(
+        map((response: ResponseWrapper) => {
+          console.log("BUNDLE RESPONSE", response)
+          // @ts-ignore
+          return response.data
+        })
+      );
+  }
 }

@@ -13,6 +13,7 @@ const routes: Routes = [
 
   { path: '', component: MedicalSourcesEditorComponent, pathMatch: 'full' },
   { path: 'tefca/export', component: TefcaIasBetaComponent },
+  { path: 'tefca/export/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
