@@ -2,6 +2,7 @@ $primary-color: #5b47fb;
 $primary-color-hover: darken($primary-color, 8%);
 $primary-strong: darken($primary-color, 18%);
 $primary-tint: lighten($primary-color, 24%);
+$primary-tint2: lighten($primary-color, 32%);
 $primary-soft: lighten($primary-color, 36%);
 
 ::ng-deep fasten-stitch-element > button {
@@ -136,7 +137,7 @@ $primary-soft: lighten($primary-color, 36%);
     }
 
     .chip {
-      background: $primary-soft;
+      background: $primary-tint2;
       border-radius: 999px;
       padding: 0.35rem 0.85rem;
       display: inline-flex;
