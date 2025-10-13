@@ -29,13 +29,12 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly destroy$ = new Subject<void>();
 
   readonly institutions: HealthcareInstitution[] = [
-    { id:'', name: 'Massachusetts General Hospital', city: 'Boston', state: 'MA', zip: '02114' },
-    { id:'', name: 'Mayo Clinic', city: 'Rochester', state: 'MN', zip: '55902' },
-    { id:'', name: 'Cleveland Clinic', city: 'Cleveland', state: 'OH', zip: '44195' },
-    { id:'', name: 'Cedars-Sinai Medical Center', city: 'Los Angeles', state: 'CA', zip: '90048' },
-    { id:'', name: 'NYU Langone Health', city: 'New York', state: 'NY', zip: '10016' },
-    { id:'', name: 'UCSF Medical Center', city: 'San Francisco', state: 'CA', zip: '94143' },
-    { id:'', name: 'Houston Methodist Hospital', city: 'Houston', state: 'TX', zip: '77030' },
+    { id:'273294', name: 'Massachusetts General Hospital', city: 'ALTAMONTE SPRINGS', state: 'FL', zip: '32701' },
+    { id:'241879', name: 'Cleveland Clinic', city: 'Cleveland', state: 'OH', zip: '44195' },
+    { id:'247278', name: 'Cedars-Sinai Medical Center', city: 'Los Angeles', state: 'CA', zip: '90048' },
+    { id:'265628', name: 'Mayo Clinic', city: 'Rochester', state: 'MN', zip: '55902' },
+    { id:'295532', name: 'Barnes Jewish Hospital', city: 'Saint Louis', state: 'MO', zip: '63110' },
+    { id:'264695', name: 'Houston Methodist Hospital', city: 'Houston', state: 'TX', zip: '77030' },
   ];
 
   filteredInstitutions: HealthcareInstitution[] = [...this.institutions];
