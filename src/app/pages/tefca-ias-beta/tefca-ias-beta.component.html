@@ -81,17 +81,21 @@
                 </div>
                 <ng-template #noResults>
                   <div class="no-results">
-                    <p>No matches yet. Add the organization you're looking for.</p>
-                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addCustomInstitution()">
-                      Add "{{ searchForm.get('institutionSearch')?.value }}"
-                    </button>
+                    <p>No matches found. Your healthcare provider may not be available on the TEFCA network yet. <br/>Please try searching for another institution.</p>
                   </div>
                 </ng-template>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-block" [disabled]="selectedInstitutions.length === 0">
+              <button *ngIf="!loading; else spinnerButton" type="submit" class="btn btn-primary btn-block" [disabled]="selectedInstitutions.length === 0">
                 Request my records
               </button>
+
+              <ng-template #spinnerButton>
+                <button class="btn btn-primary btn-block" type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="sr-only">Loading...</span>
+                </button>
+              </ng-template>
             </form>
 
             <div class="submission" *ngIf="submissionMessage">

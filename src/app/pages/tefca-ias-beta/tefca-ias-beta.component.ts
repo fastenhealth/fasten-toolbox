@@ -22,6 +22,7 @@ interface HealthcareInstitution {
 export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
   requestForm: FormGroup;
   searchForm: FormGroup;
+  loading = false
 
   @ViewChild('stitchElement', { static: true }) stitchElement: ElementRef;
 
@@ -111,14 +112,19 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
     const institutionIds = this.selectedInstitutions.map(inst => inst.id);
 
     console.table({ fullName, email, institutions: institutionIds });
-
+    this.loading = true
     this.toolboxService.tefcaIasBetaRequest({
       name: fullName,
       email: email,
       institution_ids: institutionIds,
-      external_id:  'external-id-1234'
+      external_id:  this.external_id
     }).subscribe((response) => {
+      this.loading = false
       this.stitchElement.nativeElement.show()
+    }, (error) => {
+      this.loading = false
+      this.submissionMessage = 'There was an error submitting your request. Please try again later.';
+      console.error('Error submitting request:', error);
     })
 
   }
@@ -135,18 +141,6 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   removeInstitution(index: number): void {
     this.selectedInstitutions = this.selectedInstitutions.filter((_, idx) => idx !== index);
-  }
-
-  addCustomInstitution(): void {
-    const term = (this.searchForm.get('institutionSearch')?.value || '').trim();
-
-    if (!term) {
-      return;
-    }
-
-    const customInstitution = { id: '', name: term };
-    this.addInstitution(customInstitution);
-    this.searchForm.patchValue({ institutionSearch: '' });
   }
 
   private filterInstitutions(): void {
