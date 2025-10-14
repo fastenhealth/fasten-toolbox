@@ -25,6 +25,10 @@
           <div class="form-card">
             <h2 class="card-title">Request Beta Access</h2>
             <p class="card-subtitle">Tell us who you are and where you receive care to start the request.</p>
+            <p class="alert alert-warning card-disclaimer small">
+              Fasten collects the details below only to analyze TEFCA network health and response rates during this beta.
+              TEFCA itself does not require this information—your identity is verified through our partner, Clear.
+            </p>
 
             <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" novalidate>
               <div class="form-group">
@@ -46,9 +50,6 @@
               <div class="form-group institutions" [formGroup]="searchForm">
                 <label>Healthcare institutions</label>
                 <p class="helper-text">Search for each organization that holds your records. Add at least one.</p>
-                <p class="small alert alert-warning">
-                  Adding all the places you receive care is not required for Fasten to function but helps us measure TEFCA response rates.
-                </p>
                 <div class="d-flex inputs">
                   <div class="flex-grow-1">
                     <input

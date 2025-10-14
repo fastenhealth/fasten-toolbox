@@ -81,6 +81,14 @@ $primary-soft: lighten($primary-color, 36%);
     margin-bottom: 2rem;
   }
 
+  .card-disclaimer {
+    margin-bottom: 1.5rem;
+    border: 1px;
+    border-color: #856404;
+    border-style: dotted;
+    padding: 15px;
+  }
+
   .form-group {
     margin-bottom: 1.5rem;
 
