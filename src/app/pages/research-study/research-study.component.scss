@@ -1,0 +1,33 @@
+.research-study {
+  header {
+    h1 {
+      font-weight: 600;
+    }
+
+    .lead {
+      color: #5f6c7b;
+    }
+  }
+
+  .study-form {
+    border: none;
+  }
+
+  .stitch-section {
+    border: none;
+
+    .widget-card {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem;
+      background: #f7f9fc;
+      border-radius: 0.75rem;
+
+      fasten-stitch-element {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+      }
+    }
+  }
+}

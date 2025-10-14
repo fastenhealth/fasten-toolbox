@@ -24,6 +24,7 @@ import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spin
 import { MedicalRecordsExportComponent } from './pages/medical-records-export/medical-records-export.component';
 import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-export-callback/medical-records-export-callback.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
+import { ResearchStudyComponent } from './pages/research-study/research-study.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -39,6 +40,7 @@ registerAllModules();
     MedicalRecordsExportComponent,
     MedicalRecordsExportCallbackComponent,
     TefcaIasBetaComponent,
+    ResearchStudyComponent,
   ],
   imports: [
     FormsModule,

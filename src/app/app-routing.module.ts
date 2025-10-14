@@ -8,6 +8,7 @@ import {
   MedicalRecordsExportCallbackComponent
 } from './pages/medical-records-export-callback/medical-records-export-callback.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
+import { ResearchStudyComponent } from './pages/research-study/research-study.component';
 
 const routes: Routes = [
 
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
+  { path: 'research/nyp-study', component: ResearchStudyComponent },
 
   { path: '**', redirectTo: 'catalog/editor' },
 ];
