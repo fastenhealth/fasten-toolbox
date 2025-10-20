@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {ToolboxService} from '../../services/toolbox.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {SmartHealthLinkModalComponent} from '../smart-health-link-modal/smart-health-link-modal.component';
 
 @Component({
   selector: 'app-medical-records-export-callback',
@@ -24,16 +26,16 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
   generateBundleDownloadUrl = null
   generateBundleDownloadFilename = null
 
+  hasMultipleDownloadLinks: boolean = false
   constructor(
     private activatedRoute : ActivatedRoute,
     private toolboxService: ToolboxService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(values => {
-
-
       if (values['error']) {
         this.loading = false
         this.hasError = true
@@ -76,7 +78,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
               //if success, the platform will provide a signed s3 download URL.
               // We will use this to download the bundle and present it to the user.
               let contentUrl = res.content_url
-
+              this.hasMultipleDownloadLinks = res.download_links.length > 1
 
               this.toolboxService.recordsExportDownloadContentUrl(contentUrl).subscribe((res) => {
                 this.loading = false
@@ -121,6 +123,14 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
       })
     })
+  }
+
+  onDownloadBundleFile(): void {
+    console.debug('Download FHIR Bundle File option selected');
+  }
+
+  openSmartHealthLinkModal(): void {
+    this.modalService.open(SmartHealthLinkModalComponent, { size: 'md', centered: true, backdrop: 'static' });
   }
 
 

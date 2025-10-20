@@ -1,0 +1,62 @@
+<div class="smart-link-surface">
+  <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="smartLinkTitle">
+    <header class="modal-card__header">
+      <button type="button" class="icon-button" (click)="activeModal.dismiss('cancel')">
+        <span class="sr-only">Close dialog</span>
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-card__heading">
+        <p class="eyebrow">Patient export</p>
+        <h2 id="smartLinkTitle" class="modal-card__title">{{ cardTitle }}</h2>
+      </div>
+    </header>
+
+    <section class="modal-card__section" *ngIf="loading">
+      <div class="state state--loading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <p class="state__message">Generating SMART Health Link...</p>
+      </div>
+    </section>
+
+    <section class="modal-card__section" *ngIf="!loading && errorMessage">
+      <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="fetchSmartHealthLink()">Try Again</button>
+    </section>
+
+    <section class="modal-card__section" *ngIf="!loading && !errorMessage">
+      <div class="link-summary">
+        <h3 class="link-summary__title">SMART<sup>®</sup> Health Link</h3>
+
+        <dl class="link-summary__details">
+          <div class="detail-row">
+            <dt>Name</dt>
+            <dd>{{ patientName || '—' }}</dd>
+          </div>
+          <div class="detail-row">
+            <dt>DOB</dt>
+            <dd>{{ patientDob || '—' }}</dd>
+          </div>
+        </dl>
+
+        <p class="verification" *ngIf="formattedVerificationDate">Verified {{ formattedVerificationDate }}</p>
+
+        <div class="qr-panel" *ngIf="qrCodeDataUrl">
+          <img [src]="qrCodeDataUrl" alt="SMART Health Link QR code" />
+        </div>
+
+        <div class="more-info">
+          <p>For more information about SMART<sup>®</sup> Health Links:</p>
+          <a href="https://smarthealthit.org/" target="_blank" rel="noopener">https://smarthealthit.org/</a>
+        </div>
+
+        <div class="actions" *ngIf="smartHealthLinkUrl">
+          <a [href]="smartHealthLinkUrl" class="btn btn-primary btn-block" target="_blank" rel="noopener">Open Link</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
