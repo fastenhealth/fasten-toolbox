@@ -78,7 +78,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
               //if success, the platform will provide a signed s3 download URL.
               // We will use this to download the bundle and present it to the user.
               let contentUrl = res.content_url
-              this.hasMultipleDownloadLinks = res.download_links.length > 1
+              this.hasMultipleDownloadLinks = (res.download_links || []).length > 1
 
               this.toolboxService.recordsExportDownloadContentUrl(contentUrl).subscribe((res) => {
                 this.loading = false
