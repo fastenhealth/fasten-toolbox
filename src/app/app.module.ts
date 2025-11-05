@@ -26,6 +26,7 @@ import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-e
 import { SmartHealthLinkModalComponent } from './pages/smart-health-link-modal/smart-health-link-modal.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
+import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
 
 // register Handsontable's modules
 registerAllModules();
@@ -42,6 +43,7 @@ registerAllModules();
     MedicalRecordsExportCallbackComponent,
     SmartHealthLinkModalComponent,
     TefcaIasBetaComponent,
+    TefcaIasExportComponent,
     ResearchStudyComponent
   ],
   imports: [

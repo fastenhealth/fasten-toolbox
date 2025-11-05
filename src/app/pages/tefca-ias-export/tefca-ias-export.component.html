@@ -1,0 +1,45 @@
+<div class="records-export container">
+  <div class="row">
+    <div class="col-lg-6 col-xl-5 instructions">
+      <h1 class="mb-3">Access your medical records</h1>
+      <p>Experience the power of the Fasten Connect platform and pull your own medical records in just a few steps.</p>
+      <ol>
+        <li>Click the <strong>Export Records</strong> button to begin, and enter your personal email address.</li>
+        <li>Next, check your email for a 6 digit code from Fasten.</li>
+        <li>Click <strong>Verify with Clear</strong> and complete the Clear verification steps. You will be prompted to enter your phone number, take a Selfie and potentially take a photo of your government issued id.</li>
+        <li>Once you return, <strong>wait 2 minutes</strong> while Fasten attempts to find healthcare providers that you have previously visited, that are live on the TEFCA network</li>
+        <li>If we find any providers, you can check a box (or Sign In) to consent and share those records</li>
+        <li>Click <strong>Continue</strong> and <strong>Close</strong></li>
+        <li>On success, you can view & download your records in FHIR format.</li>
+      </ol>
+      <div class="alert alert-warning mt-4" role="alert">
+        <h6 class="mb-2">Demo Limitations</h6>
+        <ul class="mb-0">
+          <li>This demo is essentially stateless & your data is only cached for 24h.</li>
+          <li>Refreshing the page will require re-authentication with your provider.</li>
+          <li>You can only export one provider at a time; repeat the process for additional providers.</li>
+          <li>Exports can take 5+ minutes if you have a long medical history.</li>
+          <li>Some sources may not be working correctly.</li>
+          <li>Exports larger than 10MB may fail or slow down your browser. Contact us if you need help retrieving a large payload.</li>
+        </ul>
+        <small class="pt-4 text-muted">These limitations only exist in this stateless demo environment, your actual integration will not have these limitations</small>
+      </div>
+      <p class="mt-4 text-muted">
+        Need help or found a missing provider? <a href="mailto:support@fastenhealth.com" target="_blank" rel="noopener">Let us know</a> so we can investigate.
+      </p>
+    </div>
+    <div class="col-lg-6 col-xl-7 widget-column">
+      <div class="widget-card">
+        <fasten-stitch-element
+          #stitchElement
+          external-id="user-opaque-id-12812904h31"
+          public-id="public_live_0p9naei79dk4e1gbfoe4hhy4bhoj1ocmy4prdnnjwlmue"
+          tefca-mode="true"
+        >Export Records using TEFCA</fasten-stitch-element>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

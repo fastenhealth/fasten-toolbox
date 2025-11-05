@@ -13,8 +13,11 @@ import { ResearchStudyComponent } from './pages/research-study/research-study.co
 const routes: Routes = [
 
   { path: '', component: MedicalSourcesEditorComponent, pathMatch: 'full' },
+
   { path: 'tefca/export', component: TefcaIasBetaComponent },
   { path: 'tefca/export/callback', component: MedicalRecordsExportCallbackComponent },
+  { path: 'tefca/beta', component: TefcaIasBetaComponent },
+  { path: 'tefca/beta/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
