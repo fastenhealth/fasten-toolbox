@@ -1,7 +1,7 @@
 name: Deploy GH Pages
 on:
   push:
-    branches: [ main ]
+    branches: [ main, smart-health-links ]
 jobs:
   deploy:
     runs-on: ubuntu-latest

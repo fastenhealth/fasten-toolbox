@@ -6,6 +6,7 @@ import {filter, map, repeat, switchMap, take, timeout} from 'rxjs/operators';
 import {Params} from '@angular/router';
 import {RecordExport} from '../models/fasten/record-export';
 import {RequestTefcaIasBeta} from "../models/fasten/request-tefca-ias-beta";
+import {SmartHealthLinkManifestCreateResponse} from '../models/fasten/smart-health-link';
 
 @Injectable({
   providedIn: 'root'
@@ -81,5 +82,17 @@ export class ToolboxService {
           return response.data
         })
       );
+  }
+
+  shlinkManifestCreate(): Observable<SmartHealthLinkManifestCreateResponse> {
+    return this._httpClient.post<any>(`${this.platform_url}/shlink/manifest/create`, {}, {
+      withCredentials: true
+    }).pipe(
+      map((response: ResponseWrapper) => {
+        console.log('SMART HEALTH LINK RESPONSE', response);
+        // @ts-ignore
+        return response.data as SmartHealthLinkManifestCreateResponse;
+      })
+    );
   }
 }

@@ -23,8 +23,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 import { MedicalRecordsExportComponent } from './pages/medical-records-export/medical-records-export.component';
 import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-export-callback/medical-records-export-callback.component';
+import { SmartHealthLinkModalComponent } from './pages/smart-health-link-modal/smart-health-link-modal.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
+import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
 
 // register Handsontable's modules
 registerAllModules();
@@ -39,8 +41,10 @@ registerAllModules();
     ImageFallbackDirective,
     MedicalRecordsExportComponent,
     MedicalRecordsExportCallbackComponent,
+    SmartHealthLinkModalComponent,
     TefcaIasBetaComponent,
-    ResearchStudyComponent,
+    TefcaIasExportComponent,
+    ResearchStudyComponent
   ],
   imports: [
     FormsModule,

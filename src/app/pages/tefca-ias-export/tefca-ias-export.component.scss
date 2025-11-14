@@ -1,0 +1,44 @@
+.records-export {
+  margin: 2rem auto;
+
+  .instructions {
+    margin-bottom: 2rem;
+
+    ol {
+      padding-left: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    ul {
+      padding-left: 1.25rem;
+    }
+  }
+
+  .widget-column {
+    display: flex;
+    align-items: stretch;
+    margin-top: 2rem;
+  }
+
+  .widget-card {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    margin-bottom: 50px;
+  }
+
+  .widget-card fasten-stitch-element {
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  @media (min-width: 992px) {
+    .widget-column {
+      margin-top: 0;
+    }
+  }
+}
