@@ -9,12 +9,13 @@ import {
 } from './pages/medical-records-export-callback/medical-records-export-callback.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
+import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
 
 const routes: Routes = [
 
   { path: '', component: MedicalSourcesEditorComponent, pathMatch: 'full' },
 
-  { path: 'tefca/export', component: TefcaIasBetaComponent },
+  { path: 'tefca/export', component: TefcaIasExportComponent },
   { path: 'tefca/export/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'tefca/beta', component: TefcaIasBetaComponent },
   { path: 'tefca/beta/callback', component: MedicalRecordsExportCallbackComponent },
