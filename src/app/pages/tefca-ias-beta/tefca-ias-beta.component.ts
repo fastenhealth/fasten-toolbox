@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {CmsService} from "../../services/cms.service";
@@ -23,6 +24,10 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
   requestForm: FormGroup;
   searchForm: FormGroup;
   loading = false
+  showVideo = false;
+  readonly videoPlaceholder = 'assets/tefca-ias-video-placeholder.svg';
+  readonly videoTitle = 'How the TEFCA IAS Beta works';
+  readonly tefcaVideoUrl: SafeResourceUrl;
 
   @ViewChild('stitchElement', { static: true }) stitchElement: ElementRef;
 
@@ -45,7 +50,13 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   external_id: string = uuidv4();
 
-  constructor(private readonly fb: FormBuilder, private cmsService: CmsService, private toolboxService: ToolboxService, private renderer: Renderer2) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private cmsService: CmsService,
+    private toolboxService: ToolboxService,
+    private renderer: Renderer2,
+    sanitizer: DomSanitizer,
+  ) {
     this.requestForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -54,6 +65,8 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchForm = this.fb.group({
       institutionSearch: [''],
     });
+
+    this.tefcaVideoUrl = sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/wTZGi99ZTS4?rel=0');
   }
 
   ngOnInit(): void {
@@ -126,6 +139,10 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
       console.error('Error submitting request:', error);
     })
 
+  }
+
+  playVideo(): void {
+    this.showVideo = true;
   }
 
   addInstitution(institution: HealthcareInstitution): void {

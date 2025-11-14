@@ -20,6 +20,9 @@ $primary-soft: lighten($primary-color, 36%);
 
   .hero-copy {
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
 
     h1 {
       font-size: 2.5rem;
@@ -37,6 +40,127 @@ $primary-soft: lighten($primary-color, 36%);
       margin-top: 1.5rem;
       font-size: 0.95rem;
       color: #4d5f7c;
+    }
+  }
+
+  .hero-media {
+    background: #fff;
+    border-radius: .75rem;
+    padding: 1.75rem;
+    box-shadow: 0 12px 35px rgba(25, 41, 89, 0.12);
+
+    .media-header {
+      margin-bottom: 1.25rem;
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: $primary-strong;
+        margin-bottom: 0.35rem;
+      }
+
+      h2 {
+        font-size: 1.45rem;
+        margin-bottom: 0.35rem;
+      }
+
+      p {
+        margin: 0;
+        color: #4d5f7c;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .video-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .video-frame {
+    position: relative;
+    width: 100%;
+    border-radius: .75rem;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16 / 9;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .video-placeholder {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .video-placeholder:focus-visible {
+    outline: 3px solid lighten($primary-color, 10%);
+    outline-offset: 3px;
+  }
+
+  .play-button {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(12, 27, 51, 0.85);
+    color: #fff;
+    font-size: 1.65rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .video-placeholder:hover .play-button,
+  .video-placeholder:focus-visible .play-button {
+    transform: scale(1.05);
+    background: rgba(91, 71, 251, 0.95);
+  }
+
+  .video-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #4d5f7c;
+  }
+
+  .video-link {
+    font-weight: 600;
+    color: $primary-color;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 
@@ -304,6 +428,10 @@ $primary-soft: lighten($primary-color, 36%);
 
     .form-card {
       padding: 2rem;
+    }
+
+    .hero-media {
+      padding: 1.25rem;
     }
 
     .inputs {
