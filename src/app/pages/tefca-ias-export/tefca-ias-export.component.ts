@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
 
 @Component({
-  selector: 'app-medical-records-export',
-  templateUrl: './medical-records-export.component.html',
-  styleUrls: ['./medical-records-export.component.scss']
+  selector: 'app-tefca-ias-export',
+  templateUrl: './tefca-ias-export.component.html',
+  styleUrls: ['./tefca-ias-export.component.scss']
 })
 export class TefcaIasExportComponent implements OnInit, AfterViewInit {
 
