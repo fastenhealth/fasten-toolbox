@@ -43,7 +43,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
           'status=400',
           `error=${values["error"]}`,
           `error_description=${values["error_description"]}`,
-          `request_id=${values["request_id"]}`
+          `request_id=${values["request_id"] || 'unavailable'}`,
+          `connection_id=${values["org_connection_id"] || 'unavailable'}`
         ]
         this.errorMsg = errorMsgLines.join('\n')
         return
@@ -54,6 +55,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
           'status=400',
           `error=fasten_export_error`,
           `error_description=No connection id was provided. Please try again.`,
+          `request_id=${values["request_id"] || 'unavailable'}`
         ]
         this.errorMsg = errorMsgLines.join('\n')
         return
@@ -103,6 +105,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
                 `status=400`,
                 `error=fasten_export_error`,
                 `error_description=An error occurred while exporting the records. Please try again later.`,
+                `request_id=${values["request_id"] || 'unavailable'}`,
+                `connection_id=${values["org_connection_id"] || 'unavailable'}`
               ]
               this.errorMsg = errorMsgLines.join('\n')
             }
@@ -115,6 +119,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
             let errorMsgLines = [
               `status=${err.status}`,
               `error=${err.error.error || err.error}`,
+              `request_id=${values["request_id"] || 'unavailable'}`,
+              `connection_id=${values["org_connection_id"] || 'unavailable'}`
             ]
             this.errorMsg = errorMsgLines.join('\n')
 
