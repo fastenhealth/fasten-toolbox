@@ -33,7 +33,8 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Athena', value: 'athena'},
     {key: 'Cerner', value: 'cerner'},
     {key: 'CHBase', value: 'chbase'},
-    {key: 'DrChrono', value: 'Drchrono'},
+    {key: 'Darena', value: 'darena'},
+    {key: 'DrChrono', value: 'drchrono'},
     {key: 'eCW/Healow', value: 'eclinicalworks'},
     {key: 'Edifecs', value: 'edifecs'},
     {key: 'Epic', value: 'epic'},
@@ -43,6 +44,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Maximeyes', value: 'maximeyes'},
     {key: 'Medhost', value: 'medhost'},
     {key: 'Medicare', value: 'medicare'},
+    {key: 'Modmed', value: 'modmed'},
     // {key: 'Meditech', value: 'meditech'},
     // meldrx.yaml
     {key: 'Netsmart', value: 'netsmart'},
