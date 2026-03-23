@@ -4,6 +4,9 @@ import {ToolboxService} from '../../services/toolbox.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SmartHealthLinkModalComponent} from '../smart-health-link-modal/smart-health-link-modal.component';
+import {
+  PatientSharedHealthDocumentModalComponent
+} from "../patient-shared-health-document-modal/patient-shared-health-document-modal.component";
 
 @Component({
   selector: 'app-medical-records-export-callback',
@@ -137,6 +140,9 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
   openSmartHealthLinkModal(): void {
     this.modalService.open(SmartHealthLinkModalComponent, { size: 'md', centered: true, backdrop: 'static' });
+  }
+  openPatientSharedHealthDocumentModal(): void {
+    this.modalService.open(PatientSharedHealthDocumentModalComponent, { size: 'md', centered: true, backdrop: 'static' });
   }
 
 

@@ -65,6 +65,7 @@
                 <a ngbDropdownItem [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename">Download FHIR JSON File</a>
                 <button ngbDropdownItem type="button" disabled="disabled" (click)="onDownloadBundleFile()">Download FHIR Bundle File</button>
                 <button [disabled]="!hasMultipleDownloadLinks"  ngbDropdownItem type="button" (click)="openSmartHealthLinkModal()">Generate Smart Health Link</button>
+                <button [disabled]="!hasMultipleDownloadLinks"  ngbDropdownItem type="button" (click)="openPatientSharedHealthDocumentModal()">Generate CMS Patient Shared Health Document</button>
               </div>
             </div>
             <a class="btn btn-outline-indigo btn-rounded" [routerLink]="'/records/export/'">Connect Another Health System</a>

@@ -84,8 +84,14 @@ export class ToolboxService {
       );
   }
 
-  shlinkManifestCreate(): Observable<SmartHealthLinkManifestCreateResponse> {
-    return this._httpClient.post<any>(`${this.platform_url}/shlink/manifest/create`, {}, {
+  shlinkManifestCreate(exportType?: 'fhir_bundle' | 'cms_patient_shared_health_document'): Observable<SmartHealthLinkManifestCreateResponse> {
+
+    let createEndpoint = `${this.platform_url}/shlink/manifest/create`
+    if(exportType){
+      createEndpoint = `${createEndpoint}?export_type=${exportType}`
+    }
+
+    return this._httpClient.post<any>(createEndpoint, {}, {
       withCredentials: true
     }).pipe(
       map((response: ResponseWrapper) => {

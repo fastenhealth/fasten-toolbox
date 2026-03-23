@@ -23,6 +23,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 import { MedicalRecordsExportComponent } from './pages/medical-records-export/medical-records-export.component';
 import { MedicalRecordsExportCallbackComponent } from './pages/medical-records-export-callback/medical-records-export-callback.component';
+import { PatientSharedHealthDocumentModalComponent } from './pages/patient-shared-health-document-modal/patient-shared-health-document-modal.component';
 import { SmartHealthLinkModalComponent } from './pages/smart-health-link-modal/smart-health-link-modal.component';
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
@@ -41,6 +42,7 @@ registerAllModules();
     ImageFallbackDirective,
     MedicalRecordsExportComponent,
     MedicalRecordsExportCallbackComponent,
+    PatientSharedHealthDocumentModalComponent,
     SmartHealthLinkModalComponent,
     TefcaIasBetaComponent,
     TefcaIasExportComponent,

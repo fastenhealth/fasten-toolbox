@@ -1,0 +1,49 @@
+<div class="patient-shared-health-document-surface">
+  <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="patientSharedHealthDocumentTitle">
+    <header class="modal-card__header">
+      <button type="button" class="icon-button" (click)="activeModal.dismiss('cancel')">
+        <span class="sr-only">Close dialog</span>
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="modal-card__heading">
+        <p class="eyebrow">Patient export</p>
+        <h2 id="patientSharedHealthDocumentTitle" class="modal-card__title">{{ cardTitle }}</h2>
+      </div>
+    </header>
+
+    <section class="modal-card__section" *ngIf="loading">
+      <div class="state state--loading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <p class="state__message">Generating Patient Shared Health Document...</p>
+      </div>
+    </section>
+
+    <section class="modal-card__section" *ngIf="!loading && errorMessage">
+      <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+      <button type="button" class="btn btn-outline-primary" (click)="fetchPatientSharedHealthDocument()">Try Again</button>
+    </section>
+
+    <section class="modal-card__section" *ngIf="!loading && !errorMessage">
+      <div class="link-summary">
+        <p class="verification" *ngIf="formattedVerificationDate">Verified {{ formattedVerificationDate }}</p>
+
+        <div class="qr-panel" *ngIf="qrCodeDataUrl">
+          <img [src]="qrCodeDataUrl" alt="Patient Shared Health Document QR code" />
+        </div>
+
+        <div class="more-info">
+          <p>For more information about CMS Patient Shared Health Documents:</p>
+          <a href="https://hackmd.io/7vmOA-SfQxmNCBgMAlPNcA" target="_blank" rel="noopener">https://hackmd.io/7vmOA-SfQxmNCBgMAlPNcA</a>
+        </div>
+
+        <div class="actions" *ngIf="patientSharedHealthDocumentUrl">
+          <a [href]="'https://viewer.tcpdev.org/#' + patientSharedHealthDocumentUrl" class="btn btn-primary btn-block" target="_blank" rel="noopener">Open Document</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
