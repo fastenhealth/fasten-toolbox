@@ -48,7 +48,7 @@ export class PatientSharedHealthDocumentModalComponent implements OnInit, OnDest
     this.errorMessage = null;
     this.qrCodeDataUrl = null;
 
-    this.subscription = this.toolboxService.shlinkManifestCreate()
+    this.subscription = this.toolboxService.shlinkManifestCreate("cms_patient_shared_health_document")
       .subscribe({
         next: async (payload: SmartHealthLinkManifestCreateResponse) => {
           this.patientSharedHealthDocumentUrl = payload?.shlink || null;
