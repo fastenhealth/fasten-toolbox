@@ -49,6 +49,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     // meldrx.yaml
     {key: 'Netsmart', value: 'netsmart'},
     {key: 'Nextgen', value: 'nextgen'},
+    {key: 'Nextgen Office', value: 'nextgenoffice'},
     // nhs.yaml
     {key: 'OneMedical', value: 'onemedical'},
     {key: 'PracticeFusion', value: 'practicefusion'},
