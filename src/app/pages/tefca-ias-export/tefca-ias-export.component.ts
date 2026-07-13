@@ -1,4 +1,10 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {
+  buildCallbackUrl,
+  ExportConnection,
+  providerDetails,
+  providerDisplayName
+} from '../export-provider-selection';
 
 @Component({
   selector: 'app-tefca-ias-export',
@@ -9,7 +15,9 @@ export class TefcaIasExportComponent implements OnInit, AfterViewInit {
 
   @ViewChild('stitchElement', { static: true }) stitchElement: ElementRef;
 
-  connections = [];
+  connections: ExportConnection[] = [];
+  showProviderSelection = false;
+
   constructor(private renderer: Renderer2) { }
 
   ngOnInit(): void {
@@ -19,31 +27,34 @@ export class TefcaIasExportComponent implements OnInit, AfterViewInit {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {
       console.warn("receiveStitchEventBus", event);
 
-      let eventPayload = JSON.parse(event.detail.data)
-      if(eventPayload.event_type == 'widget.complete') {
+      const eventPayload = JSON.parse(event.detail.data)
+      if(eventPayload.event_type === 'widget.complete') {
         console.log(eventPayload.event_type, this.connections);
-        this.connections = eventPayload.data;
-        if(this.connections && this.connections.length > 0){
-          var firstConnection = this.connections[0];
-          //redirect to the redirect.html file with these querystring parameters.
-          const currentURL = window.location.href;
-          var parsedURL = new URL(currentURL);
-          var pathParts = parsedURL.pathname.split("/")
-          pathParts.push("callback")
-          parsedURL.pathname = pathParts.join("/")
-
-          var params = new URLSearchParams(parsedURL.search);
-          for(let key of Object.getOwnPropertyNames(firstConnection)){
-            params.set(key, firstConnection[key]);
-          }
-          parsedURL.search = params.toString();
-
-          //change the current window location to the new URL
-          window.location.href = parsedURL.toString();
-        }
+        this.handleWidgetComplete(eventPayload.data);
       }
 
     });
+  }
+
+  handleWidgetComplete(connections: ExportConnection[]): void {
+    this.connections = Array.isArray(connections) ? connections : [];
+    this.showProviderSelection = this.connections.length > 1;
+
+    if (this.connections.length === 1) {
+      this.selectProvider(this.connections[0]);
+    }
+  }
+
+  selectProvider(connection: ExportConnection): void {
+    window.location.href = buildCallbackUrl(window.location.href, connection);
+  }
+
+  providerDisplayName(connection: ExportConnection, index: number): string {
+    return providerDisplayName(connection, index);
+  }
+
+  providerDetails(connection: ExportConnection): string {
+    return providerDetails(connection);
   }
 
 }

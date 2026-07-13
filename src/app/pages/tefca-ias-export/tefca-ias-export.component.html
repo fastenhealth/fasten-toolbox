@@ -29,7 +29,7 @@
       </p>
     </div>
     <div class="col-lg-6 col-xl-7 widget-column">
-      <div class="widget-card">
+      <div class="widget-card" *ngIf="!showProviderSelection">
         <fasten-stitch-element
           #stitchElement
           external-id="user-opaque-id-12812904h31"
@@ -38,9 +38,26 @@
           static-backdrop="true"
         >Export Records using TEFCA</fasten-stitch-element>
       </div>
+      <div class="provider-selection" *ngIf="showProviderSelection">
+        <h2>Select a healthcare provider</h2>
+        <p class="selection-copy">
+          More than one healthcare institution was returned. Only one provider can be downloaded at a time using this evaluation tool.
+          This limitation is not present when using the actual API.
+        </p>
+        <div class="provider-list">
+          <button
+            type="button"
+            class="provider-option"
+            *ngFor="let connection of connections; let i = index"
+            (click)="selectProvider(connection)"
+          >
+            <span class="provider-name">{{ providerDisplayName(connection, i) }}</span>
+            <span class="provider-details" *ngIf="providerDetails(connection)">{{ providerDetails(connection) }}</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 
 
