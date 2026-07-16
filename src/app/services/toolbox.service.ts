@@ -18,7 +18,7 @@ export class ToolboxService {
   constructor(private _httpClient: HttpClient) { }
 
   catalogEditor(submission: any): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/support/catalog`, submission)
+    return this._httpClient.post<any>(`https://api.connect.fastenlabs.com/v1/support/catalog`, submission)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)
@@ -74,7 +74,7 @@ export class ToolboxService {
 
 
   tefcaIasBetaRequest(requestTefcaIasBeta: RequestTefcaIasBeta): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/form/tefca-ias-beta`, requestTefcaIasBeta)
+    return this._httpClient.post<any>(`https://api.connect.fastenlabs.com/v1/form/tefca-ias-beta`, requestTefcaIasBeta)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)

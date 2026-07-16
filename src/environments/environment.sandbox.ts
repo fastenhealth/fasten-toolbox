@@ -7,6 +7,9 @@ export const environment = {
   environment_cloud: false,
   environment_name: "sandbox",
 
+  connect_api_endpoint_base: 'https://api.connect.fastenlabs.com/v1',
+  records_export_public_id: 'public_test_f5ds5i5eiv0mv6ldpn8cl4x20cyh2xhw9zd78r46q20nz',
+
   lighthouse_api_endpoint_base: 'https://lighthouse.fastenhealth.com/sandbox',
 
   //used to specify the couchdb server that we're going to use (can be relative or absolute). Must not have trailing slash
