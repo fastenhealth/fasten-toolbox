@@ -29,15 +29,46 @@
     <div class="col-lg-6 col-xl-7 widget-column">
       <div class="widget-card">
         <fasten-stitch-element
+          *ngIf="!showInstitutionSelector && !loadingInstitutions && !catalogError"
           #stitchElement
           external-id="user-opaque-id-12812904h31"
-          public-id="public_live_0p9naei79dk4e1gbfoe4hhy4bhoj1ocmy4prdnnjwlmue"
+          [attr.public-id]="environment.records_export_public_id"
           static-backdrop="true"
         >Export Records</fasten-stitch-element>
+
+        <div *ngIf="loadingInstitutions" class="text-center" role="status">
+          Loading your healthcare institutions…
+        </div>
+
+        <div *ngIf="catalogError" class="text-center">
+          <p class="text-danger">{{ catalogError }}</p>
+          <button type="button" class="btn btn-primary" (click)="loadInstitutionNames()">Try again</button>
+        </div>
+
+        <div *ngIf="showInstitutionSelector" class="institution-selector">
+          <p class="selector-label">Multiple providers connected</p>
+          <h2>Choose records to export</h2>
+          <p class="selector-description">
+            This export supports one institution at a time. Select which records you want to continue with.
+          </p>
+          <div class="institution-list">
+            <button
+              *ngFor="let connection of connections; index as index"
+              type="button"
+              class="institution-option"
+              (click)="selectConnection(index)"
+            >
+              <span class="institution-number" aria-hidden="true">{{ index + 1 }}</span>
+              <span class="institution-details">
+                <span class="institution-name">{{ connection.institutionName }}</span>
+                <span class="institution-action">Export records from this institution</span>
+              </span>
+              <span class="institution-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+          <p class="selector-note">You’ll continue to your records export after making a selection.</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-

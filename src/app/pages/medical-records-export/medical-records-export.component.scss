@@ -36,9 +36,122 @@
     max-width: 100%;
   }
 
+  .institution-selector {
+    width: 100%;
+    max-width: 34rem;
+
+    .selector-label {
+      color: #3157d5;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      color: #08275c;
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .selector-description {
+      color: #60708f;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .institution-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .institution-option {
+      align-items: center;
+      background: #fff;
+      border: 1px solid #d8e0f0;
+      border-radius: 0.75rem;
+      color: #08275c;
+      cursor: pointer;
+      display: flex;
+      padding: 1rem;
+      text-align: left;
+      transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+      width: 100%;
+
+      &:hover {
+        border-color: #3157d5;
+        box-shadow: 0 0.5rem 1rem rgba(49, 87, 213, 0.12);
+        transform: translateY(-1px);
+      }
+
+      &:focus-visible {
+        border-color: #3157d5;
+        box-shadow: 0 0 0 0.2rem rgba(49, 87, 213, 0.2);
+        outline: none;
+      }
+    }
+
+    .institution-number {
+      align-items: center;
+      background: #edf2ff;
+      border-radius: 50%;
+      color: #3157d5;
+      display: flex;
+      flex: 0 0 2.5rem;
+      font-weight: 700;
+      height: 2.5rem;
+      justify-content: center;
+      margin-right: 1rem;
+    }
+
+    .institution-details {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .institution-name {
+      font-size: 1rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .institution-action {
+      color: #74829d;
+      font-size: 0.8125rem;
+      margin-top: 0.2rem;
+    }
+
+    .institution-arrow {
+      color: #3157d5;
+      font-size: 1.25rem;
+      margin-left: 1rem;
+    }
+
+    .selector-note {
+      color: #74829d;
+      font-size: 0.8125rem;
+      margin: 1rem 0 0;
+      text-align: center;
+    }
+  }
+
   @media (min-width: 992px) {
     .widget-column {
       margin-top: 0;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .widget-card {
+      padding: 1.25rem;
+    }
+
+    .institution-selector h2 {
+      font-size: 1.5rem;
     }
   }
 }

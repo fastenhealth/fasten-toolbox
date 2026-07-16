@@ -1,49 +1,117 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-medical-records-export',
   templateUrl: './medical-records-export.component.html',
   styleUrls: ['./medical-records-export.component.scss']
 })
-export class MedicalRecordsExportComponent implements OnInit, AfterViewInit {
+export class MedicalRecordsExportComponent implements AfterViewInit {
 
-  @ViewChild('stitchElement', { static: true }) stitchElement: ElementRef;
+  @ViewChild('stitchElement') stitchElement: ElementRef;
 
+  environment = environment;
   connections = [];
-  constructor(private renderer: Renderer2) { }
+  showInstitutionSelector = false;
+  loadingInstitutions = false;
+  catalogError = '';
 
-  ngOnInit(): void {
-  }
+  private catalogApiMode = '';
+
+  constructor(private renderer: Renderer2) { }
 
   ngAfterViewInit() {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {
-      console.warn("receiveStitchEventBus", event);
-
-      let eventPayload = JSON.parse(event.detail.data)
-      if(eventPayload.event_type == 'widget.complete') {
-        console.log(eventPayload.event_type, this.connections);
-        this.connections = eventPayload.data;
-        if(this.connections && this.connections.length > 0){
-          var firstConnection = this.connections[0];
-          //redirect to the redirect.html file with these querystring parameters.
-          const currentURL = window.location.href;
-          var parsedURL = new URL(currentURL);
-          var pathParts = parsedURL.pathname.split("/")
-          pathParts.push("callback")
-          parsedURL.pathname = pathParts.join("/")
-
-          var params = new URLSearchParams(parsedURL.search);
-          for(let key of Object.getOwnPropertyNames(firstConnection)){
-            params.set(key, firstConnection[key]);
-          }
-          parsedURL.search = params.toString();
-
-          //change the current window location to the new URL
-          window.location.href = parsedURL.toString();
-        }
-      }
-
+      this.onStitchEvent(event);
     });
   }
 
+  onStitchEvent(event: any): void {
+    const eventPayload = JSON.parse(event.detail.data);
+    if (eventPayload.event_type !== 'widget.complete') {
+      return;
+    }
+
+    this.connections = eventPayload.data || [];
+    this.catalogApiMode = eventPayload.api_mode;
+
+    if (this.connections.length === 1) {
+      this.redirectConnection(this.connections[0]);
+    } else if (this.connections.length > 1) {
+      this.hideStitchWidget();
+      this.loadInstitutionNames();
+    }
+  }
+
+  async loadInstitutionNames(): Promise<void> {
+    this.catalogError = '';
+    this.loadingInstitutions = true;
+
+    try {
+      if (!this.catalogApiMode) {
+        throw new Error('Missing catalog lookup configuration');
+      }
+
+      await Promise.all(this.connections.map(async (connection: any) => {
+        const params = new URLSearchParams({
+          api_mode: this.catalogApiMode,
+          public_id: environment.records_export_public_id,
+        });
+        const tefcaDirectoryId = connection.tefca_directory_id || connection.TEAdirectoryID;
+        const brandId = connection.brand_id || connection.brandID;
+
+        if (tefcaDirectoryId) {
+          params.set('tefca_directory_id', tefcaDirectoryId);
+        } else if (brandId) {
+          params.set('brand_id', brandId);
+        } else {
+          throw new Error('Connection has no catalog identifier');
+        }
+
+        const response = await fetch(`${environment.connect_api_endpoint_base}/bridge/catalog?${params}`);
+        const catalogEntry = await response.json();
+        if (!response.ok || !catalogEntry.success || !catalogEntry.data?.name) {
+          throw new Error('Could not load institution name');
+        }
+
+        connection.institutionName = catalogEntry.data.name;
+      }));
+
+      this.showInstitutionSelector = true;
+    } catch (error) {
+      console.error('Could not load institution names', error);
+      this.catalogError = 'We could not load the institution names. Please try again.';
+    } finally {
+      this.loadingInstitutions = false;
+    }
+  }
+
+  selectConnection(index: number): void {
+    this.redirectConnection(this.connections[index]);
+  }
+
+  redirectConnection(connection: any): void {
+    const currentURL = window.location.href;
+    const parsedURL = new URL(currentURL);
+    const pathParts = parsedURL.pathname.split('/');
+    pathParts.push('callback');
+    parsedURL.pathname = pathParts.join('/');
+
+    const params = new URLSearchParams(parsedURL.search);
+    for (const key of Object.getOwnPropertyNames(connection)) {
+      if (key !== 'institutionName') {
+        params.set(key, connection[key]);
+      }
+    }
+    parsedURL.search = params.toString();
+
+    window.location.href = parsedURL.toString();
+  }
+
+  private hideStitchWidget(): void {
+    const stitchElement = this.stitchElement.nativeElement as any;
+    if (typeof stitchElement.hide === 'function') {
+      stitchElement.hide();
+    }
+  }
 }
