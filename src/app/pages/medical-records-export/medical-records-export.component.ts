@@ -75,6 +75,12 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
         }
 
         connection.institutionName = catalogEntry.data.name;
+        const location = catalogEntry.data.locations?.[0];
+        connection.institutionLocation = catalogEntry.data.location ||
+          [catalogEntry.data.city, catalogEntry.data.state].filter(Boolean).join(', ') ||
+          [location?.city, location?.state].filter(Boolean).join(', ');
+        connection.institutionLogo = catalogEntry.data.logo ||
+          (brandId ? `https://cdn.fastenhealth.com/logos/sources/${brandId}.png` : null);
       }));
 
       this.showInstitutionSelector = true;
@@ -90,7 +96,7 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
     this.redirectConnection(this.connections[index]);
   }
 
-  redirectConnection(connection: any): void {
+  buildCallbackUrl(connection: any): string {
     const currentURL = window.location.href;
     const parsedURL = new URL(currentURL);
     const pathParts = parsedURL.pathname.split('/');
@@ -99,13 +105,17 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
 
     const params = new URLSearchParams(parsedURL.search);
     for (const key of Object.getOwnPropertyNames(connection)) {
-      if (key !== 'institutionName') {
+      if (key !== 'institutionName' && key !== 'institutionLogo' && key !== 'institutionLocation') {
         params.set(key, connection[key]);
       }
     }
     parsedURL.search = params.toString();
 
-    window.location.href = parsedURL.toString();
+    return parsedURL.toString();
+  }
+
+  redirectConnection(connection: any): void {
+    window.location.href = this.buildCallbackUrl(connection);
   }
 
   private hideStitchWidget(): void {

@@ -58,12 +58,26 @@
               class="institution-option"
               (click)="selectConnection(index)"
             >
-              <span class="institution-number" aria-hidden="true">{{ index + 1 }}</span>
+              <img
+                *ngIf="connection.institutionLogo"
+                class="institution-logo"
+                [src]="connection.institutionLogo"
+                alt=""
+                loading="lazy"
+                (error)="connection.institutionLogo = null"
+              />
+              <span
+                *ngIf="!connection.institutionLogo"
+                class="institution-logo-placeholder"
+                aria-hidden="true"
+              ></span>
               <span class="institution-details">
                 <span class="institution-name">{{ connection.institutionName }}</span>
-                <span class="institution-action">Export records from this institution</span>
+                <span class="institution-location">
+                  {{ connection.institutionLocation || 'Connected provider' }}
+                </span>
               </span>
-              <span class="institution-arrow" aria-hidden="true">&rarr;</span>
+              <span class="institution-arrow" aria-hidden="true"></span>
             </button>
           </div>
           <p class="selector-note">You’ll continue to your records export after making a selection.</p>
