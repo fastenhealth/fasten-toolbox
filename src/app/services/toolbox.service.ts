@@ -7,6 +7,7 @@ import {Params} from '@angular/router';
 import {RecordExport} from '../models/fasten/record-export';
 import {RequestTefcaIasBeta} from "../models/fasten/request-tefca-ias-beta";
 import {SmartHealthLinkManifestCreateResponse} from '../models/fasten/smart-health-link';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,24 @@ export class ToolboxService {
           return response.data
         })
       );
+  }
+
+  getCatalogEntry(apiMode: string, connection: any): Observable<any> {
+    const tefcaDirectoryId = connection.tefca_directory_id || connection.TEAdirectoryID;
+    const brandId = connection.brand_id || connection.brandID;
+    let params = new HttpParams()
+      .set('api_mode', apiMode)
+      .set('public_id', environment.records_export_public_id);
+
+    if (tefcaDirectoryId) {
+      params = params.set('tefca_directory_id', tefcaDirectoryId);
+    } else if (brandId) {
+      params = params.set('brand_id', brandId);
+    } else {
+      return throwError(() => new Error('Connection has no catalog identifier'));
+    }
+
+    return this._httpClient.get<any>(`${environment.connect_api_endpoint_base}/bridge/catalog`, {params});
   }
 
   //returns authenticated or error

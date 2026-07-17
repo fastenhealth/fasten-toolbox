@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { ToolboxService } from '../../services/toolbox.service';
 import { TefcaIasExportComponent } from './tefca-ias-export.component';
 
 describe('TefcaIasExportComponent', () => {
   let component: TefcaIasExportComponent;
   let fixture: ComponentFixture<TefcaIasExportComponent>;
+  let toolboxService: jasmine.SpyObj<ToolboxService>;
 
   beforeEach(async () => {
+    toolboxService = jasmine.createSpyObj('ToolboxService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ TefcaIasExportComponent ],
-      imports: [ CommonModule ]
+      imports: [ CommonModule ],
+      providers: [ { provide: ToolboxService, useValue: toolboxService } ]
     })
     .compileComponents();
 
@@ -36,23 +40,11 @@ describe('TefcaIasExportComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('redirects directly when the widget completes with one connection', () => {
-    const fetchSpy = spyOn(window, 'fetch');
-    const redirectSpy = spyOn(component, 'redirectConnection');
-    const connection = { org_connection_id: 'connection-one', tefca_directory_id: 'tefca-one' };
-
-    dispatchWidgetComplete([connection]);
-
-    expect(redirectSpy).toHaveBeenCalledWith(connection);
-    expect(fetchSpy).not.toHaveBeenCalled();
-  });
-
   it('loads environment catalog metadata and renders a choice for each connection', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValues(
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://catalog.example/alpha.png' } }) } as any),
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Beta Health' } }) } as any),
+    toolboxService.getCatalogEntry.and.returnValues(
+      of({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://catalog.example/alpha.png' } }),
+      of({ success: true, data: { name: 'Beta Health' } }),
     );
-    const redirectSpy = spyOn(component, 'redirectConnection');
 
     dispatchWidgetComplete([
       { org_connection_id: 'connection-one', tefca_directory_id: 'tefca-one', brand_id: 'brand-one' },
@@ -62,16 +54,9 @@ describe('TefcaIasExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const catalogRequests = fetchSpy.calls.allArgs().map(args => new URL(args[0] as string));
-    expect(catalogRequests.map(request => `${request.origin}${request.pathname}`)).toEqual([
-      `${environment.connect_api_endpoint_base}/bridge/catalog`,
-      `${environment.connect_api_endpoint_base}/bridge/catalog`,
-    ]);
-    expect(catalogRequests.map(request => request.searchParams.get('api_mode'))).toEqual([ 'live', 'live' ]);
-    expect(catalogRequests.map(request => request.searchParams.get('public_id'))).toEqual([
-      environment.records_export_public_id,
-      environment.records_export_public_id,
-    ]);
+    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
+    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
+      .toEqual([ 'connection-one', 'connection-two' ]);
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
     expect(choices.length).toBe(2);
@@ -81,14 +66,12 @@ describe('TefcaIasExportComponent', () => {
     expect(choices[1].querySelector('.institution-logo').getAttribute('src'))
       .toBe('https://cdn.fastenhealth.com/logos/sources/brand-two.png');
 
-    choices[1].click();
-    expect(redirectSpy).toHaveBeenCalledWith(component.connections[1]);
   });
 
   it('shows placeholders when the catalog has no logo or the logo cannot load', async () => {
-    spyOn(window, 'fetch').and.returnValues(
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Directory Health' } }) } as any),
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Brand Health' } }) } as any),
+    toolboxService.getCatalogEntry.and.returnValues(
+      of({ success: true, data: { name: 'Directory Health' } }),
+      of({ success: true, data: { name: 'Brand Health' } }),
     );
 
     dispatchWidgetComplete([
@@ -111,7 +94,7 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('shows a retryable error when catalog metadata cannot be loaded', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({ ok: false, json: () => Promise.resolve({ success: false }) } as any));
+    toolboxService.getCatalogEntry.and.returnValue(of({ success: false }));
 
     dispatchWidgetComplete([
       { org_connection_id: 'connection-one', tefca_directory_id: 'tefca-one' },

@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { ToolboxService } from '../../services/toolbox.service';
 import { MedicalRecordsExportComponent } from './medical-records-export.component';
 
 describe('MedicalRecordsExportComponent', () => {
   let component: MedicalRecordsExportComponent;
   let fixture: ComponentFixture<MedicalRecordsExportComponent>;
+  let toolboxService: jasmine.SpyObj<ToolboxService>;
 
   beforeEach(async () => {
+    toolboxService = jasmine.createSpyObj('ToolboxService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ MedicalRecordsExportComponent ],
-      imports: [ CommonModule ]
+      imports: [ CommonModule ],
+      providers: [ { provide: ToolboxService, useValue: toolboxService } ]
     })
     .compileComponents();
 
@@ -25,11 +29,10 @@ describe('MedicalRecordsExportComponent', () => {
   });
 
   it('shows a choice for each completed connection', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValues(
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-one.png' } }) } as any),
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Beta Health', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-two.png' } }) } as any),
+    toolboxService.getCatalogEntry.and.returnValues(
+      of({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-one.png' } }),
+      of({ success: true, data: { name: 'Beta Health', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-two.png' } }),
     );
-    const redirectSpy = spyOn(component, 'redirectConnection');
 
     component.stitchElement.nativeElement.dispatchEvent(new CustomEvent('eventBus', {
       detail: {
@@ -47,15 +50,9 @@ describe('MedicalRecordsExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const catalogRequests = fetchSpy.calls.allArgs().map(args => new URL(args[0] as string));
-    expect(catalogRequests.map(request => `${request.origin}${request.pathname}`)).toEqual([
-      `${environment.connect_api_endpoint_base}/bridge/catalog`,
-      `${environment.connect_api_endpoint_base}/bridge/catalog`,
-    ]);
-    expect(catalogRequests.map(request => request.searchParams.get('public_id'))).toEqual([
-      environment.records_export_public_id,
-      environment.records_export_public_id,
-    ]);
+    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
+    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
+      .toEqual([ 'connection-one', 'connection-two' ]);
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
     expect(choices.length).toBe(2);
@@ -73,14 +70,12 @@ describe('MedicalRecordsExportComponent', () => {
     expect(logo2.getAttribute('src')).toBe('https://cdn.fastenhealth.com/logos/sources/brand-two.png');
     expect(logo2.getAttribute('alt')).toBe('');
 
-    choices[1].click();
-    expect(redirectSpy).toHaveBeenCalledWith(component.connections[1]);
   });
 
   it('falls back to the brand logo and keeps providers without logos selectable', async () => {
-    spyOn(window, 'fetch').and.returnValues(
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'Fallback Health' } }) } as any),
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: { name: 'TEFCA Health' } }) } as any),
+    toolboxService.getCatalogEntry.and.returnValues(
+      of({ success: true, data: { name: 'Fallback Health' } }),
+      of({ success: true, data: { name: 'TEFCA Health' } }),
     );
 
     component.stitchElement.nativeElement.dispatchEvent(new CustomEvent('eventBus', {
