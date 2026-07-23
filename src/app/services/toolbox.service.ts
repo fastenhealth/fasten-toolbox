@@ -19,7 +19,7 @@ export class ToolboxService {
   constructor(private _httpClient: HttpClient) { }
 
   catalogEditor(submission: any): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/support/catalog`, submission)
+    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/support/catalog`, submission)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)
@@ -30,8 +30,8 @@ export class ToolboxService {
   }
 
   getCatalogEntry(apiMode: string, connection: any): Observable<any> {
-    const tefcaDirectoryId = connection.tefca_directory_id || connection.TEAdirectoryID;
-    const brandId = connection.brand_id || connection.brandID;
+    const tefcaDirectoryId = connection.tefca_directory_id;
+    const brandId = connection.brand_id;
     let params = new HttpParams()
       .set('api_mode', apiMode)
       .set('public_id', environment.records_export_public_id);
@@ -93,7 +93,7 @@ export class ToolboxService {
 
 
   tefcaIasBetaRequest(requestTefcaIasBeta: RequestTefcaIasBeta): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/form/tefca-ias-beta`, requestTefcaIasBeta)
+    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/form/tefca-ias-beta`, requestTefcaIasBeta)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)
