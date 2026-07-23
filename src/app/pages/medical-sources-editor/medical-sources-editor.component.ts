@@ -33,6 +33,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Athena', value: 'athena'},
     {key: 'Cerner', value: 'cerner'},
     {key: 'CHBase', value: 'chbase'},
+    // {key: 'Charm', value: 'charm'},
     {key: 'Darena', value: 'darena'},
     {key: 'DrChrono', value: 'drchrono'},
     {key: 'eCW/Healow', value: 'eclinicalworks'},
@@ -53,6 +54,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Nextgen Office', value: 'nextgenoffice'},
     // nhs.yaml
     {key: 'OneMedical', value: 'onemedical'},
+    // {key: 'PracticeFusion', value: 'pointclickcare'},
     {key: 'PracticeFusion', value: 'practicefusion'},
     {key: 'Qualifacts Carelogic', value: 'qualifacts-carelogic'},
     {key: 'Qualifacts Credible', value: 'qualifacts-credible'},
