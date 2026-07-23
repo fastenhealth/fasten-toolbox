@@ -22,24 +22,22 @@ export class TefcaIasExportComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {
-      this.onStitchEvent(event);
+      console.warn("receiveStitchEventBus", event);
+
+      const eventPayload = JSON.parse(event.detail.data);
+      if (eventPayload.event_type !== 'widget.complete') {
+        return;
+      }
+
+      this.connections = eventPayload.data || [];
+      this.catalogApiMode = eventPayload.api_mode;
+      if (this.connections.length === 1) {
+        window.location.href = this.buildCallbackUrl(this.connections[0]);
+      } else if (this.connections.length > 1) {
+        this.hideStitchWidget();
+        this.loadInstitutionNames();
+      }
     });
-  }
-
-  onStitchEvent(event: any): void {
-    const eventPayload = JSON.parse(event.detail.data);
-    if (eventPayload.event_type !== 'widget.complete') {
-      return;
-    }
-
-    this.connections = eventPayload.data || [];
-    this.catalogApiMode = eventPayload.api_mode;
-    if (this.connections.length === 1) {
-      window.location.href = this.buildCallbackUrl(this.connections[0]);
-    } else if (this.connections.length > 1) {
-      this.hideStitchWidget();
-      this.loadInstitutionNames();
-    }
   }
 
   async loadInstitutionNames(): Promise<void> {

@@ -23,26 +23,25 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {
-      this.onStitchEvent(event);
+      console.warn("receiveStitchEventBus", event);
+
+      const eventPayload = JSON.parse(event.detail.data);
+      if (eventPayload.event_type !== 'widget.complete') {
+        return;
+      }
+
+      this.connections = eventPayload.data || [];
+      this.catalogApiMode = eventPayload.api_mode;
+
+      if (this.connections.length === 1) {
+        window.location.href = this.buildCallbackUrl(this.connections[0]);
+      } else if (this.connections.length > 1) {
+        this.hideStitchWidget();
+        this.loadInstitutionNames();
+      }
     });
   }
 
-  onStitchEvent(event: any): void {
-    const eventPayload = JSON.parse(event.detail.data);
-    if (eventPayload.event_type !== 'widget.complete') {
-      return;
-    }
-
-    this.connections = eventPayload.data || [];
-    this.catalogApiMode = eventPayload.api_mode;
-
-    if (this.connections.length === 1) {
-      window.location.href = this.buildCallbackUrl(this.connections[0]);
-    } else if (this.connections.length > 1) {
-      this.hideStitchWidget();
-      this.loadInstitutionNames();
-    }
-  }
 
   async loadInstitutionNames(): Promise<void> {
     this.catalogError = '';
@@ -54,7 +53,7 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
       }
 
       await Promise.all(this.connections.map(async (connection: any) => {
-        const brandId = connection.brand_id || connection.brandID;
+        const brandId = connection.brand_id;
         const catalogEntry = await this.toolboxService.getCatalogEntry(this.catalogApiMode, connection).toPromise();
         if (!catalogEntry.success || !catalogEntry.data?.name) {
           throw new Error('Could not load institution name');
