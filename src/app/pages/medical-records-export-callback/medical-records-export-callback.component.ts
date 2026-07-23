@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {ToolboxService} from '../../services/toolbox.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -13,7 +13,7 @@ import {
   templateUrl: './medical-records-export-callback.component.html',
   styleUrls: ['./medical-records-export-callback.component.scss']
 })
-export class MedicalRecordsExportCallbackComponent implements OnInit {
+export class MedicalRecordsExportCallbackComponent implements OnInit, OnDestroy {
 
   hasError = false
   errorMsg = ""
@@ -30,12 +30,18 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
   generateBundleDownloadFilename = null
 
   hasMultipleDownloadLinks: boolean = false
+  private exportPoll: any
+  private exportPollInFlight = false
   constructor(
     private activatedRoute : ActivatedRoute,
     private toolboxService: ToolboxService,
     private sanitizer: DomSanitizer,
     private modalService: NgbModal
   ) { }
+
+  ngOnDestroy(): void {
+    this.stopExportPolling()
+  }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(values => {
@@ -70,14 +76,21 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
 
         //get the current timestamp
         this.bundleSyncStart = new Date().toISOString()
+        this.bundleSyncCurrent = this.bundleSyncStart
 
-        //make calls to the download endpoint every 10 seconds, until we get an error or a success payload
-        let cancel = setInterval(() => {
+        //check immediately, then poll until we get an error or a success payload
+        const poll = () => {
+          if (this.exportPollInFlight) {
+            return
+          }
+
+          this.exportPollInFlight = true
           this.bundleSyncCurrent = new Date().toISOString()
           this.toolboxService.recordsExportContentUrl().subscribe((res) => {
+            this.exportPollInFlight = false
             console.log(res)
             if(res.status == 'success' || res.status == 'failed'){
-              clearInterval(cancel)
+              this.stopExportPolling()
             }
             if(res.status == 'success') {
               //if success, the platform will provide a signed s3 download URL.
@@ -115,7 +128,8 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
             }
 
           }, (err) => {
-            clearInterval(cancel)
+            this.exportPollInFlight = false
+            this.stopExportPolling()
             this.loading = false
 
             this.hasError = true
@@ -128,10 +142,29 @@ export class MedicalRecordsExportCallbackComponent implements OnInit {
             this.errorMsg = errorMsgLines.join('\n')
 
           })
-        }, 10000)
+        }
 
+        this.exportPoll = setInterval(poll, 5000)
+        poll()
+
+      }, (err) => {
+        this.loading = false
+        this.hasError = true
+        this.errorMsg = [
+          'status=' + err.status,
+          `error=${err.error?.error || err.error || 'export_callback_error'}`,
+          `request_id=${values["request_id"] || 'unavailable'}`,
+          `connection_id=${values["org_connection_id"] || 'unavailable'}`
+        ].join('\n')
       })
     })
+  }
+
+  private stopExportPolling(): void {
+    if (this.exportPoll) {
+      clearInterval(this.exportPoll)
+      this.exportPoll = null
+    }
   }
 
   onDownloadBundleFile(): void {

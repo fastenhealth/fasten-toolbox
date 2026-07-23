@@ -7,6 +7,7 @@ import {Params} from '@angular/router';
 import {RecordExport} from '../models/fasten/record-export';
 import {RequestTefcaIasBeta} from "../models/fasten/request-tefca-ias-beta";
 import {SmartHealthLinkManifestCreateResponse} from '../models/fasten/smart-health-link';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ToolboxService {
   constructor(private _httpClient: HttpClient) { }
 
   catalogEditor(submission: any): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/support/catalog`, submission)
+    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/support/catalog`, submission)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)
@@ -26,6 +27,24 @@ export class ToolboxService {
           return response.data
         })
       );
+  }
+
+  getCatalogEntry(apiMode: string, connection: any): Observable<any> {
+    const tefcaDirectoryId = connection.tefca_directory_id;
+    const brandId = connection.brand_id;
+    let params = new HttpParams()
+      .set('api_mode', apiMode)
+      .set('public_id', environment.records_export_public_id);
+
+    if (tefcaDirectoryId) {
+      params = params.set('tefca_directory_id', tefcaDirectoryId);
+    } else if (brandId) {
+      params = params.set('brand_id', brandId);
+    } else {
+      return throwError(() => new Error('Connection has no catalog identifier'));
+    }
+
+    return this._httpClient.get<any>(`${environment.connect_api_endpoint_base}/bridge/catalog`, {params});
   }
 
   //returns authenticated or error
@@ -74,7 +93,7 @@ export class ToolboxService {
 
 
   tefcaIasBetaRequest(requestTefcaIasBeta: RequestTefcaIasBeta): Observable<any> {
-    return this._httpClient.post<any>(`https://api.connect.fastenhealth.com/v1/form/tefca-ias-beta`, requestTefcaIasBeta)
+    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/form/tefca-ias-beta`, requestTefcaIasBeta)
       .pipe(
         map((response: ResponseWrapper) => {
           console.log("BUNDLE RESPONSE", response)

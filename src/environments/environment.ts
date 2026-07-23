@@ -12,6 +12,9 @@ export const environment = {
   // the environment name, `sandbox`, `prod`, `beta`
   environment_name: "sandbox",
 
+  connect_api_endpoint_base: 'https://api.connect.fastenlabs.com/v1',
+  records_export_public_id: 'public_test_f5ds5i5eiv0mv6ldpn8cl4x20cyh2xhw9zd78r46q20nz',
+
   //specify the lighthouse server that we're going to use to authenticate against all our source/providers. Must not have trailing slash
   lighthouse_api_endpoint_base: 'https://lighthouse.fastenhealth.com/v1',
 
