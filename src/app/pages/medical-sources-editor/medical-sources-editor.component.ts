@@ -2,14 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {LighthouseService} from '../../services/lighthouse.service';
 import {BehaviorSubject} from 'rxjs';
-import {MetadataSource} from '../../models/fasten/metadata-source';
-import Handsontable from 'handsontable';
-import { HotTableRegisterer } from '@handsontable/angular';
 import {MedicalSourcesFilter} from '../../models/lighthouse/medical-sources-filter';
-import {
-  LighthouseBrandListDisplayItem,
-  LighthouseSourceSearchResult
-} from '../../models/lighthouse/lighthouse-source-search';
+import {LighthouseBrandListDisplayItem} from '../../models/lighthouse/lighthouse-source-search';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -47,7 +41,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Medhost', value: 'medhost'},
     {key: 'Medicare', value: 'medicare'},
     {key: 'Modmed EMA', value: 'modmedema'},
-    // {key: 'Meditech', value: 'meditech'},
+    {key: 'Meditech', value: 'meditech'},
     // meldrx.yaml
     {key: 'Netsmart', value: 'netsmart'},
     {key: 'Nextgen', value: 'nextgen'},
@@ -83,30 +77,6 @@ export class MedicalSourcesEditorComponent implements OnInit {
   selectedBrandForEditor: LighthouseBrandListDisplayItem = undefined
   brandEditorForm: FormGroup
 
-
-  //table settings
-  settings: Handsontable.GridSettings = {
-    fixedColumnsStart: 1,
-    // colWidths: 200,
-    // autoColumnSize: true,
-    columnSorting: false,
-
-    autoRowSize: true,
-    rowHeaders: true,
-    rowHeights: 100,
-    width: '100%',
-    colHeaders: true,
-
-    manualRowResize: true,
-    manualColumnResize: true,
-    selectionMode: 'single',
-
-    afterSelection: (row, col, row2, col2, preventScrolling, selectionLayerLevel) => {
-      console.log("SELECTION", row, col, row2, col2, preventScrolling, selectionLayerLevel)
-      this.showEditorModal(this.brandsList[row])
-    }
-
-  }
 
   constructor(
     private lighthouseApi: LighthouseService,
@@ -197,6 +167,22 @@ export class MedicalSourcesEditorComponent implements OnInit {
     this.resetEditorForm(this.selectedBrandForEditor)
 
     this.modalService.open(this.editor, { size: 'lg' });
+  }
+
+  logoUrl(brand: LighthouseBrandListDisplayItem): string {
+    return brand.logo || `https://cdn.fastenhealth.com/logos/sources/${brand.id}.png`;
+  }
+
+  logoError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.onerror = null;
+    image.src = 'https://cdn.fastenhealth.com/images/no-image.svg';
+  }
+
+  locationSummary(brand: LighthouseBrandListDisplayItem): string {
+    const states = (brand.locations || []).map(location => typeof location === 'string' ? location : location?.state || location?.address?.state).filter(Boolean).map(state => String(state).toUpperCase());
+    const uniqueStates = Array.from(new Set(states)).sort();
+    return uniqueStates.length ? uniqueStates.join(', ') : 'N/A';
   }
 
   resetEditorForm(selectedBrand: LighthouseBrandListDisplayItem) {
@@ -339,46 +325,6 @@ export class MedicalSourcesEditorComponent implements OnInit {
   get logo_brand_id(): string {
     return `https://cdn.fastenhealth.com/logos/sources/${this.selectedBrandForEditor.id}.png`
   }
-
-  //helpers, HandsOnTable Renderers
-
-  imageRender(instance, td, row, col, prop, value, cellProperties) {
-    const img = document.createElement('img');
-
-    img.src = `https://cdn.fastenhealth.com/logos/sources/${value}.png`;
-    img.style.width = '100px';
-    img.addEventListener('mousedown', event => {
-      event.preventDefault();
-    });
-
-    img.addEventListener("error", function(event) {
-      // @ts-ignore
-      // event.target.parentNode.removeChild( event.target);
-
-      event.target.src = 'https://cdn.fastenhealth.com/images/no-image.svg';
-
-      // @ts-ignore
-      event.onerror = null
-    })
-
-    td.innerText = '';
-    td.appendChild(img);
-
-    return td;
-  }
-
-  listRender(instance, td, row, col, prop, value, cellProperties) {
-    const ulElement = document.createElement('ul');
-    for (const item of value) {
-      const liElement = document.createElement('li');
-      liElement.innerText = item;
-      ulElement.appendChild(liElement);
-    }
-    td.innerText = '';
-    td.appendChild(ulElement);
-    return td;
-  }
-
 
   npiTypeahead: any = (query, process) => {
 
