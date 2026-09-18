@@ -1,80 +1,69 @@
-<div class="az-content">
-  <div class="">
-    <div class="az-content-body pd-lg-l-40 d-flex flex-column">
-      <div class="az-content-breadcrumb">
-        <span>Fasten Sources Editor</span>
+<main class="sources-page">
+  <div class="sources-shell">
+    <header class="sources-intro">
+      <span class="eyebrow"><span class="eyebrow-dot">✓</span> DIRECTORY</span>
+      <h1>Healthcare Sources Editor</h1>
+      <p>Browse health systems and healthcare providers, then suggest updates to keep the Fasten directory accurate.</p>
+    </header>
+
+    <div class="review-note" role="note">
+      <span class="review-note-icon">i</span>
+      <span><strong>Contribute a correction</strong> Select a source below to edit its information. Your changes are reviewed by a Fasten Health administrator before they appear in the directory.</span>
+    </div>
+
+    <section class="catalog-card" aria-labelledby="catalog-title">
+      <div class="catalog-toolbar">
+        <div class="catalog-heading">
+          <h2 id="catalog-title">Catalog</h2>
+          <p>Health systems and healthcare providers available in our public catalog.</p>
+        </div>
+        <div class="catalog-filters">
+          <label class="search-field">
+            <span class="sr-only">Search sources</span>
+            <span class="search-icon" aria-hidden="true"></span>
+            <input [ngModel]="searchTermUpdate | async" (ngModelChange)="searchTermUpdate.next($event)" type="search" placeholder="Search catalog">
+          </label>
+          <label class="filter-field">
+            <span class="sr-only">Filter by state</span>
+            <select [(ngModel)]="searchFilter.locations[0]" (ngModelChange)="resetSearch()">
+              <option value="ALL">All states</option>
+              <option *ngFor="let item of stateCodes | keyvalue" [value]="item.value">{{ item.key }}</option>
+            </select>
+          </label>
+          <label class="filter-field">
+            <span class="sr-only">Filter by platform</span>
+            <select [(ngModel)]="searchFilter.platformTypes[0]" (ngModelChange)="resetSearch()">
+              <option value="">All platforms</option>
+              <option *ngFor="let item of platformTypes" [value]="item.value">{{ item.key }}</option>
+            </select>
+          </label>
+        </div>
       </div>
 
-      <div class="alert alert-info" role="alert">
-        <strong>Submit Corrections!</strong>
-        <br/>
-        This tool allows Fasten users to contribute changes & fixes to the Fasten Health sources list.<br/>
-        <br/>
-        When you click on a provider in the list below, you will be shown a form where you can edit the provider's details. <br/>
-        <strong>These changes will not be applied until they are reviewed by a Fasten Health administrator.</strong><br/>
+      <div *ngIf="loading && !brandsList.length" class="catalog-state" aria-live="polite">Loading sources…</div>
+      <div *ngIf="!loading && !brandsList.length" class="catalog-state" aria-live="polite">No sources match your search. Try a different name or filter.</div>
+
+      <div *ngIf="brandsList.length" class="catalog-table-wrap" infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
+        <table class="catalog-table">
+          <thead><tr><th scope="col">Logo</th><th scope="col">Brand name</th><th scope="col">States active in</th><th scope="col">Type</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let brand of brandsList" (click)="showEditorModal(brand)" (keyup.enter)="showEditorModal(brand)" (keyup.space)="showEditorModal(brand)" tabindex="0" [attr.aria-label]="'Edit ' + brand.name">
+              <td><span class="brand-logo"><img [src]="logoUrl(brand)" (error)="logoError($event)" [alt]="brand.name + ' logo'"></span></td>
+              <td><span class="brand-name">{{brand.name}}</span><span class="brand-subtitle">{{brand.aliases?.length ? brand.aliases.join(', ') : 'No aliases listed'}}</span></td>
+              <td><span class="muted-value">{{locationSummary(brand)}}</span></td>
+              <td><span class="type-badge">Clinical</span></td>
+              <td><span class="status-badge">Available</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <ng-container *ngIf="!loading || brandsList.length > 0 else isLoadingTemplate">
-        <!-- Search -->
-        <div class="row row-sm sticky-top pt-2" style="position:sticky;">
-          <div class="col-lg-8">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search-prefix">Search</span>
-              </div>
-              <input [ngModel]="searchTermUpdate | async" (keyup)="searchTermUpdate.next($event.target.value)" type="text" class="form-control" placeholder="Search Term">
-              <div class="input-group-append">
-                <select [(ngModel)]="searchFilter.locations[0]" (ngModelChange)="resetSearch()" class="w-full flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50">
-                  <option value="ALL" selected>All States</option>
-                  <option disabled>-------</option>
-                  <option *ngFor="let item of stateCodes | keyvalue"  [value]="item.value">{{ item.key }}</option>
-                </select>
-              </div>
-              <div class="input-group-append">
-                <select [(ngModel)]="searchFilter.platformTypes[0]" (ngModelChange)="resetSearch()" class="w-full flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50">
-                  <option value="" selected>All Platforms</option>
-                  <option disabled>-------</option>
-                  <option *ngFor="let item of platformTypes"  [value]="item.value">{{ item.key }}</option>
-                </select>
-              </div>
-            </div><!-- input-group -->
-          </div><!-- col -->
-        </div>
-
-        <div
-          infiniteScroll
-          [infiniteScrollDistance]="3"
-          [infiniteScrollThrottle]="50"
-          (scrolled)="onScroll()"
-          >
-          <hot-table
-            [settings]="settings"
-            [data]="brandsList"
-            [colHeaders]="true"
-            [rowHeaders]="true"
-            licenseKey="non-commercial-and-evaluation">
-            <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
-            <hot-column data="name" [readOnly]="true" title="Institution Name"></hot-column>
-            <hot-column data="id" [readOnly]="true" title="Logo" [renderer]="imageRender"></hot-column>
-    <!--        <hot-column type="autocomplete" title="NPI" [source]="npiTypeahead" width="300px"></hot-column>-->
-    <!--        <hot-column data="logo" [readOnly]="true" title="Logo Override"></hot-column>-->
-            <hot-column data="aliases" [readOnly]="true" title="Aliases" [renderer]="listRender"></hot-column>
-            <hot-column data="platform_type" [readOnly]="true" title="Platform Type" [renderer]="listRender"></hot-column>
-    <!--        <hot-column data="category" [readOnly]="true" title="Category Tags"></hot-column>-->
-            <hot-column data="brand_website" [readOnly]="true" title="Homepage"></hot-column>
-            <hot-column data="patient_access_description" [readOnly]="true" title="Description"></hot-column>
-
-
-
-          </hot-table>
-        </div>
-
-
-
-      </ng-container>
-    </div><!-- az-content-body -->
-  </div><!-- container -->
-</div><!-- az-content -->
+      <div *ngIf="brandsList.length" class="catalog-footer">
+        <span>{{brandsList.length}} of 70,000+ sources shown</span>
+        <button *ngIf="!scrollComplete" type="button" class="load-more" (click)="onScroll()" [disabled]="loading">{{loading ? 'Loading…' : 'Load more'}} <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+  </div>
+</main>
 
 
 <ng-template #editor let-modal>
