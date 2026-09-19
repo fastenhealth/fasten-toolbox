@@ -1,16 +1,17 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {LighthouseService} from '../../services/lighthouse.service';
+import {ConnectApiService} from '../../services/connect-api.service';
 import {BehaviorSubject} from 'rxjs';
 import {MedicalSourcesFilter} from '../../models/lighthouse/medical-sources-filter';
 import {LighthouseBrandListDisplayItem} from '../../models/lighthouse/lighthouse-source-search';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {ToolboxService} from '../../services/toolbox.service';
+import {PlatformApiService} from '../../services/platform-api.service';
 import {ToastNotification, ToastType} from '../../models/fasten/toast';
 import {ToastService} from '../../services/toast.service';
 import {StateCodes} from "../../utils/state-codes";
+import {CmsService} from "../../services/cms.service";
 
 @Component({
   selector: 'app-medical-sources-editor',
@@ -79,8 +80,9 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
 
   constructor(
-    private lighthouseApi: LighthouseService,
-    private toolboxApi: ToolboxService,
+    private connectApi: ConnectApiService,
+    private cmsApi: CmsService,
+    private toolboxApi: PlatformApiService,
     private toastService: ToastService,
     private modalService: NgbModal,
   ) { }
@@ -125,7 +127,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
     this.loading = true
     this.searchFilter.fields = ["*"];
-    this.lighthouseApi.searchLighthouseSources(this.searchFilter)
+    this.connectApi.searchCatalogSources(this.searchFilter)
       .subscribe(wrapper => {
         this.loading = false
         console.log("RESULTS", wrapper)
@@ -240,7 +242,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
 
     console.log("SUBMITTING", JSON.stringify(formData))
-    this.toolboxApi.catalogEditor(formData).subscribe(
+    this.connectApi.catalogEditor(formData).subscribe(
       response => {
         console.log("RESPONSE", response)
         this.loading_submit = false
@@ -328,7 +330,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
 
   npiTypeahead: any = (query, process) => {
 
-    this.lighthouseApi.searchMedicalContactIndividual(query).subscribe(results => {
+    this.cmsApi.searchMedicalContactIndividual(query).subscribe(results => {
       console.log("typeahead RESULTS", results)
       process(results)
     }, error => {

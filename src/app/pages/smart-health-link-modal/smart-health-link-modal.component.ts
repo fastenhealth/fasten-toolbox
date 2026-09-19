@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import QRCode from 'qrcode';
-import { ToolboxService } from '../../services/toolbox.service';
+import { PlatformApiService } from '../../services/platform-api.service';
 import { SmartHealthLinkManifestCreateResponse } from '../../models/fasten/smart-health-link';
 
 @Component({
@@ -24,7 +24,7 @@ export class SmartHealthLinkModalComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null = null;
 
   constructor(
-    private toolboxService: ToolboxService,
+    private toolboxService: PlatformApiService,
     public activeModal: NgbActiveModal
   ) {}
 

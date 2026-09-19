@@ -72,4 +72,85 @@ export class CmsService {
         })
       );
   }
+
+  searchMedicalContactIndividual(searchTerm: string): Observable<string[]> {
+    let queryParams = {
+      'terms':searchTerm,
+      'df':'NPI,name.full,provider_type,addr_practice,licenses.taxonomy.code'
+    }
+
+    //https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?df=&terms=xx
+    return this._httpClient.get<any>(`https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search`, {params: queryParams})
+      .pipe(
+        map((response) => {
+          return response[3].map((item) => {
+            return item[1]
+            // let addr_practice = JSON.parse(item[3])
+            // return {
+            //   id: item[0],
+            //   identifier: [{
+            //     system: 'http://hl7.org/fhir/sid/us-npi',
+            //     value: item[0],
+            //     type: {
+            //       coding: [
+            //         {
+            //           system: "http://terminology.hl7.org/CodeSystem/v2-0203",
+            //           code: "NPI"
+            //         }
+            //       ]
+            //     }
+            //   }],
+            //   text: item[1],
+            //   subtext: `${item[2]} - ${addr_practice.state}`,
+            //   provider_type: {
+            //     id: item[4],
+            //     text: item[2],
+            //     identifier: [{
+            //       system: 'http://nucc.org/provider-taxonomy',
+            //       code: item[4],
+            //       display: item[2],
+            //     }]
+            //   },
+            //   provider_address: {
+            //     line1: addr_practice.line1,
+            //     line2: addr_practice.line2,
+            //     city: addr_practice.city,
+            //     state: addr_practice.state,
+            //     zip: addr_practice.zip,
+            //     country: addr_practice.country,
+            //   },
+            //   provider_fax: addr_practice.fax,
+            //   provider_phone: addr_practice.phone,
+            // }
+          })
+        })
+      )
+  }
+
+}
+
+
+export interface NlmSearchResults {
+  id: string
+  text: string
+  subtext?: string //used for display purposes only
+  parentAnswerCode?: string
+  link?: string
+  identifier?: any[]
+
+  provider_type?: {
+    id: string,
+    text: string,
+    identifier?: any[]
+  }
+  provider_address?: {
+    line1?: string
+    line2?: string
+    city?: string
+    state?: string
+    zip?: string
+    country?: string
+  }
+  provider_phone?: string
+  provider_fax?: string
 }

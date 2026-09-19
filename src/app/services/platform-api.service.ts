@@ -12,44 +12,13 @@ import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ToolboxService {
-
-  platform_url = 'https://api.platform.fastenhealth.com/v1'
+export class PlatformApiService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  catalogEditor(submission: any): Observable<any> {
-    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/support/catalog`, submission)
-      .pipe(
-        map((response: ResponseWrapper) => {
-          console.log("BUNDLE RESPONSE", response)
-          // @ts-ignore
-          return response.data
-        })
-      );
-  }
-
-  getCatalogEntry(apiMode: string, connection: any): Observable<any> {
-    const tefcaDirectoryId = connection.tefca_directory_id;
-    const brandId = connection.brand_id;
-    let params = new HttpParams()
-      .set('api_mode', apiMode)
-      .set('public_id', environment.records_export_public_id);
-
-    if (tefcaDirectoryId) {
-      params = params.set('tefca_directory_id', tefcaDirectoryId);
-    } else if (brandId) {
-      params = params.set('brand_id', brandId);
-    } else {
-      return throwError(() => new Error('Connection has no catalog identifier'));
-    }
-
-    return this._httpClient.get<any>(`${environment.connect_api_endpoint_base}/bridge/catalog`, {params});
-  }
-
   //returns authenticated or error
   recordsExportCallback(queryStringParams: Params ): Observable<boolean> {
-    return this._httpClient.get<any>(`${this.platform_url}/records/export/callback`,
+    return this._httpClient.get<any>(`${environment.platform_api_endpoint_base}/records/export/callback`,
       {
         params: queryStringParams,
         withCredentials: true
@@ -64,7 +33,7 @@ export class ToolboxService {
   }
 
   recordsExportContentUrl(): Observable<RecordExport> {
-    return this._httpClient.get<any>(`${this.platform_url}/records/export/download`,
+    return this._httpClient.get<any>(`${environment.platform_api_endpoint_base}/records/export/download`,
       {
         withCredentials: true
       })
@@ -91,21 +60,9 @@ export class ToolboxService {
       );
   }
 
-
-  tefcaIasBetaRequest(requestTefcaIasBeta: RequestTefcaIasBeta): Observable<any> {
-    return this._httpClient.post<any>(`${environment.connect_api_endpoint_base}/form/tefca-ias-beta`, requestTefcaIasBeta)
-      .pipe(
-        map((response: ResponseWrapper) => {
-          console.log("BUNDLE RESPONSE", response)
-          // @ts-ignore
-          return response.data
-        })
-      );
-  }
-
   shlinkManifestCreate(exportType?: 'fhir_bundle' | 'cms_patient_shared_health_document'): Observable<SmartHealthLinkManifestCreateResponse> {
 
-    let createEndpoint = `${this.platform_url}/shlink/manifest/create`
+    let createEndpoint = `${environment.platform_api_endpoint_base}/shlink/manifest/create`
     if(exportType){
       createEndpoint = `${createEndpoint}?export_type=${exportType}`
     }

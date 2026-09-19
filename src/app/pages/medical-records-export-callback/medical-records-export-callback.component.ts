@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
-import {ToolboxService} from '../../services/toolbox.service';
+import {PlatformApiService} from '../../services/platform-api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SmartHealthLinkModalComponent} from '../smart-health-link-modal/smart-health-link-modal.component';
@@ -34,7 +34,7 @@ export class MedicalRecordsExportCallbackComponent implements OnInit, OnDestroy 
   private exportPollInFlight = false
   constructor(
     private activatedRoute : ActivatedRoute,
-    private toolboxService: ToolboxService,
+    private toolboxService: PlatformApiService,
     private sanitizer: DomSanitizer,
     private modalService: NgbModal
   ) { }

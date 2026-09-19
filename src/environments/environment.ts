@@ -15,16 +15,6 @@ export const environment = {
   connect_api_endpoint_base: 'https://api.connect.fastenlabs.com/v1',
   records_export_public_id: 'public_test_f5ds5i5eiv0mv6ldpn8cl4x20cyh2xhw9zd78r46q20nz',
 
-  //specify the lighthouse server that we're going to use to authenticate against all our source/providers. Must not have trailing slash
-  lighthouse_api_endpoint_base: 'https://lighthouse.fastenhealth.com/v1',
+  platform_api_endpoint_base: 'https://api.platform.fastenlabs.com/v1',
 
-  //used to specify the couchdb server that we're going to use (can be relative or absolute). Must not have trailing slash
-  // couchdb_endpoint_base: 'https://couchdb.sandbox.fastenhealth.com',
-  // if relative, must start with /
-  couchdb_endpoint_base: '/database',
-
-  //used to specify the api server that we're going to use (can be relative or absolute). Must not have trailing slash
-  // fasten_api_endpoint_base: 'https://api.sandbox.fastenhealth.com/v1',
-  // if relative, must start with /
-  fasten_api_endpoint_base: '/api',
 };

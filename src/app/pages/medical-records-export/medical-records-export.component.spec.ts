@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { ToolboxService } from '../../services/toolbox.service';
+import { PlatformApiService } from '../../services/platform-api.service';
 import { MedicalRecordsExportComponent } from './medical-records-export.component';
+import {ConnectApiService} from "../../services/connect-api.service";
 
 describe('MedicalRecordsExportComponent', () => {
   let component: MedicalRecordsExportComponent;
   let fixture: ComponentFixture<MedicalRecordsExportComponent>;
-  let toolboxService: jasmine.SpyObj<ToolboxService>;
+  let connectApiService: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
-    toolboxService = jasmine.createSpyObj('ToolboxService', [ 'getCatalogEntry' ]);
+    connectApiService = jasmine.createSpyObj('ConnectApiService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ MedicalRecordsExportComponent ],
       imports: [ CommonModule ],
-      providers: [ { provide: ToolboxService, useValue: toolboxService } ]
+      providers: [
+        { provide: ConnectApiService, useValue: connectApiService },
+        { provide: PlatformApiService, useValue: {} },
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
     .compileComponents();
 
@@ -28,8 +34,27 @@ describe('MedicalRecordsExportComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('renders the widget inside the phone scaffold with the configured public id', () => {
+    const widget = fixture.nativeElement.querySelector('fasten-stitch-element');
+
+    expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeTruthy();
+    expect(widget).toBeTruthy();
+    expect(widget.getAttribute('public-id')).toBe(component.environment.records_export_public_id);
+    expect(widget.getAttribute('static-backdrop')).toBe('true');
+  });
+
+  it('ignores widget events that are not completion events', () => {
+    component.stitchElement.nativeElement.dispatchEvent(new CustomEvent('eventBus', {
+      detail: { data: JSON.stringify({ event_type: 'widget.opened', data: [] }) }
+    }));
+
+    expect(component.connections).toEqual([]);
+    expect(connectApiService.getCatalogEntry).not.toHaveBeenCalled();
+    expect(component.showInstitutionSelector).toBeFalse();
+  });
+
   it('shows a choice for each completed connection', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApiService.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-one.png' } }),
       of({ success: true, data: { name: 'Beta Health', logo: 'https://cdn.fastenhealth.com/logos/sources/brand-two.png' } }),
     );
@@ -50,8 +75,8 @@ describe('MedicalRecordsExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
+    expect(connectApiService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
+    expect(connectApiService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
       .toEqual([ 'connection-one', 'connection-two' ]);
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
@@ -75,7 +100,7 @@ describe('MedicalRecordsExportComponent', () => {
   });
 
   it('falls back to the brand logo and keeps providers without logos selectable', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApiService.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Fallback Health' } }),
       of({ success: true, data: { name: 'TEFCA Health' } }),
     );
@@ -122,5 +147,32 @@ describe('MedicalRecordsExportComponent', () => {
     expect(params.get('institutionName')).toBeNull();
     expect(params.get('institutionLogo')).toBeNull();
     expect(params.get('institutionLocation')).toBeNull();
+  });
+
+  it('shows a retryable error when provider metadata cannot be loaded', async () => {
+    spyOn(console, 'error');
+    connectApiService.getCatalogEntry.and.returnValue(of({ success: false }));
+
+    component.stitchElement.nativeElement.dispatchEvent(new CustomEvent('eventBus', {
+      detail: {
+        data: JSON.stringify({
+          event_type: 'widget.complete',
+          api_mode: 'live',
+          data: [
+            { org_connection_id: 'connection-one' },
+            { org_connection_id: 'connection-two' },
+          ]
+        })
+      }
+    }));
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(component.loadingInstitutions).toBeFalse();
+    expect(component.showInstitutionSelector).toBeFalse();
+    expect(fixture.nativeElement.querySelector('.error-state p').textContent.trim())
+      .toBe('We could not load the institution names. Please try again.');
+    expect(fixture.nativeElement.querySelector('.retry-button')).toBeTruthy();
   });
 });

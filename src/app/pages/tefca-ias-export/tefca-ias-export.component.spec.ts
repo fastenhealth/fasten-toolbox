@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { ToolboxService } from '../../services/toolbox.service';
+import { PlatformApiService } from '../../services/platform-api.service';
 import { TefcaIasExportComponent } from './tefca-ias-export.component';
+import {ConnectApiService} from "../../services/connect-api.service";
 
 describe('TefcaIasExportComponent', () => {
   let component: TefcaIasExportComponent;
   let fixture: ComponentFixture<TefcaIasExportComponent>;
-  let toolboxService: jasmine.SpyObj<ToolboxService>;
+  let connectApi: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
-    toolboxService = jasmine.createSpyObj('ToolboxService', [ 'getCatalogEntry' ]);
+    connectApi = jasmine.createSpyObj('ConnectApiService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ TefcaIasExportComponent ],
       imports: [ CommonModule ],
-      providers: [ { provide: ToolboxService, useValue: toolboxService } ]
+      providers: [
+        { provide: ConnectApiService, useValue: connectApi },
+        { provide: PlatformApiService, useValue: {} },
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
     .compileComponents();
 
@@ -40,8 +46,26 @@ describe('TefcaIasExportComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('configures the embedded widget for TEFCA mode', () => {
+    const widget = fixture.nativeElement.querySelector('fasten-stitch-element');
+
+    expect(widget).toBeTruthy();
+    expect(widget.getAttribute('tefca-mode')).toBe('true');
+    expect(widget.getAttribute('public-id')).toBe(component.environment.records_export_public_id);
+    expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeTruthy();
+  });
+
+  it('ignores widget events that are not completion events', () => {
+    component.stitchElement.nativeElement.dispatchEvent(new CustomEvent('eventBus', {
+      detail: { data: JSON.stringify({ event_type: 'widget.opened', data: [] }) }
+    }));
+
+    expect(component.connections).toEqual([]);
+    expect(connectApi.getCatalogEntry).not.toHaveBeenCalled();
+  });
+
   it('loads environment catalog metadata and renders a choice for each connection', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApi.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://catalog.example/alpha.png' } }),
       of({ success: true, data: { name: 'Beta Health' } }),
     );
@@ -54,8 +78,8 @@ describe('TefcaIasExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
+    expect(connectApi.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
+    expect(connectApi.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
       .toEqual([ 'connection-one', 'connection-two' ]);
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
@@ -71,7 +95,7 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('shows placeholders when the catalog has no logo or the logo cannot load', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApi.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Directory Health' } }),
       of({ success: true, data: { name: 'Brand Health' } }),
     );
@@ -96,7 +120,8 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('shows a retryable error when catalog metadata cannot be loaded', async () => {
-    toolboxService.getCatalogEntry.and.returnValue(of({ success: false }));
+    spyOn(console, 'error');
+    connectApi.getCatalogEntry.and.returnValue(of({ success: false }));
 
     dispatchWidgetComplete([
       { org_connection_id: 'connection-one', tefca_directory_id: 'tefca-one' },
@@ -109,6 +134,16 @@ describe('TefcaIasExportComponent', () => {
     expect(fixture.nativeElement.querySelector('.error-state p').textContent.trim())
       .toBe('We could not load the institution names. Please try again.');
     expect(fixture.nativeElement.querySelector('button.retry-button')).toBeTruthy();
+  });
+
+  it('retries provider metadata loading from the error action', () => {
+    component.catalogError = 'Lookup failed';
+    fixture.detectChanges();
+    spyOn(component, 'loadInstitutionNames');
+
+    fixture.nativeElement.querySelector('.retry-button').click();
+
+    expect(component.loadInstitutionNames).toHaveBeenCalled();
   });
 
   it('does not pass UI-only institution fields to the callback', () => {

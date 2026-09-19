@@ -4,8 +4,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {CmsService} from "../../services/cms.service";
-import {ToolboxService} from "../../services/toolbox.service";
+import {PlatformApiService} from "../../services/platform-api.service";
 import { v4 as uuidv4 } from 'uuid';
+import {ConnectApiService} from "../../services/connect-api.service";
 
 interface HealthcareInstitution {
   id: string;
@@ -53,7 +54,8 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private readonly fb: FormBuilder,
     private cmsService: CmsService,
-    private toolboxService: ToolboxService,
+    private platformApiService: PlatformApiService,
+    private connectApiService: ConnectApiService,
     private renderer: Renderer2,
     sanitizer: DomSanitizer,
   ) {
@@ -125,7 +127,7 @@ export class TefcaIasBetaComponent implements OnInit, OnDestroy, AfterViewInit {
 
     console.table({ fullName, email, institutions: institutionIds });
     this.loading = true
-    this.toolboxService.tefcaIasBetaRequest({
+    this.connectApiService.tefcaIasBetaRequest({
       name: fullName,
       email: email,
       institution_ids: institutionIds,
