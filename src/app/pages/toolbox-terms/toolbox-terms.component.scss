@@ -196,22 +196,54 @@ input.invalid {
   overflow: hidden;
   min-height: 100%;
   border-left: 1px solid rgba(91, 71, 251, .08);
-  background:
-    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .85) 0, transparent 34%),
-    radial-gradient(circle at 18% 76%, rgba(91, 71, 251, .06) 0, transparent 36%),
-    #f3f5fc;
+  background: linear-gradient(145deg, #f9f9fc 0%, #f2f4fa 52%, #f7f5ff 100%);
 }
 
+.marketing-panel::before,
 .marketing-panel::after {
   content: '';
   position: absolute;
-  right: -120px;
-  bottom: -170px;
-  width: 430px;
-  height: 430px;
-  border: 1px solid rgba(91, 71, 251, .09);
-  border-radius: 50%;
-  box-shadow: 0 0 0 80px rgba(91, 71, 251, .025), 0 0 0 160px rgba(91, 71, 251, .018);
+  z-index: 2;
+  left: 0;
+  width: 100%;
+  height: 18%;
+  pointer-events: none;
+}
+
+.marketing-panel::before { top: 0; background: linear-gradient(#f7f8fc 8%, rgba(247, 248, 252, 0)); }
+.marketing-panel::after { bottom: 0; background: linear-gradient(rgba(247, 248, 252, 0), #f6f6fb 92%); }
+
+.logo-grid-angle {
+  position: absolute;
+  inset: -32% -14%;
+  transform: rotate(-12deg);
+  transform-origin: center;
+}
+
+.logo-grid-set {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.integration-card {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.2 / 1;
+  padding: 16%;
+  overflow: hidden;
+  border: 1px solid rgba(20, 22, 32, .09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 8px 18px rgba(36, 34, 65, .1);
+}
+
+.integration-card img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .confirmation {
@@ -243,7 +275,7 @@ input.invalid {
   }
 
   .marketing-panel {
-    min-height: 280px;
+    min-height: 520px;
     border-top: 1px solid rgba(91, 71, 251, .08);
     border-left: 0;
   }
@@ -264,6 +296,11 @@ input.invalid {
   }
 
   .marketing-panel {
-    min-height: 220px;
+    min-height: 420px;
   }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-grid-track { animation: logo-grid-scroll 28s linear infinite; }
+  @keyframes logo-grid-scroll { to { transform: translateY(-50%); } }
 }

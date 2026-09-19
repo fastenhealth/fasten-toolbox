@@ -78,5 +78,20 @@
     </div>
   </section>
 
-  <aside class="marketing-panel" aria-label="Marketing content placeholder"></aside>
+  <aside class="marketing-panel" aria-label="Healthcare organizations available through Fasten">
+    <div class="logo-grid-angle">
+      <div class="logo-grid-track">
+        <div class="logo-grid-set">
+          <div class="integration-card" *ngFor="let source of logoSources">
+            <img [src]="source.path" [alt]="source.name + ' logo'">
+          </div>
+        </div>
+        <div class="logo-grid-set" aria-hidden="true">
+          <div class="integration-card" *ngFor="let source of logoSources">
+            <img [src]="source.path" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 </main>
