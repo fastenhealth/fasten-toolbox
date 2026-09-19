@@ -37,7 +37,7 @@
   </section>
 
   <aside class="callback-panel" aria-label="Medical records export status">
-    <div class="callback-viewport">
+    <div class="callback-viewport" [class.has-success]="hasBundle">
       <section *ngIf="hasError" class="callback-card error-card" aria-labelledby="export-error-title">
         <span class="status-icon error-icon" aria-hidden="true">!</span>
         <p class="status-label">Export interrupted</p>
@@ -58,27 +58,33 @@
         </dl>
       </section>
 
-      <section *ngIf="hasBundle" class="callback-card success-card" aria-labelledby="export-success-title">
-        <span class="status-icon success-icon" aria-hidden="true">✓</span>
-        <p class="status-label">Export complete</p>
-        <h2 id="export-success-title">Your records are ready</h2>
-        <p class="status-copy">Download your medical records or connect another health system.</p>
-
-        <div class="result-actions">
-          <div ngbDropdown>
-            <button class="primary-action dropdown-toggle" ngbDropdownToggle type="button">Download file</button>
-            <div class="download-menu" ngbDropdownMenu>
-              <a ngbDropdownItem [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename">Download FHIR JSON file</a>
-              <button ngbDropdownItem type="button" disabled (click)="onDownloadBundleFile()">Download FHIR bundle file</button>
-              <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openSmartHealthLinkModal()">Generate Smart Health Link</button>
-              <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openPatientSharedHealthDocumentModal()">Generate CMS Patient Shared Health Document</button>
+      <section *ngIf="hasBundle" class="success-workspace" aria-labelledby="export-success-title">
+        <header class="success-toolbar">
+          <div class="success-heading">
+            <span class="status-icon success-icon" aria-hidden="true">✓</span>
+            <div>
+              <p class="status-label">Export complete</p>
+              <h2 id="export-success-title">Your records are ready</h2>
+              <p class="status-copy">Download your medical records or inspect the complete FHIR JSONL payload below.</p>
             </div>
           </div>
-          <a class="secondary-action" [routerLink]="'/records/export/'">Connect another health system</a>
-        </div>
+
+          <div class="result-actions">
+            <div ngbDropdown>
+              <button class="primary-action dropdown-toggle" ngbDropdownToggle type="button">Download file</button>
+              <div class="download-menu" ngbDropdownMenu>
+                <a ngbDropdownItem [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename">Download FHIR JSON file</a>
+                <button ngbDropdownItem type="button" disabled (click)="onDownloadBundleFile()">Download FHIR bundle file</button>
+                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openSmartHealthLinkModal()">Generate Smart Health Link</button>
+                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openPatientSharedHealthDocumentModal()">Generate CMS Patient Shared Health Document</button>
+              </div>
+            </div>
+            <a class="secondary-action" [routerLink]="'/records/export/'">Connect another health system</a>
+          </div>
+        </header>
 
         <div class="bundle-preview">
-          <div class="preview-heading"><span>FHIR data preview</span><small>{{ generateBundleDownloadFilename }}</small></div>
+          <div class="preview-heading"><span>Complete FHIR JSONL payload</span><small>{{ generateBundleDownloadFilename }}</small></div>
           <pre><code [languages]="['json', 'xml']" [highlight]="bundle"></code></pre>
         </div>
       </section>

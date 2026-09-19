@@ -45,4 +45,17 @@ describe('MedicalRecordsExportCallbackComponent', () => {
     expect(fixture.nativeElement.querySelector('.phone-frame')).toBeNull();
     expect(fixture.nativeElement.querySelector('.error-card')).toBeTruthy();
   });
+
+  it('uses the full results workspace for a completed export', () => {
+    component.hasError = false;
+    component.loading = false;
+    component.hasBundle = true;
+    component.bundle = '{"resourceType":"Patient","id":"example"}\n';
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.callback-viewport.has-success')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.success-workspace')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.success-workspace.callback-card')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.bundle-preview')).toBeTruthy();
+  });
 });

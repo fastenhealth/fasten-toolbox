@@ -25,6 +25,7 @@ h1 { margin: 0 0 12px; font-family: 'Records Hubot Sans', system-ui, sans-serif;
 
 .callback-panel { position: relative; display: flex; align-items: flex-start; justify-content: center; min-height: 100%; overflow: hidden; border-left: 1px solid rgba(91, 71, 251, .08); background: radial-gradient(circle at 76% 20%, rgba(255, 255, 255, .9) 0, transparent 32%), radial-gradient(circle at 18% 78%, rgba(91, 71, 251, .07) 0, transparent 38%), #f3f5fc; }
 .callback-viewport { position: sticky; top: 0; display: grid; place-items: center; width: 100%; min-height: calc(100vh - 104px); padding: 48px clamp(28px, 5vw, 72px); }
+.callback-viewport.has-success { display: block; height: calc(100vh - 104px); min-height: 560px; padding: 28px 30px 34px; }
 .callback-card { width: min(100%, 600px); padding: clamp(28px, 4vw, 42px); border: 1px solid rgba(23, 23, 26, .09); border-radius: 18px; background: rgba(255, 255, 255, .97); box-shadow: 0 22px 55px rgba(36, 34, 65, .12); }
 .status-icon, .status-spinner { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 20px; border-radius: 50%; font-size: 20px; font-weight: 750; }
 .status-spinner { border: 3px solid #e3e0ff; border-top-color: var(--primary); animation: spin .8s linear infinite; }
@@ -43,24 +44,34 @@ h1 { margin: 0 0 12px; font-family: 'Records Hubot Sans', system-ui, sans-serif;
 .primary-action, .secondary-action { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 10px 18px; border: 1px solid var(--primary); border-radius: 8px; font: 650 13px/1.2 'Records Inter', system-ui, sans-serif; text-decoration: none; cursor: pointer; }
 .primary-action { color: #fff; background: var(--primary); }
 .secondary-action { color: var(--primary); background: #fff; }
-.result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.success-workspace { display: flex; flex-direction: column; width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.success-toolbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.success-heading { display: flex; align-items: flex-start; gap: 14px; min-width: 0; }
+.success-heading .status-icon { flex: 0 0 44px; margin: 0; }
+.success-heading .status-copy { margin: 6px 0 0; }
+.result-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 10px; }
 .download-menu { min-width: 270px; padding: 7px; border: 1px solid #e3e1ec; border-radius: 10px; box-shadow: 0 14px 35px rgba(31, 30, 50, .15); }
 .download-menu a, .download-menu button { border-radius: 6px; font-size: 12px; }
-.bundle-preview { overflow: hidden; border: 1px solid #dedde5; border-radius: 12px; background: #202126; }
+.bundle-preview { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; border: 1px solid #dedde5; border-radius: 12px; background: #202126; box-shadow: 0 16px 36px rgba(31, 30, 50, .12); }
 .preview-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 15px; color: #ededf0; background: #2a2b31; font-size: 12px; font-weight: 650; }
 .preview-heading small { max-width: 60%; color: #a9aab0; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bundle-preview pre { max-height: min(42vh, 420px); margin: 0; padding: 16px; overflow: auto; color: #e8e8eb; font-size: 11px; }
+.bundle-preview pre { flex: 1 1 auto; min-width: 0; min-height: 0; margin: 0; padding: 16px; overflow: auto; color: #e8e8eb; font-size: 11px; line-height: 1.55; white-space: pre; }
+.bundle-preview code { display: block; width: max-content; min-width: 100%; }
 
 @media (max-width: 900px) {
   .records-page { grid-template-columns: 1fr; }
   .callback-panel { min-height: 460px; border-top: 1px solid rgba(91, 71, 251, .08); border-left: 0; }
   .callback-viewport { position: relative; min-height: 0; padding: 48px 24px 72px; }
+  .callback-viewport.has-success { height: auto; min-height: 720px; padding: 36px 24px 60px; }
+  .success-toolbar { align-items: flex-start; flex-direction: column; }
+  .bundle-preview { min-height: 520px; }
 }
 @media (max-width: 560px) {
   .instructions-panel { padding: 48px 20px 72px; }
   h1 { font-size: 32px; }
   .callback-card { padding: 24px 20px; }
   .result-actions { align-items: stretch; flex-direction: column; }
+  .success-heading { align-items: flex-start; }
   .primary-action, .secondary-action { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .status-spinner { animation: none; } }
