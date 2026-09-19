@@ -1,11 +1,11 @@
 <main class="auth-page">
   <section class="signup-panel" aria-labelledby="toolbox-terms-title">
     <div class="signup-content">
-      <div class="eyebrow"><span class="eyebrow-dot">✓</span> FASTEN TOOLBOX</div>
+      <div class="eyebrow"><span class="eyebrow-dot">✓</span> EVALUATION TOOLS</div>
 
       <div *ngIf="!submitted; else confirmation">
         <h1 id="toolbox-terms-title">See Fasten in action</h1>
-        <p class="intro">Tell us a little about yourself and we’ll help you explore what the Fasten Toolbox can do.</p>
+        <p class="intro">Tell us a little about yourself and we’ll help you explore what Fasten Connect can do.</p>
 
         <form [formGroup]="signupForm" (ngSubmit)="submit()" novalidate>
           <div class="name-fields">
@@ -84,6 +84,11 @@
         <div class="logo-grid-set">
           <div class="integration-card" *ngFor="let source of logoSources">
             <img [src]="source.path" [alt]="source.name + ' logo'">
+          </div>
+        </div>
+        <div class="logo-grid-set" aria-hidden="true">
+          <div class="integration-card" *ngFor="let source of logoSources">
+            <img [src]="source.path" alt="">
           </div>
         </div>
         <div class="logo-grid-set" aria-hidden="true">

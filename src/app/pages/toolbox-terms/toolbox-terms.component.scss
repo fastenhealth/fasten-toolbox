@@ -301,6 +301,6 @@ input.invalid {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .logo-grid-track { animation: logo-grid-scroll 28s linear infinite; }
-  @keyframes logo-grid-scroll { to { transform: translateY(-50%); } }
+  .logo-grid-track { animation: logo-grid-scroll 56s linear infinite; }
+  @keyframes logo-grid-scroll { to { transform: translateY(-33.333333%); } }
 }
