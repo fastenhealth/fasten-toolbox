@@ -1,0 +1,9 @@
+@media (max-width: 991.98px) {
+  :host ::ng-deep .az-header .az-header-left .az-logo {
+    display: flex;
+  }
+
+  :host ::ng-deep .az-header .az-header-menu {
+    display: none;
+  }
+}

@@ -1,88 +1,137 @@
-<div class="records-export container">
-  <div class="row">
-    <div class="col-lg-6 col-xl-5 instructions">
-      <h1 class="mb-3">Access your medical records</h1>
-      <p>Experience the power of the Fasten Connect platform and pull your own medical records in just a few steps.</p>
-      <ol>
+<main class="records-page">
+  <section class="instructions-panel" aria-labelledby="records-export-title">
+    <div class="instructions-content">
+      <div class="eyebrow"><span class="eyebrow-dot">✓</span> CATALOG SEARCH</div>
+      <h1 id="records-export-title">Access your medical records</h1>
+      <p class="intro">Experience the power of the Fasten Connect platform and pull your own medical records in just a few steps.</p>
+
+      <ol class="steps-list">
         <li>Click the <strong>Export Records</strong> button to begin, and search for your healthcare provider.</li>
         <li>Choose your patient portal, then sign in with your existing credentials when prompted.</li>
-        <li>Click <strong>Continue</strong> and <strong>Close</strong></li>
-        <li>Once you return, Fasten will attempt to collect your records from your healthcare provider</li>
-        <li>On success, you can view & download your records in FHIR format.</li>
+        <li>Click <strong>Continue</strong> and <strong>Close</strong>.</li>
+        <li>Once you return, Fasten will attempt to collect your records from your healthcare provider.</li>
+        <li>On success, you can view and download your records in FHIR format.</li>
       </ol>
-      <div class="alert alert-warning mt-4" role="alert">
-        <h6 class="mb-2">Demo Limitations</h6>
-        <ul class="mb-0">
-          <li>This demo is essentially stateless & your data is only cached for 24h.</li>
+
+      <div class="demo-note" role="note">
+        <div class="demo-note-heading">
+          <span class="demo-note-icon" aria-hidden="true">i</span>
+          <h2>Demo limitations</h2>
+        </div>
+        <ul>
+          <li>This demo is essentially stateless and your data is only cached for 24 hours.</li>
           <li>Refreshing the page will require re-authentication with your provider.</li>
           <li>You can only export one provider at a time; repeat the process for additional providers.</li>
           <li>Exports can take 5+ minutes if you have a long medical history.</li>
           <li>Some sources may not be working correctly.</li>
           <li>Exports larger than 10MB may fail or slow down your browser. Contact us if you need help retrieving a large payload.</li>
         </ul>
-        <small class="pt-4 text-muted">These limitations only exist in this stateless demo environment, your actual integration will not have these limitations</small>
+        <p>These limitations only exist in this stateless demo environment. Your actual integration will not have these limitations.</p>
       </div>
-      <p class="mt-4 text-muted">
-        Need help or found a missing provider? <a href="mailto:support@fastenhealth.com" target="_blank" rel="noopener">Let us know</a> so we can investigate.
+
+      <p class="support-copy">
+        Need help or found a missing provider?
+        <a href="mailto:support@fastenhealth.com" target="_blank" rel="noopener">Let us know</a> so we can investigate.
       </p>
     </div>
-    <div class="col-lg-6 col-xl-7 widget-column">
-      <div class="widget-card">
-        <fasten-stitch-element
-          *ngIf="!showInstitutionSelector && !loadingInstitutions && !catalogError"
-          #stitchElement
-          external-id="user-opaque-id-12812904h31"
-          [attr.public-id]="environment.records_export_public_id"
-          static-backdrop="true"
-        >Export Records</fasten-stitch-element>
+  </section>
 
-        <div *ngIf="loadingInstitutions" class="text-center" role="status">
-          Loading your healthcare institutions…
-        </div>
-
-        <div *ngIf="catalogError" class="text-center">
-          <p class="text-danger">{{ catalogError }}</p>
-          <button type="button" class="btn btn-primary" (click)="loadInstitutionNames()">Try again</button>
-        </div>
-
-        <div *ngIf="showInstitutionSelector" class="institution-selector">
-          <p class="selector-label">Multiple providers connected</p>
-          <h2>Choose records to export</h2>
-          <p class="selector-description">
-            This export supports one institution at a time. Select which records you would like to retrieve.
-          </p>
-          <div class="institution-list">
-            <button
-              *ngFor="let connection of connections; index as index"
-              type="button"
-              class="institution-option"
-              (click)="selectConnection(index)"
-            >
-              <img
-                *ngIf="connection.institutionLogo"
-                class="institution-logo"
-                [src]="connection.institutionLogo"
-                alt=""
-                loading="lazy"
-                (error)="connection.institutionLogo = null"
-              />
-              <span
-                *ngIf="!connection.institutionLogo"
-                class="institution-logo-placeholder"
-                aria-hidden="true"
-              ></span>
-              <span class="institution-details">
-                <span class="institution-name">{{ connection.institutionName }}</span>
-                <span class="institution-location">
-                  {{ connection.institutionLocation || 'Connected provider' }}
-                </span>
-              </span>
-              <span class="institution-arrow" aria-hidden="true"></span>
-            </button>
+  <aside class="widget-panel" aria-label="Fasten medical records export widget">
+    <div *ngIf="!showInstitutionSelector" class="phone-viewport">
+      <div class="phone-frame" aria-label="Example customer mobile application">
+        <div class="phone-shell">
+          <div class="phone-hardware" aria-hidden="true"><span></span></div>
+          <div class="customer-app">
+          <div class="app-toolbar" aria-hidden="true">
+            <span class="wire-app-logo"></span>
+            <span class="wire-brand-lines"><i></i><i></i></span>
+            <span class="wire-avatar"></span>
           </div>
-          <p class="selector-note">You’ll continue to your records export after making a selection.</p>
+
+          <div class="app-screen">
+            <div class="wire-welcome" aria-hidden="true">
+              <span class="wire-title"></span>
+              <span class="wire-subtitle"></span>
+            </div>
+
+            <div class="wire-summary" aria-hidden="true">
+              <span class="wire-summary-icon"></span>
+              <span class="wire-summary-copy"><i></i><i></i></span>
+            </div>
+
+            <section class="widget-embed" aria-label="Embedded Fasten widget">
+              <div class="embed-heading">
+                <span>Medical records</span>
+                <small>Connect your patient portals</small>
+              </div>
+              <div class="widget-stage">
+      <fasten-stitch-element
+        *ngIf="!showInstitutionSelector && !loadingInstitutions && !catalogError"
+        #stitchElement
+        external-id="user-opaque-id-12812904h31"
+        [attr.public-id]="environment.records_export_public_id"
+        static-backdrop="true"
+      >Export Records</fasten-stitch-element>
+
+      <div *ngIf="loadingInstitutions" class="widget-state" role="status">
+        <span class="state-spinner" aria-hidden="true"></span>
+        Loading your healthcare institutions…
+      </div>
+
+      <div *ngIf="catalogError" class="widget-state error-state">
+        <p>{{ catalogError }}</p>
+        <button type="button" class="retry-button" (click)="loadInstitutionNames()">Try again</button>
+      </div>
+
+              </div>
+            </section>
+
+            <div class="wire-list" aria-hidden="true">
+              <span><i></i><b></b></span>
+              <span><i></i><b></b></span>
+            </div>
+          </div>
+
+          <div class="wire-bottom-nav" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+          </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <div *ngIf="showInstitutionSelector" class="selection-viewport">
+      <div class="institution-selector">
+        <p class="selector-label">Multiple providers connected</p>
+        <h2>Choose records to export</h2>
+        <p class="selector-description">
+          This evaluation tool only supports one institution at a time. Select which healthcare records you would like to retrieve.
+        </p>
+        <div class="institution-list">
+          <button
+            *ngFor="let connection of connections; index as index"
+            type="button"
+            class="institution-option"
+            (click)="selectConnection(index)"
+          >
+            <img
+              *ngIf="connection.institutionLogo"
+              class="institution-logo"
+              [src]="connection.institutionLogo"
+              alt=""
+              loading="lazy"
+              (error)="connection.institutionLogo = null"
+            >
+            <span *ngIf="!connection.institutionLogo" class="institution-logo-placeholder" aria-hidden="true"></span>
+            <span class="institution-details">
+              <span class="institution-name">{{ connection.institutionName }}</span>
+              <span class="institution-location">{{ connection.institutionLocation || 'Connected provider' }}</span>
+            </span>
+            <span class="institution-arrow" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="selector-note">You’ll continue to your records export after making a selection.</p>
+      </div>
+    </div>
+  </aside>
+</main>

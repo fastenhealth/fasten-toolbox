@@ -60,6 +60,8 @@ describe('TefcaIasExportComponent', () => {
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
     expect(choices.length).toBe(2);
+    expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.selection-viewport')).toBeTruthy();
     expect(choices[0].querySelector('.institution-name').textContent.trim()).toBe('Alpha Health');
     expect(choices[0].querySelector('.institution-location').textContent.trim()).toBe('California');
     expect(choices[0].querySelector('.institution-logo').getAttribute('src')).toBe('https://catalog.example/alpha.png');
@@ -104,9 +106,9 @@ describe('TefcaIasExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('.text-danger').textContent.trim())
+    expect(fixture.nativeElement.querySelector('.error-state p').textContent.trim())
       .toBe('We could not load the institution names. Please try again.');
-    expect(fixture.nativeElement.querySelector('button.btn-primary')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('button.retry-button')).toBeTruthy();
   });
 
   it('does not pass UI-only institution fields to the callback', () => {
