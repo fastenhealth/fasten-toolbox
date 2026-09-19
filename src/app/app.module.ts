@@ -28,6 +28,7 @@ import { SmartHealthLinkModalComponent } from './pages/smart-health-link-modal/s
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
 import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
+import {ToolboxTermsComponent} from './pages/toolbox-terms/toolbox-terms.component';
 
 // register Handsontable's modules
 registerAllModules();
@@ -46,7 +47,8 @@ registerAllModules();
     SmartHealthLinkModalComponent,
     TefcaIasBetaComponent,
     TefcaIasExportComponent,
-    ResearchStudyComponent
+    ResearchStudyComponent,
+    ToolboxTermsComponent
   ],
   imports: [
     FormsModule,

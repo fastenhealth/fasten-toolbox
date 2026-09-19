@@ -1,0 +1,82 @@
+<main class="auth-page">
+  <section class="signup-panel" aria-labelledby="toolbox-terms-title">
+    <div class="signup-content">
+      <div class="eyebrow"><span class="eyebrow-dot">✓</span> FASTEN TOOLBOX</div>
+
+      <div *ngIf="!submitted; else confirmation">
+        <h1 id="toolbox-terms-title">See Fasten in action</h1>
+        <p class="intro">Tell us a little about yourself and we’ll help you explore what the Fasten Toolbox can do.</p>
+
+        <form [formGroup]="signupForm" (ngSubmit)="submit()" novalidate>
+          <div class="name-fields">
+            <div class="field-group">
+              <label for="firstName">First name</label>
+              <input
+                id="firstName"
+                type="text"
+                formControlName="firstName"
+                autocomplete="given-name"
+                placeholder="Jane"
+                [class.invalid]="controlInvalid('firstName')"
+                [attr.aria-invalid]="controlInvalid('firstName')"
+                aria-describedby="firstNameError"
+              >
+              <span *ngIf="controlInvalid('firstName')" id="firstNameError" class="field-error">Enter your first name.</span>
+            </div>
+
+            <div class="field-group">
+              <label for="lastName">Last name</label>
+              <input
+                id="lastName"
+                type="text"
+                formControlName="lastName"
+                autocomplete="family-name"
+                placeholder="Smith"
+                [class.invalid]="controlInvalid('lastName')"
+                [attr.aria-invalid]="controlInvalid('lastName')"
+                aria-describedby="lastNameError"
+              >
+              <span *ngIf="controlInvalid('lastName')" id="lastNameError" class="field-error">Enter your last name.</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="email">Work email</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              inputmode="email"
+              placeholder="jane@company.com"
+              [class.invalid]="controlInvalid('email')"
+              [attr.aria-invalid]="controlInvalid('email')"
+              aria-describedby="emailError"
+            >
+            <span *ngIf="controlInvalid('email')" id="emailError" class="field-error">Enter a valid email address.</span>
+          </div>
+
+          <button type="submit" class="continue-button">
+            Continue
+            <span aria-hidden="true">→</span>
+          </button>
+
+          <p class="privacy-copy">
+            By clicking Continue, you agree that Fasten may contact you about this request and that your information will be handled according to our
+            <a href="https://policy.fastenhealth.com/privacy_policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+          </p>
+        </form>
+      </div>
+
+      <ng-template #confirmation>
+        <div class="confirmation" role="status" aria-live="polite">
+          <span class="confirmation-icon" aria-hidden="true">✓</span>
+          <h1>Thanks, {{ signupForm.get('firstName')?.value }}.</h1>
+          <p class="intro">Your request has been received. We’ll be in touch at <strong>{{ signupForm.get('email')?.value }}</strong>.</p>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+
+  <aside class="marketing-panel" aria-label="Marketing content placeholder"></aside>
+</main>

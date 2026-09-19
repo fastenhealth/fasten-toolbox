@@ -10,6 +10,7 @@ import {
 import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.component';
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
 import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
+import {ToolboxTermsComponent} from './pages/toolbox-terms/toolbox-terms.component';
 
 const routes: Routes = [
 
@@ -20,6 +21,8 @@ const routes: Routes = [
   { path: 'tefca/beta', component: TefcaIasBetaComponent },
   { path: 'tefca/beta/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
+  { path: 'auth', redirectTo: 'auth/terms', pathMatch: 'full' },
+  { path: 'auth/terms', component: ToolboxTermsComponent },
   { path: 'records/export', component: MedicalRecordsExportComponent },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'research/nyp-study', component: ResearchStudyComponent },
