@@ -56,6 +56,8 @@ describe('MedicalRecordsExportComponent', () => {
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
     expect(choices.length).toBe(2);
+    expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.selection-viewport')).toBeTruthy();
     expect(choices[0].querySelector('.institution-name').textContent.trim()).toBe('Alpha Health');
     expect(choices[1].querySelector('.institution-name').textContent.trim()).toBe('Beta Health');
     expect(choices[0].querySelector('.institution-location').textContent.trim()).toBe('California');

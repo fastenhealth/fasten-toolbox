@@ -37,7 +37,7 @@
   </section>
 
   <aside class="widget-panel" aria-label="Fasten medical records export widget">
-    <div class="phone-viewport">
+    <div *ngIf="!showInstitutionSelector" class="phone-viewport">
       <div class="phone-frame" aria-label="Example customer mobile application">
         <div class="phone-shell">
           <div class="phone-hardware" aria-hidden="true"><span></span></div>
@@ -83,11 +83,29 @@
         <button type="button" class="retry-button" (click)="loadInstitutionNames()">Try again</button>
       </div>
 
-      <div *ngIf="showInstitutionSelector" class="institution-selector">
+              </div>
+            </section>
+
+            <div class="wire-list" aria-hidden="true">
+              <span><i></i><b></b></span>
+              <span><i></i><b></b></span>
+            </div>
+          </div>
+
+          <div class="wire-bottom-nav" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showInstitutionSelector" class="selection-viewport">
+      <div class="institution-selector">
         <p class="selector-label">Multiple providers connected</p>
         <h2>Choose records to export</h2>
         <p class="selector-description">
-          This export supports one institution at a time. Select which records you would like to retrieve.
+          This evaluation tool only supports one institution at a time. Select which healthcare records you would like to retrieve.
         </p>
         <div class="institution-list">
           <button
@@ -113,21 +131,6 @@
           </button>
         </div>
         <p class="selector-note">You’ll continue to your records export after making a selection.</p>
-      </div>
-              </div>
-            </section>
-
-            <div class="wire-list" aria-hidden="true">
-              <span><i></i><b></b></span>
-              <span><i></i><b></b></span>
-            </div>
-          </div>
-
-          <div class="wire-bottom-nav" aria-hidden="true">
-            <i></i><i></i><i></i><i></i>
-          </div>
-          </div>
-        </div>
       </div>
     </div>
   </aside>
