@@ -37,7 +37,34 @@
   </section>
 
   <aside class="widget-panel" aria-label="Fasten medical records export widget">
-    <div class="widget-stage">
+    <div class="phone-viewport">
+      <div class="phone-frame" aria-label="Example customer mobile application">
+        <div class="phone-shell">
+          <div class="phone-hardware" aria-hidden="true"><span></span></div>
+          <div class="customer-app">
+          <div class="app-toolbar" aria-hidden="true">
+            <span class="wire-app-logo"></span>
+            <span class="wire-brand-lines"><i></i><i></i></span>
+            <span class="wire-avatar"></span>
+          </div>
+
+          <div class="app-screen">
+            <div class="wire-welcome" aria-hidden="true">
+              <span class="wire-title"></span>
+              <span class="wire-subtitle"></span>
+            </div>
+
+            <div class="wire-summary" aria-hidden="true">
+              <span class="wire-summary-icon"></span>
+              <span class="wire-summary-copy"><i></i><i></i></span>
+            </div>
+
+            <section class="widget-embed" aria-label="Embedded Fasten widget">
+              <div class="embed-heading">
+                <span>Medical records</span>
+                <small>Connect your patient portals</small>
+              </div>
+              <div class="widget-stage">
       <fasten-stitch-element
         *ngIf="!showInstitutionSelector && !loadingInstitutions && !catalogError"
         #stitchElement
@@ -86,6 +113,21 @@
           </button>
         </div>
         <p class="selector-note">You’ll continue to your records export after making a selection.</p>
+      </div>
+              </div>
+            </section>
+
+            <div class="wire-list" aria-hidden="true">
+              <span><i></i><b></b></span>
+              <span><i></i><b></b></span>
+            </div>
+          </div>
+
+          <div class="wire-bottom-nav" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
   </aside>
