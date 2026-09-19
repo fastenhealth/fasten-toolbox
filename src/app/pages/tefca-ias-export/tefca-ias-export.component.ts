@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {ToolboxService} from '../../services/toolbox.service';
+import {PlatformApiService} from '../../services/platform-api.service';
+import {ConnectApiService} from "../../services/connect-api.service";
 
 @Component({
   selector: 'app-tefca-ias-export',
@@ -18,7 +19,11 @@ export class TefcaIasExportComponent implements AfterViewInit {
   catalogError = '';
   private catalogApiMode = '';
 
-  constructor(private renderer: Renderer2, private toolboxService: ToolboxService) { }
+  constructor(
+    private renderer: Renderer2,
+    private connectApi: ConnectApiService,
+    private toolboxService: PlatformApiService
+  ) { }
 
   ngAfterViewInit() {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {
@@ -51,7 +56,7 @@ export class TefcaIasExportComponent implements AfterViewInit {
 
       await Promise.all(this.connections.map(async (connection: any) => {
         const brandId = connection.brand_id || connection.brandID;
-        const catalogEntry = await this.toolboxService.getCatalogEntry(this.catalogApiMode, connection).toPromise();
+        const catalogEntry = await this.connectApi.getCatalogEntry(this.catalogApiMode, connection).toPromise();
         if (!catalogEntry.success || !catalogEntry.data?.name) {
           throw new Error('Could not load institution name');
         }

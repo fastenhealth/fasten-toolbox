@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
-import { ToolboxService } from '../../services/toolbox.service';
+import { PlatformApiService } from '../../services/platform-api.service';
 import { MedicalRecordsExportCallbackComponent } from './medical-records-export-callback.component';
 
 describe('MedicalRecordsExportCallbackComponent', () => {
@@ -27,7 +27,7 @@ describe('MedicalRecordsExportCallbackComponent', () => {
             })
           }
         },
-        { provide: ToolboxService, useValue: jasmine.createSpyObj('ToolboxService', [ 'recordsExportCallback' ]) },
+        { provide: PlatformApiService, useValue: jasmine.createSpyObj('ToolboxService', [ 'recordsExportCallback' ]) },
         { provide: NgbModal, useValue: jasmine.createSpyObj('NgbModal', [ 'open' ]) },
       ],
       schemas: [ NO_ERRORS_SCHEMA ],

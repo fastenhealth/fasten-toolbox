@@ -4,3 +4,6 @@
 .PHONY: serve-frontend
 serve-frontend:
 	yarn serve
+
+test-frontend:
+	npx ng test --watch=false

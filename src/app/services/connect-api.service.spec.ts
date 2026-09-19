@@ -1,25 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { environment } from '../../environments/environment';
+import { ConnectApiService } from './connect-api.service';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {RouterModule} from '@angular/router';
+import {environment} from "../../environments/environment";
 
-import { ToolboxService } from './toolbox.service';
-
-describe('ToolboxService', () => {
-  let service: ToolboxService;
+describe('ConnectApiService', () => {
+  let service: ConnectApiService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ]
+      imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(ToolboxService);
+    service = TestBed.inject(ConnectApiService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
-
   afterEach(() => {
     httpTestingController.verify();
   });
+
 
   it('should be created', () => {
     expect(service).toBeTruthy();

@@ -2,20 +2,21 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { ToolboxService } from '../../services/toolbox.service';
+import { PlatformApiService } from '../../services/platform-api.service';
 import { TefcaIasExportComponent } from './tefca-ias-export.component';
+import {ConnectApiService} from "../../services/connect-api.service";
 
 describe('TefcaIasExportComponent', () => {
   let component: TefcaIasExportComponent;
   let fixture: ComponentFixture<TefcaIasExportComponent>;
-  let toolboxService: jasmine.SpyObj<ToolboxService>;
+  let connectApi: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
-    toolboxService = jasmine.createSpyObj('ToolboxService', [ 'getCatalogEntry' ]);
+    connectApi = jasmine.createSpyObj('ConnectApiService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ TefcaIasExportComponent ],
       imports: [ CommonModule ],
-      providers: [ { provide: ToolboxService, useValue: toolboxService } ]
+      providers: [ { provide: ConnectApiService, useValue: connectApi } ]
     })
     .compileComponents();
 
@@ -41,7 +42,7 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('loads environment catalog metadata and renders a choice for each connection', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApi.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Alpha Health', location: 'California', logo: 'https://catalog.example/alpha.png' } }),
       of({ success: true, data: { name: 'Beta Health' } }),
     );
@@ -54,8 +55,8 @@ describe('TefcaIasExportComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
-    expect(toolboxService.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
+    expect(connectApi.getCatalogEntry.calls.allArgs().map(args => args[0])).toEqual([ 'live', 'live' ]);
+    expect(connectApi.getCatalogEntry.calls.allArgs().map(args => args[1].org_connection_id))
       .toEqual([ 'connection-one', 'connection-two' ]);
 
     const choices = fixture.nativeElement.querySelectorAll('.institution-selector button');
@@ -71,7 +72,7 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('shows placeholders when the catalog has no logo or the logo cannot load', async () => {
-    toolboxService.getCatalogEntry.and.returnValues(
+    connectApi.getCatalogEntry.and.returnValues(
       of({ success: true, data: { name: 'Directory Health' } }),
       of({ success: true, data: { name: 'Brand Health' } }),
     );
@@ -96,7 +97,7 @@ describe('TefcaIasExportComponent', () => {
   });
 
   it('shows a retryable error when catalog metadata cannot be loaded', async () => {
-    toolboxService.getCatalogEntry.and.returnValue(of({ success: false }));
+    connectApi.getCatalogEntry.and.returnValue(of({ success: false }));
 
     dispatchWidgetComplete([
       { org_connection_id: 'connection-one', tefca_directory_id: 'tefca-one' },
