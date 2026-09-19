@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
@@ -16,7 +17,11 @@ describe('MedicalRecordsExportComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ MedicalRecordsExportComponent ],
       imports: [ CommonModule ],
-      providers: [ { provide: ConnectApiService, useValue: connectApiService } ]
+      providers: [
+        { provide: ConnectApiService, useValue: connectApiService },
+        { provide: PlatformApiService, useValue: {} },
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
     .compileComponents();
 

@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
@@ -16,7 +17,11 @@ describe('TefcaIasExportComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ TefcaIasExportComponent ],
       imports: [ CommonModule ],
-      providers: [ { provide: ConnectApiService, useValue: connectApi } ]
+      providers: [
+        { provide: ConnectApiService, useValue: connectApi },
+        { provide: PlatformApiService, useValue: {} },
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     })
     .compileComponents();
 
