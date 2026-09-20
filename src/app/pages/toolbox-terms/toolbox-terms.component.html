@@ -56,10 +56,12 @@
             <span *ngIf="controlInvalid('email')" id="emailError" class="field-error">Enter a valid email address.</span>
           </div>
 
-          <button type="submit" class="continue-button">
-            Continue
+          <button type="submit" class="continue-button" [disabled]="submitting">
+            {{ submitting ? 'Submitting…' : 'Continue' }}
             <span aria-hidden="true">→</span>
           </button>
+
+          <p *ngIf="submissionError" class="submission-error" role="alert">{{ submissionError }}</p>
 
           <p class="privacy-copy">
             By clicking Continue, you agree that Fasten may contact you about this request and that your information will be handled according to our

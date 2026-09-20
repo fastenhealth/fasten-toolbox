@@ -13,6 +13,7 @@ describe('MedicalRecordsExportComponent', () => {
   let connectApiService: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
+    document.cookie = 'toolbox_access_email=jane%2Btoolbox%40example.com; Path=/';
     connectApiService = jasmine.createSpyObj('ConnectApiService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ MedicalRecordsExportComponent ],
@@ -39,6 +40,7 @@ describe('MedicalRecordsExportComponent', () => {
 
     expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeTruthy();
     expect(widget).toBeTruthy();
+    expect(widget.getAttribute('external-id')).toBe('amFuZSt0b29sYm94QGV4YW1wbGUuY29t');
     expect(widget.getAttribute('public-id')).toBe(component.environment.records_export_public_id);
     expect(widget.getAttribute('static-backdrop')).toBe('true');
   });

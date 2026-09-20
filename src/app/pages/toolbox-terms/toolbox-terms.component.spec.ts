@@ -1,16 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import {ActivatedRoute, convertToParamMap, Router} from '@angular/router';
+import {of, throwError} from 'rxjs';
 
 import { ToolboxTermsComponent } from './toolbox-terms.component';
+import {ConnectApiService} from '../../services/connect-api.service';
 
 describe('ToolboxTermsComponent', () => {
   let component: ToolboxTermsComponent;
   let fixture: ComponentFixture<ToolboxTermsComponent>;
+  let connectApi: jasmine.SpyObj<ConnectApiService>;
+  let router: jasmine.SpyObj<Router>;
+  let activatedRoute: {snapshot: {queryParamMap: ReturnType<typeof convertToParamMap>}};
 
   beforeEach(async () => {
+    connectApi = jasmine.createSpyObj('ConnectApiService', ['requestToolboxAccess']);
+    connectApi.requestToolboxAccess.and.returnValue(of(true));
+    router = jasmine.createSpyObj('Router', ['navigateByUrl']);
+    router.navigateByUrl.and.returnValue(Promise.resolve(true));
+    activatedRoute = {
+      snapshot: {queryParamMap: convertToParamMap({})},
+    };
     await TestBed.configureTestingModule({
       declarations: [ToolboxTermsComponent],
       imports: [ReactiveFormsModule],
+      providers: [
+        {provide: ConnectApiService, useValue: connectApi},
+        {provide: ActivatedRoute, useValue: activatedRoute},
+        {provide: Router, useValue: router},
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ToolboxTermsComponent);
@@ -25,6 +43,7 @@ describe('ToolboxTermsComponent', () => {
   it('should require a valid name and email before continuing', () => {
     component.submit();
     expect(component.submitted).toBeFalse();
+    expect(connectApi.requestToolboxAccess).not.toHaveBeenCalled();
 
     component.signupForm.setValue({
       firstName: 'Jane',
@@ -34,6 +53,11 @@ describe('ToolboxTermsComponent', () => {
     component.submit();
 
     expect(component.submitted).toBeTrue();
+    expect(connectApi.requestToolboxAccess).toHaveBeenCalledWith({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
   });
 
   it('marks every required field as touched after an invalid submission', () => {
@@ -75,6 +99,62 @@ describe('ToolboxTermsComponent', () => {
     expect(confirmation.textContent).toContain('Thanks, Jane.');
     expect(confirmation.textContent).toContain('jane@example.com');
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it('returns to the originally requested route after a successful submission', () => {
+    const returnUrl = '/records/export?source=example#results';
+    activatedRoute.snapshot.queryParamMap = convertToParamMap({returnUrl});
+    fixture.destroy();
+    fixture = TestBed.createComponent(ToolboxTermsComponent);
+    component = fixture.componentInstance;
+    component.signupForm.setValue({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
+
+    component.submit();
+
+    expect(component.submitted).toBeTrue();
+    expect(router.navigateByUrl).toHaveBeenCalledWith(returnUrl);
+  });
+
+  it('does not navigate to an external return URL', () => {
+    activatedRoute.snapshot.queryParamMap = convertToParamMap({
+      returnUrl: 'https://malicious.example/collect',
+    });
+    fixture.destroy();
+    fixture = TestBed.createComponent(ToolboxTermsComponent);
+    component = fixture.componentInstance;
+    component.signupForm.setValue({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
+
+    component.submit();
+
+    expect(component.submitted).toBeTrue();
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it('keeps the form visible and displays an error when the request fails', () => {
+    connectApi.requestToolboxAccess.and.returnValue(throwError(() => new Error('request failed')));
+    component.signupForm.setValue({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
+
+    component.submit();
+    fixture.detectChanges();
+
+    expect(component.submitted).toBeFalse();
+    expect(component.submitting).toBeFalse();
+    expect(fixture.nativeElement.querySelector('form')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.submission-error').textContent)
+      .toContain('Please try again');
   });
 
   it('renders three continuous logo sets while hiding duplicate sets from assistive technology', () => {

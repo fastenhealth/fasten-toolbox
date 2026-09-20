@@ -1,7 +1,9 @@
-import {AfterViewInit, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {AfterViewInit, Component, ElementRef, Inject, Renderer2, ViewChild} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {PlatformApiService} from '../../services/platform-api.service';
 import {ConnectApiService} from "../../services/connect-api.service";
+import {getToolboxAccessExternalId} from '../../utils/toolbox-access';
 
 @Component({
   selector: 'app-medical-records-export',
@@ -13,6 +15,7 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
   @ViewChild('stitchElement') stitchElement: ElementRef;
 
   environment = environment;
+  externalId: string;
   connections = [];
   showInstitutionSelector = false;
   loadingInstitutions = false;
@@ -24,7 +27,10 @@ export class MedicalRecordsExportComponent implements AfterViewInit {
     private renderer: Renderer2,
     private toolboxService: PlatformApiService,
     private connectApi: ConnectApiService,
-  ) { }
+    @Inject(DOCUMENT) document: Document,
+  ) {
+    this.externalId = getToolboxAccessExternalId(document);
+  }
 
   ngAfterViewInit() {
     this.renderer.listen(this.stitchElement.nativeElement, 'eventBus', (event:any) => {

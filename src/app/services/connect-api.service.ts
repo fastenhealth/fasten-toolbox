@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -11,13 +12,17 @@ import {MetadataSource} from '../models/fasten/metadata-source';
 import {LighthouseSourceSearch} from '../models/lighthouse/lighthouse-source-search';
 import {MedicalSourcesFilter} from '../models/lighthouse/medical-sources-filter';
 import {RequestTefcaIasBeta} from "../models/fasten/request-tefca-ias-beta";
+import {RequestToolboxAccess} from '../models/fasten/request-toolbox-access';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectApiService {
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    @Inject(DOCUMENT) private readonly document: Document,
+  ) {}
 
   public searchCatalogSources(filter: MedicalSourcesFilter): Observable<LighthouseSourceSearch> {
     if((typeof filter.searchAfter === 'string' || filter.searchAfter instanceof String) && (filter.searchAfter as string).length > 0){
@@ -75,6 +80,18 @@ export class ConnectApiService {
           // @ts-ignore
           return response.data
         })
+      );
+  }
+
+  requestToolboxAccess(request: RequestToolboxAccess): Observable<boolean> {
+    return this._httpClient
+      .post<ResponseWrapper>(`${environment.connect_api_endpoint_base}/form/toolbox-access`, request)
+      .pipe(
+        map((response: ResponseWrapper) => response.data as boolean),
+        tap(() => {
+          const secure = this.document.location.protocol === 'https:' ? '; Secure' : '';
+          this.document.cookie = `toolbox_access_email=${encodeURIComponent(request.email.trim())}; Max-Age=2592000; Path=/; SameSite=Lax${secure}`;
+        }),
       );
   }
 

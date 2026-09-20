@@ -70,7 +70,7 @@
                   <fasten-stitch-element
                     *ngIf="!loadingInstitutions && !catalogError"
                     #stitchElement
-                    external-id="user-opaque-id-12812904h31"
+                    [attr.external-id]="externalId"
                     [attr.public-id]="environment.records_export_public_id"
                     tefca-mode="true"
                     static-backdrop="true"
