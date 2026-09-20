@@ -68,7 +68,7 @@
       <fasten-stitch-element
         *ngIf="!showInstitutionSelector && !loadingInstitutions && !catalogError"
         #stitchElement
-        external-id="user-opaque-id-12812904h31"
+        [attr.external-id]="externalId"
         [attr.public-id]="environment.records_export_public_id"
         static-backdrop="true"
       >Export Records</fasten-stitch-element>

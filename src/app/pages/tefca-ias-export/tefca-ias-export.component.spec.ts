@@ -13,6 +13,7 @@ describe('TefcaIasExportComponent', () => {
   let connectApi: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
+    document.cookie = 'toolbox_access_email=jane%2Btoolbox%40example.com; Path=/';
     connectApi = jasmine.createSpyObj('ConnectApiService', [ 'getCatalogEntry' ]);
     await TestBed.configureTestingModule({
       declarations: [ TefcaIasExportComponent ],
@@ -50,6 +51,7 @@ describe('TefcaIasExportComponent', () => {
     const widget = fixture.nativeElement.querySelector('fasten-stitch-element');
 
     expect(widget).toBeTruthy();
+    expect(widget.getAttribute('external-id')).toBe('amFuZSt0b29sYm94QGV4YW1wbGUuY29t');
     expect(widget.getAttribute('tefca-mode')).toBe('true');
     expect(widget.getAttribute('public-id')).toBe(component.environment.records_export_public_id);
     expect(fixture.nativeElement.querySelector('.phone-viewport')).toBeTruthy();
