@@ -11,19 +11,22 @@ import { TefcaIasBetaComponent } from './pages/tefca-ias-beta/tefca-ias-beta.com
 import { ResearchStudyComponent } from './pages/research-study/research-study.component';
 import {TefcaIasExportComponent} from "./pages/tefca-ias-export/tefca-ias-export.component";
 import {ToolboxTermsComponent} from './pages/toolbox-terms/toolbox-terms.component';
+import {IsAuthenticatedAuthGuard} from "./auth-guards/is-authenticated-auth-guard";
 
 const routes: Routes = [
 
   { path: '', component: MedicalSourcesEditorComponent, pathMatch: 'full' },
-
-  { path: 'tefca/export', component: TefcaIasExportComponent },
-  { path: 'tefca/export/callback', component: MedicalRecordsExportCallbackComponent },
-  { path: 'tefca/beta', component: TefcaIasBetaComponent },
-  { path: 'tefca/beta/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'catalog/editor', component: MedicalSourcesEditorComponent },
+
   { path: 'auth', redirectTo: 'auth/terms', pathMatch: 'full' },
   { path: 'auth/terms', component: ToolboxTermsComponent },
-  { path: 'records/export', component: MedicalRecordsExportComponent },
+
+  { path: 'tefca/export', component: TefcaIasExportComponent, canActivate: [IsAuthenticatedAuthGuard] },
+  { path: 'tefca/export/callback', component: MedicalRecordsExportCallbackComponent },
+  { path: 'tefca/beta', component: TefcaIasBetaComponent, canActivate: [IsAuthenticatedAuthGuard] },
+  { path: 'tefca/beta/callback', component: MedicalRecordsExportCallbackComponent },
+
+  { path: 'records/export', component: MedicalRecordsExportComponent, canActivate: [IsAuthenticatedAuthGuard] },
   { path: 'records/export/callback', component: MedicalRecordsExportCallbackComponent },
   { path: 'research/nyp-study', component: ResearchStudyComponent },
 
