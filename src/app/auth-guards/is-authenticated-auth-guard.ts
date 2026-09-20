@@ -9,7 +9,7 @@ export class IsAuthenticatedAuthGuard implements CanActivate {
     @Inject(DOCUMENT) private readonly document: Document,
   ) {}
 
-  canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): boolean | UrlTree {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const hasToolboxAccess = this.document.cookie
       .split(';')
       .map(cookie => cookie.trim())
@@ -22,6 +22,8 @@ export class IsAuthenticatedAuthGuard implements CanActivate {
 
     return hasToolboxAccess
       ? true
-      : this.router.createUrlTree(['/auth/terms']);
+      : this.router.createUrlTree(['/auth/terms'], {
+        queryParams: {returnUrl: state.url},
+      });
   }
 }

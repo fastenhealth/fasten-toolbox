@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ConnectApiService} from '../../services/connect-api.service';
 
 type ToolboxTermsField = 'firstName' | 'lastName' | 'email';
@@ -56,16 +57,27 @@ export class ToolboxTermsComponent {
   submitted = false;
   submitting = false;
   submissionError = '';
+  private readonly returnUrl: string | null;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly connectApi: ConnectApiService,
+    activatedRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(80)]],
       lastName: ['', [Validators.required, Validators.maxLength(80)]],
       email: ['', [Validators.required, Validators.email]],
     });
+
+    const requestedReturnUrl = activatedRoute.snapshot.queryParamMap.get('returnUrl');
+    this.returnUrl = requestedReturnUrl
+      && requestedReturnUrl.startsWith('/')
+      && !requestedReturnUrl.startsWith('//')
+      && !requestedReturnUrl.startsWith('/auth/terms')
+        ? requestedReturnUrl
+        : null;
   }
 
   submit(): void {
@@ -80,6 +92,9 @@ export class ToolboxTermsComponent {
       next: () => {
         this.submitting = false;
         this.submitted = true;
+        if (this.returnUrl) {
+          void this.router.navigateByUrl(this.returnUrl);
+        }
       },
       error: () => {
         this.submitting = false;
