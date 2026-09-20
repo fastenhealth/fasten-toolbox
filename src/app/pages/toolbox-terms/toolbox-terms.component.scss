@@ -57,13 +57,27 @@
 }
 
 .eyebrow-dot {
-  display: inline-grid;
-  place-items: center;
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
   width: 13px;
   height: 13px;
   border: 1.5px solid currentColor;
   border-radius: 50%;
-  font-size: 8px;
+  font-size: 0;
+  line-height: 0;
+}
+
+.eyebrow-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translate(-50%, -58%) rotate(45deg);
 }
 
 h1 {

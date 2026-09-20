@@ -5,7 +5,8 @@
 .sources-shell { max-width: 1280px; margin: 0 auto; }
 .sources-intro { margin-bottom: 26px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px; background: rgba(91, 71, 251, .1); color: var(--directory-primary); font-size: 12px; font-weight: 600; letter-spacing: .025em; }
-.eyebrow-dot { display: inline-grid; place-items: center; width: 13px; height: 13px; border: 1.5px solid currentColor; border-radius: 50%; font-size: 8px; }
+.eyebrow-dot { position: relative; display: inline-block; flex: 0 0 auto; width: 13px; height: 13px; border: 1.5px solid currentColor; border-radius: 50%; font-size: 0; line-height: 0; }
+.eyebrow-dot::before { content: ''; position: absolute; top: 50%; left: 50%; width: 3px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translate(-50%, -58%) rotate(45deg); }
 .sources-intro h1 { margin: 12px 0 7px; font-family: 'Directory Hubot Sans', system-ui, sans-serif; font-size: clamp(36px, 4vw, 48px); font-weight: 700; line-height: 1.12; letter-spacing: 0; }
 .sources-intro p { max-width: 680px; margin: 0; color: #777b84; font-size: 16px; line-height: 1.55; }
 .review-note { display: flex; align-items: flex-start; gap: 11px; max-width: 790px; margin-bottom: 32px; color: #666a76; font-size: 13px; line-height: 1.5; }
