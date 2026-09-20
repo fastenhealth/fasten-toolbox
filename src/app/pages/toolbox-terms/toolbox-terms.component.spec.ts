@@ -1,16 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import {of, throwError} from 'rxjs';
 
 import { ToolboxTermsComponent } from './toolbox-terms.component';
+import {ConnectApiService} from '../../services/connect-api.service';
 
 describe('ToolboxTermsComponent', () => {
   let component: ToolboxTermsComponent;
   let fixture: ComponentFixture<ToolboxTermsComponent>;
+  let connectApi: jasmine.SpyObj<ConnectApiService>;
 
   beforeEach(async () => {
+    connectApi = jasmine.createSpyObj('ConnectApiService', ['requestToolboxAccess']);
+    connectApi.requestToolboxAccess.and.returnValue(of(true));
     await TestBed.configureTestingModule({
       declarations: [ToolboxTermsComponent],
       imports: [ReactiveFormsModule],
+      providers: [{provide: ConnectApiService, useValue: connectApi}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ToolboxTermsComponent);
@@ -25,6 +31,7 @@ describe('ToolboxTermsComponent', () => {
   it('should require a valid name and email before continuing', () => {
     component.submit();
     expect(component.submitted).toBeFalse();
+    expect(connectApi.requestToolboxAccess).not.toHaveBeenCalled();
 
     component.signupForm.setValue({
       firstName: 'Jane',
@@ -34,6 +41,11 @@ describe('ToolboxTermsComponent', () => {
     component.submit();
 
     expect(component.submitted).toBeTrue();
+    expect(connectApi.requestToolboxAccess).toHaveBeenCalledWith({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
   });
 
   it('marks every required field as touched after an invalid submission', () => {
@@ -75,6 +87,24 @@ describe('ToolboxTermsComponent', () => {
     expect(confirmation.textContent).toContain('Thanks, Jane.');
     expect(confirmation.textContent).toContain('jane@example.com');
     expect(fixture.nativeElement.querySelector('form')).toBeNull();
+  });
+
+  it('keeps the form visible and displays an error when the request fails', () => {
+    connectApi.requestToolboxAccess.and.returnValue(throwError(() => new Error('request failed')));
+    component.signupForm.setValue({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+    });
+
+    component.submit();
+    fixture.detectChanges();
+
+    expect(component.submitted).toBeFalse();
+    expect(component.submitting).toBeFalse();
+    expect(fixture.nativeElement.querySelector('form')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.submission-error').textContent)
+      .toContain('Please try again');
   });
 
   it('renders three continuous logo sets while hiding duplicate sets from assistive technology', () => {

@@ -175,6 +175,21 @@ input.invalid {
   outline-offset: 3px;
 }
 
+.continue-button:disabled {
+  box-shadow: none;
+  cursor: wait;
+  opacity: .68;
+  transform: none;
+}
+
+.submission-error {
+  margin: -4px 0 0;
+  color: #b52f3d;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .privacy-copy {
   margin: -6px auto 0;
   max-width: 480px;
