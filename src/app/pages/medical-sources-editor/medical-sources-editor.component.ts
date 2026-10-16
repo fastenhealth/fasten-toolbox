@@ -42,6 +42,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Medhost', value: 'medhost'},
     {key: 'Medicare', value: 'medicare'},
     {key: 'Modmed EMA', value: 'modmedema'},
+    {key: 'Modmed Gastro', value: 'modmedgastro'},
     {key: 'Meditech', value: 'meditech'},
     // meldrx.yaml
     {key: 'Netsmart', value: 'netsmart'},
