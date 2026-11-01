@@ -38,6 +38,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Humana', value: 'humana'},
     {key: 'Kaiser', value: 'kaiser'},
     {key: 'Maximeyes', value: 'maximeyes'},
+    {key: 'Mckesson', value: 'mckesson'},
     {key: 'Medent', value: 'medent'},
     {key: 'Medhost', value: 'medhost'},
     {key: 'Medicare', value: 'medicare'},
