@@ -24,6 +24,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'AdvancedMD', value: 'advancedmd'},
     {key: 'Aetna', value: 'aetna'},
     {key: 'Allscripts', value: 'allscripts'},
+    {key: 'Altera', value: 'altera'},
     {key: 'Anthem', value: 'anthem'},
     {key: 'Athena', value: 'athena'},
     {key: 'Cerner', value: 'cerner'},
@@ -42,9 +43,9 @@ export class MedicalSourcesEditorComponent implements OnInit {
     {key: 'Medent', value: 'medent'},
     {key: 'Medhost', value: 'medhost'},
     {key: 'Medicare', value: 'medicare'},
+    {key: 'Meditech', value: 'meditech'},
     {key: 'Modmed EMA', value: 'modmedema'},
     {key: 'Modmed Gastro', value: 'modmedgastro'},
-    {key: 'Meditech', value: 'meditech'},
     // meldrx.yaml
     {key: 'Netsmart', value: 'netsmart'},
     {key: 'Nextgen', value: 'nextgen'},
@@ -60,6 +61,7 @@ export class MedicalSourcesEditorComponent implements OnInit {
     // {key: 'Tefca', value: 'tefca'}
     {key: 'United Healthcare', value: 'unitedhealthcare'},
     {key: 'VA Health', value: 'vahealth'},
+    {key: 'Veradigm', value: 'veradigm'},
   ]
 
 
