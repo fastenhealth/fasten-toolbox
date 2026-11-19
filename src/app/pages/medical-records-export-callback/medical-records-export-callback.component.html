@@ -74,9 +74,9 @@
               <button class="primary-action dropdown-toggle" ngbDropdownToggle type="button">Download file</button>
               <div class="download-menu" ngbDropdownMenu>
                 <a ngbDropdownItem [href]="generateBundleDownloadUrl" [download]="generateBundleDownloadFilename">Download FHIR JSON file</a>
-                <button ngbDropdownItem type="button" disabled (click)="onDownloadBundleFile()">Download FHIR bundle file</button>
-                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openSmartHealthLinkModal()">Generate Smart Health Link</button>
-                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openPatientSharedHealthDocumentModal()">Generate CMS Patient Shared Health Document</button>
+                <button ngbDropdownItem type="button" disabled (click)="onDownloadBundleFile()">Export FHIR bundle file</button>
+<!--                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openSmartHealthLinkModal()">Generate Smart Health Link</button>-->
+<!--                <button [disabled]="!hasMultipleDownloadLinks" ngbDropdownItem type="button" (click)="openPatientSharedHealthDocumentModal()">Generate CMS Patient Shared Health Document</button>-->
               </div>
             </div>
             <a class="secondary-action" [routerLink]="'/records/export/'">Connect another health system</a>
